@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="35" height="32" tilewidth="128" tileheight="128" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="35" height="32" tilewidth="128" tileheight="128" infinite="0" nextlayerid="4" nextobjectid="17">
  <tileset firstgid="1" source="../tsx/tiles.tsx"/>
+ <tileset firstgid="300" source="../tsx/Objects.tsx"/>
  <layer id="1" name="Ground" width="35" height="32">
   <data encoding="csv">
 56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,
@@ -73,4 +74,22 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="3" name="Objects">
+  <object id="1" name="Castle" type="Building" gid="300" x="1240" y="1424" width="820" height="1092"/>
+  <object id="2" name="Tower" type="Building" gid="302" x="1192" y="1220" width="384" height="496"/>
+  <object id="3" name="Tower" type="Building" gid="302" x="1752" y="1224" width="384" height="516"/>
+  <object id="4" name="Trees" type="Vegetables" gid="303" x="2616" y="800" width="256" height="256"/>
+  <object id="5" name="Trees" type="Vegetables" gid="303" x="3508" y="1616" width="256" height="256"/>
+  <object id="6" name="Trees" type="Vegetables" gid="303" x="2620" y="2244" width="256" height="256"/>
+  <object id="7" name="Trees" type="Vegetables" gid="303" x="3508" y="2708" width="256" height="256"/>
+  <object id="8" name="Mushroom" type="Vegetables" gid="301" x="2244" y="904" width="64" height="64"/>
+  <object id="9" name="Mushroom" type="Vegetables" gid="301" x="2680" y="1112" width="64" height="64"/>
+  <object id="10" name="Mushroom" type="Vegetables" gid="301" x="2972" y="1128" width="64" height="64"/>
+  <object id="11" name="Mushroom" type="Vegetables" gid="301" x="3260" y="1312" width="64" height="64"/>
+  <object id="12" name="Mushroom" type="Vegetables" gid="301" x="3452" y="1648" width="64" height="64"/>
+  <object id="13" name="Mushroom" type="Vegetables" gid="301" x="3456" y="1996" width="64" height="64"/>
+  <object id="14" name="Mushroom" type="Vegetables" gid="301" x="3292" y="2504" width="64" height="64"/>
+  <object id="15" name="Mushroom" type="Vegetables" gid="301" x="3080" y="2440" width="64" height="64"/>
+  <object id="16" name="Mushroom" type="Vegetables" gid="301" x="3440" y="2384" width="64" height="64"/>
+ </objectgroup>
 </map>
