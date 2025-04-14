@@ -1,3 +1,6 @@
 hshjbsbckscjs
 nyudgwhdbck
 bhwdckwhbdck
+efef
+efnenf
+EOFError
