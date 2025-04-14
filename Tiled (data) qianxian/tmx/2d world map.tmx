@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="35" height="32" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="19">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="35" height="32" tilewidth="128" tileheight="128" infinite="0" nextlayerid="7" nextobjectid="21">
  <editorsettings>
   <export target="../export/2d world map..tmx" format="tmx"/>
  </editorsettings>
@@ -169,5 +169,11 @@
   <object id="15" name="Mushroom" type="Vegetables" gid="301" x="3080" y="2440" width="64" height="64"/>
   <object id="16" name="Mushroom" type="Vegetables" gid="301" x="3440" y="2384" width="64" height="64"/>
   <object id="17" gid="301" x="2804" y="1856" width="64" height="64"/>
+  <object id="19" name="Marker" type="Shape" x="1996" y="924">
+   <point/>
+  </object>
+  <object id="20" name="Marker" type="Shape" x="3028" y="2660">
+   <point/>
+  </object>
  </objectgroup>
 </map>
