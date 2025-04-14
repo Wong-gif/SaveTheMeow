@@ -12,6 +12,12 @@ screen = pygame.display.set_mode((1280,720))
 tmx_data = load_pygame("Tiled (data) qianxian/tmx/2d world map.tmx")
 sprite_group = pygame.sprite.Group()
 
+for layer in tmx_data.visible_layers:
+    if hasattr(layer,"data"):
+        for x,y,surf in layer.tiles():
+            pos =(x*128,y*128)
+            Tile(pos = pos, surf = surf, groups = sprite_group)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
