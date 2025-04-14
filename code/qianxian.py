@@ -10,6 +10,7 @@ class Tile(pygame.sprite.Sprite):
 pygame.init()
 screen = pygame.display.set_mode((1280,720))
 tmx_data = load_pygame("Tiled (data) qianxian/tmx/2d world map.tmx")
+sprite_group = pygame.sprite.Group()
 
 while True:
     for event in pygame.event.get():
@@ -18,4 +19,5 @@ while True:
             sys.exit()
 
     screen.fill("black")
+    sprite_group.draw(screen)
     pygame.display.update()
