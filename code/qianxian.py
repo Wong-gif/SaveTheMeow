@@ -13,10 +13,14 @@ class Game:
         pygame.display.set_caption("Save The Meow")
 
         self.import_map()
+        self.setup(self.tmx_maps["world"],"")
 
     def import_map(self):
         self.tmx_maps = {"world": load_pygame(join("Tiled (data) qianxian", "tmx", "2d world map.tmx"))}
-        print(self.tmx_maps)
+
+    def setup(self, tmx_map, player_start_pos):
+        for x,y,surf in tmx_map.get_layer_by_name("Floor").tiles():
+         print(x,y,surf)
 
     def run(self):
         while True:
