@@ -40,6 +40,5 @@ class Game:
             self.all_sprites.draw(self.display_surface)
             pygame.display.update()
 
-if __name__ == "__main__":
-    game = Game()
-    game.run()
+game = Game()
+game.run()
