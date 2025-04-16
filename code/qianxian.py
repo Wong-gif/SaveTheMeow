@@ -21,7 +21,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
 
         self.import_map()
-        self.setup(self.tmx_maps["world"],"(0,0)")
+        self.setup(self.tmx_maps["world"],"(0)")
 
     def import_map(self):
         self.tmx_maps = {"world": load_pygame(join("Tiled (data) qianxian", "tmx", "2d world map.tmx"))}
