@@ -6,11 +6,19 @@ from os.path import join
 window_width, window_height = 1280, 720
 tile_size = 128
 
+class Sprite(pygame.sprite.Sprite):
+    def __init__(self,pos,surf,groups):
+        super().__init__(groups)
+        self.image = surf
+        self.rect = self.image.get_frect(topleft = pos)
+
 class Game:
     def __init__(self):
         pygame.init()
         self.display_surface = pygame.display.set_mode((window_width,window_height))
         pygame.display.set_caption("Save The Meow")
+
+        self.all_sprites = pygame.sprite.Group()
 
         self.import_map()
         self.setup(self.tmx_maps["world"],"")
