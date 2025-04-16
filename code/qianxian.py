@@ -1,29 +1,44 @@
-import pygame, sys
+import pygame
+from sys import exit
 from pytmx.util_pygame import load_pygame
+from os.path import join
 
-class Tile(pygame.sprite.Sprite):
+window_width, window_height = 1280, 720
+tile_size = 128
+
+class Sprite(pygame.sprite.Sprite):
     def __init__(self,pos,surf,groups):
         super().__init__(groups)
         self.image = surf
-        self.rect = self.image.get_rect(topleft = pos)
+        self.rect = self.image.get_frect(topleft = pos)
 
-pygame.init()
-screen = pygame.display.set_mode((1280,720))
-tmx_data = load_pygame("Tiled (data) qianxian/tmx/2d world map.tmx")
-sprite_group = pygame.sprite.Group()
+class Game:
+    def __init__(self):
+        pygame.init()
+        self.display_surface = pygame.display.set_mode((window_width,window_height))
+        pygame.display.set_caption("Save The Meow")
 
-for layer in tmx_data.visible_layers:
-    if hasattr(layer,"data"):
-        for x,y,surf in layer.tiles():
-            pos =(x*128,y*128)
-            Tile(pos = pos, surf = surf, groups = sprite_group)
+        self.all_sprites = pygame.sprite.Group()
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+        self.import_map()
+        self.setup(self.tmx_maps["world"],"(0)")
 
-    screen.fill("black")
-    sprite_group.draw(screen)
-    pygame.display.update()
+    def import_map(self):
+        self.tmx_maps = {"world": load_pygame(join("Tiled (data) qianxian", "tmx", "2d world map.tmx"))}
+
+    def setup(self, tmx_map,player_start_pos):
+        for x,y,surf in tmx_map.get_layer_by_name("Floor").tiles():
+         Sprite((x*tile_size,y*tile_size),surf,self.all_sprites)
+
+    def run(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+
+            self.all_sprites.draw(self.display_surface)
+            pygame.display.update()
+
+game = Game()
+game.run()
