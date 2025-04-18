@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="42" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="7" nextobjectid="8">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="42" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="7" nextobjectid="29">
  <tileset firstgid="1" source="../tsx/overworld.tsx"/>
  <layer id="1" name="main" width="42" height="30">
   <data encoding="csv">
@@ -70,13 +70,73 @@
 </data>
  </layer>
  <objectgroup id="3" name="Nodes">
-  <object id="2" name="Node" x="1279" y="831" width="64" height="64"/>
-  <object id="3" name="Node" x="1215" y="1345" width="64" height="64"/>
-  <object id="4" name="Node" x="1984" y="830" width="64" height="64"/>
-  <object id="5" name="Node" x="1986" y="1343" width="64" height="64"/>
-  <object id="6" name="Node" x="1345" y="254" width="64" height="64"/>
-  <object id="7" name="Node" x="640" y="255" width="64" height="64"/>
+  <object id="2" name="Node" x="1279" y="831" width="64" height="64">
+   <properties>
+    <property name="down" value="1"/>
+    <property name="right" value="4"/>
+    <property name="stage" value="0"/>
+    <property name="up" value="2"/>
+   </properties>
+  </object>
+  <object id="3" name="Node" x="1215" y="1345" width="64" height="64">
+   <properties>
+    <property name="right" value="6r"/>
+    <property name="stage" value="6"/>
+   </properties>
+  </object>
+  <object id="4" name="Node" x="1984" y="830" width="64" height="64">
+   <properties>
+    <property name="down" value="5"/>
+    <property name="left" value="4r"/>
+    <property name="stage" value="4"/>
+   </properties>
+  </object>
+  <object id="5" name="Node" x="1986" y="1343" width="64" height="64">
+   <properties>
+    <property name="left" value="6"/>
+    <property name="stage" value="5"/>
+    <property name="up" value="5r"/>
+   </properties>
+  </object>
+  <object id="6" name="Node" x="1345" y="254" width="64" height="64">
+   <properties>
+    <property name="down" value="2r"/>
+    <property name="left" value="3"/>
+    <property name="stage" value="2"/>
+   </properties>
+  </object>
+  <object id="7" name="Node" x="640" y="255" width="64" height="64">
+   <properties>
+    <property name="right" value="3r"/>
+    <property name="stage" value="3"/>
+   </properties>
+  </object>
+  <object id="16" name="Node" x="1153.67" y="959" width="64" height="64">
+   <properties>
+    <property name="stage" value="1"/>
+    <property name="up" value="1r"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="5" name="Paths"/>
+ <objectgroup id="5" name="Paths">
+  <object id="19" x="1345.67" y="256">
+   <polygon points="0,0 -66.3333,573.333 -2.16667,573.5"/>
+  </object>
+  <object id="21" x="1280" y="830">
+   <polygon points="0,0 0,127 -125,127"/>
+  </object>
+  <object id="25" x="1280.67" y="830.667">
+   <polygon points="0,0 0,59.3333 704.667,-4"/>
+  </object>
+  <object id="26" x="640" y="258.667">
+   <polygon points="0,0 -1.33333,56 705.333,-2.66667"/>
+  </object>
+  <object id="27" x="1982.67" y="830.667">
+   <polygon points="0,0 65.3333,-1.33333 4,509.333"/>
+  </object>
+  <object id="28" x="1985.33" y="1341.33">
+   <polygon points="0,0 0,60 -770.667,6.66667"/>
+  </object>
+ </objectgroup>
  <objectgroup id="6" name="Objects"/>
 </map>
