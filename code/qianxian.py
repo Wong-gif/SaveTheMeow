@@ -29,6 +29,7 @@ class Game:
     def setup(self, tmx_map,player_start_pos):
         for x,y,surf in tmx_map.get_layer_by_name("Floor").tiles():
          Sprite((x*tile_size,y*tile_size),surf,self.all_sprites)
+         print(x,y,surf)
 
     def run(self):
         while True:
