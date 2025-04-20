@@ -25,14 +25,16 @@ class Mario(pygame.sprite.Sprite):
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = 50
-        self.rect.y = 250
+        self.rect.centery = HEIGHT/2
+        self.speedy = 10
+
 
     def update(self):
         key_pressed = pygame.key.get_pressed()
         if key_pressed[pygame.K_UP]:
-            self.rect.y -= +5
+            self.rect.y -= self.speedy
         if key_pressed[pygame.K_DOWN]:
-            self.rect.y += +5
+            self.rect.y += self.speedy
 
         if self.rect.top < 0:
             self.rect.top = 0
