@@ -23,3 +23,10 @@ def import_folder_dict(*path):
             surf = pygame.image.load(full_path).convert_alpha()
             frames[image_name('.')[0]] = surf
     return frames
+
+def import_sub_folders(*path):
+    frames = {}
+    for _,sub_folders,__ in walk(join(*path)):
+        for sub_folder in sub_folders:
+            frames[sub_folder] = import_folder(*path,sub_folder)
+    return frames
