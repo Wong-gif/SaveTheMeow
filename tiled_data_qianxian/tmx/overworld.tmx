@@ -121,21 +121,51 @@
  </objectgroup>
  <objectgroup id="5" name="Paths">
   <object id="19" x="1345.67" y="256">
+   <properties>
+    <property name="end" value="2"/>
+    <property name="path_id" value="2"/>
+    <property name="start" value="0"/>
+   </properties>
    <polygon points="0,0 -66.3333,573.333 -2.16667,573.5"/>
   </object>
   <object id="21" x="1280" y="830">
+   <properties>
+    <property name="end" value="1"/>
+    <property name="path_id" value="1"/>
+    <property name="start" value="0"/>
+   </properties>
    <polygon points="0,0 0,127 -125,127"/>
   </object>
   <object id="25" x="1280.67" y="830.667">
+   <properties>
+    <property name="end" value="4"/>
+    <property name="path_id" value="4"/>
+    <property name="start" value="0"/>
+   </properties>
    <polygon points="0,0 0,59.3333 704.667,-4"/>
   </object>
   <object id="26" x="640" y="258.667">
+   <properties>
+    <property name="end" value="3"/>
+    <property name="path_id" value="3"/>
+    <property name="start" value="2"/>
+   </properties>
    <polygon points="0,0 -1.33333,56 705.333,-2.66667"/>
   </object>
   <object id="27" x="1982.67" y="830.667">
+   <properties>
+    <property name="end" value="5"/>
+    <property name="path_id" value="5"/>
+    <property name="start" value="4"/>
+   </properties>
    <polygon points="0,0 65.3333,-1.33333 4,509.333"/>
   </object>
   <object id="28" x="1985.33" y="1341.33">
+   <properties>
+    <property name="end" value="6"/>
+    <property name="path_id" value="6"/>
+    <property name="start" value="5"/>
+   </properties>
    <polygon points="0,0 0,60 -770.667,6.66667"/>
   </object>
  </objectgroup>
