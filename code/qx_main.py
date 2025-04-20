@@ -1,10 +1,6 @@
-import pygame
-from sys import exit
+from qx_settings import *
 from pytmx.util_pygame import load_pygame
 from os.path import join
-
-window_width, window_height = 1280, 720
-tile_size = 128
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self,pos,surf,groups):
