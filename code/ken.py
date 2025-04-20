@@ -27,6 +27,21 @@ class Mario(pygame.sprite.Sprite):
         self.rect.x = 50
         self.rect.y = 250
 
+    def update(self):
+        key_pressed = pygame.key.get_pressed()
+        if key_pressed[pygame.K_UP]:
+            self.rect.y -= +5
+        if key_pressed[pygame.K_DOWN]:
+            self.rect.y += +5
+
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT
+    
+
+        
+
 boss = pygame.Rect(700, 250, 60, 60)
 
 all_sprites = pygame.sprite.Group()
@@ -35,8 +50,6 @@ all_sprites.add(mario)
 
 # Game loop
 running = True
-
-
 while running:
     clock.tick(60)
     screen.fill(WHITE)
@@ -44,6 +57,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    all_sprites.update()
 
     all_sprites.draw(screen)
     pygame.display.update()
