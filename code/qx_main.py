@@ -14,6 +14,12 @@ class Game:
         #generate the world map
         self.tmx_overworld = load_pygame(join("tiled_data_qianxian","tmx","overworld.tmx"))
 
+    def import_assets(self):
+        self.overworld_frames = {
+            "palms" : import_folder("graphics","overworld","palm"),
+            "water" : import_folder("graphics","overworld","water")
+        }
+
     def run(self):
         while True:
             dt = self.clock.tick() / 1000
