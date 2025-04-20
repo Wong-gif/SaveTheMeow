@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 
 WIDTH, HEIGHT = 800, 400
 BLACK = (0, 0, 0)
@@ -40,7 +41,24 @@ class Mario(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
+
+class Boss(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((60, 60))
+        self.image.fill(ORANGE)
+        self.rect = self.image.get_rect()
+        self.rect.x = 700
+        self.rect.y = HEIGHT/2
+        self.speed = random.choice([-2, 2])
     
+    def update(self):
+        self.rect.y += self.speed
+
+        if self.rect.top == 0 or self.rect.bottom == HEIGHT:
+            self.speed *= -1
+
+
 
         
 
@@ -48,7 +66,9 @@ boss = pygame.Rect(700, 250, 60, 60)
 
 all_sprites = pygame.sprite.Group()
 mario = Mario()
+boss = Boss()
 all_sprites.add(mario)
+all_sprites.add(boss)
 
 # Game loop
 running = True
