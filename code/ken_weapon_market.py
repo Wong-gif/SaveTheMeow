@@ -3,6 +3,7 @@ import sys
 
 WIDTH, HEIGHT = 800, 600
 FPS = 60
+BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 PURPLE =  (255, 215, 0)
 GOLD = (150, 0, 150)
@@ -37,12 +38,14 @@ while running:
     item_box = pygame.Rect(item_x, item_y, 200, 150)
     pygame.draw.rect(screen, (180, 180, 180), item_box)
 
-    name_text = font.render(market_item["name"], True, (WHITE))
-    screen.blit(name_text, (item_x + 100 - name_text.get_width() // 2, item_y + 160))
+    name_text = font.render(market_item["name"], True, (BLACK))
+    screen.blit(name_text, (item_x + item_box.width // 2 - name_text.get_width() // 2, item_y + 155))
 
     color = (PURPLE) if market_item["currency"] == "coins" else (GOLD)
     price_text = font.render(f"{market_item['price']} {market_item['currency']}", True, color)
-    screen.blit(price_text, (item_x + 100 - name_text.get_width() // 2, item_y + 180))
+    screen.blit(price_text, (item_x + item_box.width // 2 - price_text.get_width() // 2, item_y + 180))
+
+
 
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
