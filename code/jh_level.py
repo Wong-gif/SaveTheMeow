@@ -8,7 +8,7 @@ class Level:
         self.screen_width, self.screen_height = screen.get_size()
         self.font = pygame.font.SysFont('Arial', 24)
 
-        self.world_width = 3000
+        self.world_width = 3200
         self.camera_x = 0
 
         self.state = "playing"
@@ -62,7 +62,8 @@ class Level:
             {"rect": pygame.Rect(1600, 400, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1850, 400, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1900, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(2700, 380, 60, 90), "type": "portal", "active": True}
+            {"rect": pygame.Rect(2500, 400, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(3000, 380, 80, 100), "type": "portal", "active": True}
         ]
 
     def _load_images(self, folder, image_dict, default_size):
