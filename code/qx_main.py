@@ -9,7 +9,6 @@ class Game:
         pygame.init()
         self.display_surface = pygame.display.set_mode((window_width,window_height))
         pygame.display.set_caption("Save The Meow")
-        self.clock = pygame.time.Clock()
         self.import_assets()
 
         #generate the world map
@@ -18,14 +17,12 @@ class Game:
 
     def import_assets(self):
         self.overworld_frames = {
-            "palms" : import_folder("graphics","overworld","palm"),
-            "water" : import_folder("graphics","overworld","water")
+            "palms" : import_folder("graphics_qx","overworld","palm"),
+            "water" : import_folder("graphics_qx","overworld","water")
         }
 
     def run(self):
         while True:
-            dt = self.clock.tick() / 1000
-            print(dt)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
