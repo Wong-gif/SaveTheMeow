@@ -16,7 +16,9 @@ font = pygame.font.SysFont("arial", 20)
 player_coins = 1500
 player_gems = 500
 
-
+market_item = {
+    "name": "Golden Sword", "price": 1000, "currency": "coins"
+}
 
 running = True
 while running:
@@ -28,7 +30,14 @@ while running:
     screen.blit(coins_text, (30, 20))
     screen.blit(gems_text, (30, 60))
 
-    for event in pygame.event.get():
+    item_x = 100
+    item_y = 100
+    item_box = pygame.Rect(item_x, item_y, 200, 150)
+    pygame.draw.rect(screen, (180, 180, 180), item_box)
+
+   
+
+    for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
             running = False
 
