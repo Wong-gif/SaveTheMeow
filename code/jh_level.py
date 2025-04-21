@@ -103,12 +103,12 @@ class Level:
 
     def update_physics(self):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_time_update > 1000:
+        if self.state == "playing" and current_time - self.last_time_update > 1000:
             self.time_left -= 1
             self.last_time_update = current_time
-        if self.time_left <= 0:
-            print("time up！game start again。")
-            self.__init__(self.screen)
+            if self.time_left <= 0:
+                print("time up！game start again。")
+                self.__init__(self.screen)
 
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
