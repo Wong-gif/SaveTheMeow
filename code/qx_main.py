@@ -2,7 +2,7 @@ from qx_settings import *
 from pytmx.util_pygame import load_pygame
 from os.path import join
 from qx_overworld import Overworld
-from qx_support import *
+from qx_support import * 
 
 class Game:
     def __init__(self):
@@ -13,7 +13,7 @@ class Game:
 
         #generate the world map
         self.tmx_overworld = load_pygame(join("tiled_data_qianxian","tmx","overworld.tmx"))
-        self.current_stage = Overworld(self.tmx_overworld,self.data,self.overworld_frames)
+        self.current_stage = Overworld(self.tmx_overworld,self.overworld_frames)
 
     def import_assets(self):
         self.overworld_frames = {

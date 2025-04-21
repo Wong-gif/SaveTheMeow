@@ -7,9 +7,9 @@ tile_size = 64
 Z_layers = {
     "bg" : 0,
     "clouds" : 1,
-    "bg_tiles" : 2,
+    "bg tiles" : 2,
     "path" : 3,
-    "bg_details" : 4,
+    "bg details" : 4,
     "main" : 5,
     "water" : 6,
     "fg" : 7
