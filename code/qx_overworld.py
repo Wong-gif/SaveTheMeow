@@ -1,11 +1,12 @@
 from qx_settings import *
 from qx_sprites import Sprite, AnimatedSprite
+from qx_groups import WorldSprites
 
 class Overworld:
     def __init__(self, tmx_map, overworld_frames):
         self.display_surface = pygame.display.get_surface() 
 
-        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites = WorldSprites()
 
         self.setup(tmx_map,overworld_frames)
 
@@ -22,4 +23,4 @@ class Overworld:
 
     def run(self,dt):
         self.all_sprites.update(dt)
-        self.all_sprites.draw(self.display_surface)
+        self.all_sprites.draw((1200,830))
