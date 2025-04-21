@@ -98,6 +98,7 @@ class Fireball(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.speed = 5
+        self.hit_count = 3
 
     def update(self):
         self.rect.x -= self.speed
@@ -130,6 +131,19 @@ while running:
     
 
     all_sprites.update()
+    for bullet in bullets:
+        hit_fireballs = pygame.sprite.spritecollide(bullet, fireballs, False)
+        for fireball in hit_fireballs:
+            bullet.kill()  # Remove bullet on hit
+            fireball.hit_count += 1  
+            if fireball.hit_count >= 5:
+                fireball.kill()
+
+    hits = pygame.sprite.spritecollide(mario, fireballs, False)
+    if hits:
+        print("Game over")
+        running = False
+    
 
     all_sprites.draw(screen)
     pygame.display.update()
