@@ -1,9 +1,10 @@
 import pygame
 import sys
 from jh_level import Level
-import pygame as pg
 
+# pygame and mix the sound
 pygame.init()
+pygame.mixer.init()
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -17,22 +18,31 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Save The Meow")
 clock = pygame.time.Clock()
 
-background = pg.image.load('assets/images/background.png').convert()
-background = pg.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.mixer.music.load("assets/sounds/background_music.mp3")
-pygame.mixer.music.set_volume(0.5)
-
-# Game states
 MENU = 0
 GAME = 1
 current_state = MENU
 
-# Initialize level
+# 尝试加载背景和音乐（添加错误处理）
+try:
+    background = pygame.image.load('assets/images/background.png').convert()
+    background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+except:
+    print("cannot load the image")
+    background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+    background.fill((135, 206, 235))  # 天蓝色背景
+
+try:
+    pygame.mixer.music.load("assets/sounds/background_music.mp3")
+    pygame.mixer.music.set_volume(0.5)
+except:
+    print("cannot play the sound")
+
+# 初始化关卡
 level = Level(screen)
 
 class Button:
     def __init__(self, x, y, width, height, text):
-        self.rect = pygame.Rect(x, y, width, height)
+        self.rect = pygame.Rect(x, y, width, height)#position
         self.text = text
         self.font = pygame.font.SysFont('Arial', 32)
         self.normal_color = GREEN
@@ -54,7 +64,6 @@ class Button:
             return self.rect.collidepoint(event.pos)
         return False
 
-# Create start button
 start_button = Button(
     SCREEN_WIDTH//2 - 100, 
     SCREEN_HEIGHT//2 + 70, 
@@ -62,26 +71,32 @@ start_button = Button(
     "Start The Game"
 )
 
-# Main game loop
+# 主游戏循环
 running = True
 while running:
     clock.tick(FPS)
     
+    # 事件处理
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         
-        if current_state == MENU and start_button.is_clicked(event):
-            current_state = GAME
-            pygame.mixer.music.play(-1)
+        
+        if current_state == MENU:
+            if start_button.is_clicked(event):
+                current_state = GAME
+                try:
+                    pygame.mixer.music.play(-1)  # music start
+                except:
+                    pass 
     
+    # 状态渲染
     if current_state == MENU:
-        # Draw menu state - background with button
+        # 绘制菜单
         screen.blit(background, (0, 0))
         start_button.draw(screen)
     elif current_state == GAME:
-        # Draw game state - black screen
-        screen.fill(BLACK)
+        # 运行游戏逻辑
         level.run()
     
     pygame.display.update()
