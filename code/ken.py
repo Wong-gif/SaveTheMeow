@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 
 WIDTH, HEIGHT = 800, 400
 BLACK = (0, 0, 0)
@@ -25,28 +26,90 @@ class Mario(pygame.sprite.Sprite):
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.x = 50
-        self.rect.y = 250
+        self.rect.centery = HEIGHT/2
+        self.speedy = 10
+
 
     def update(self):
         key_pressed = pygame.key.get_pressed()
         if key_pressed[pygame.K_UP]:
-            self.rect.y -= +5
+            self.rect.y -= self.speedy
         if key_pressed[pygame.K_DOWN]:
-            self.rect.y += +5
+            self.rect.y += self.speedy
 
         if self.rect.top < 0:
             self.rect.top = 0
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
+
+    def shoot
+
+class Boss(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((60, 60))
+        self.image.fill(ORANGE)
+        self.rect = self.image.get_rect()
+        self.rect.x = 700
+        self.rect.y = HEIGHT/2
+        self.speed = random.choice([-2, 2])
+        self.shoot_chance = 10
+    
+    def update(self):
+        self.rect.y += self.speed
+
+        if self.rect.top == 0 or self.rect.bottom == HEIGHT:
+            self.speed *= -1
+
+        if random.randint(1, 100) <= self.shoot_chance:
+            self.shoot()
+
+    def shoot(self):
+        fireball = Fireball(self.rect.x, self.rect.y)
+        all_sprites.add(fireball)
+        fireballs.add(fireball)
+
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((10, 5))
+        self.image.fill(GREEN)
+        self.rect = self.image.get.rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = 5
+
+    def update(self):
+        self.rect.x += self.speed
+        if self.rect.left > WIDTH:
+            self.kill()
+
+
+class Fireball(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((5, 5))
+        self.image.fill(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = 5
+
+    def update(self):
+        self.rect.x -= self.speed
+        if self.rect.right < 0:
+            self.kill()
+
     
 
-        
-
-boss = pygame.Rect(700, 250, 60, 60)
 
 all_sprites = pygame.sprite.Group()
+fireballs = pygame.sprite.Group()
 mario = Mario()
+boss = Boss()
 all_sprites.add(mario)
+all_sprites.add(boss)
 
 # Game loop
 running = True
@@ -57,6 +120,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    
 
     all_sprites.update()
 
