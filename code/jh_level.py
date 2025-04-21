@@ -62,8 +62,8 @@ class Level:
             {"rect": pygame.Rect(1600, 400, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1850, 400, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1900, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(2500, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(3000, 380, 80, 100), "type": "portal", "active": True}
+            {"rect": pygame.Rect(2800, 400, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(3000, 355, 80, 100), "type": "portal", "active": True}
         ]
 
     def _load_images(self, folder, image_dict, default_size):
