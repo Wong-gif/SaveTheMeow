@@ -1,6 +1,7 @@
 from qx_settings import *
 from qx_sprites import Sprite, AnimatedSprite
 from qx_groups import WorldSprites
+from  random import randint
 
 class Overworld:
     def __init__(self, tmx_map, overworld_frames):
@@ -21,6 +22,14 @@ class Overworld:
            for row in range(tmx_map.height):
               AnimatedSprite((col*tile_size,row*tile_size), overworld_frames["water"],self.all_sprites,Z_layers["bg"])
 
+        #objects
+        for obj in tmx_map.get_layer_by_name("Objects"):
+         if obj.name == "palm":
+            AnimatedSprite((obj.x,obj.y),overworld_frames["palms"],self.all_sprites,Z_layers["main"],randint(4,6))
+         else:
+            z = Z_layers[f"{"bg details" if obj.name == "grass" else "bg tiles"}"]
+            Sprite((obj.x,obj.y), obj.image, self.all_sprites, z)
+
     def run(self,dt):
         self.all_sprites.update(dt)
-        self.all_sprites.draw((1200,830))
+        self.all_sprites.draw((1350,900))
