@@ -9,6 +9,7 @@ class Game:
         pygame.init()
         self.display_surface = pygame.display.set_mode((window_width,window_height))
         pygame.display.set_caption("Save The Meow")
+        self.clock = pygame.time.Clock()
         self.import_assets()
 
         #generate the world map
@@ -23,11 +24,13 @@ class Game:
 
     def run(self):
         while True:
+            dt = self.clock.tick() / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
 
+            self.current_stage.run(dt)
             pygame.display.update()
 
 game = Game()
