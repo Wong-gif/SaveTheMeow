@@ -158,7 +158,7 @@ class Level:
         for brick in self.bricks:
             if brick["type"] == "spike" and brick.get("visible", False):
                 if self.player_rect.colliderect(brick["rect"]):
-                    print("U died！")
+                    print("Beware of traps！")
                     self.__init__(self.screen)
 
         for brick in self.bricks:
@@ -166,7 +166,7 @@ class Level:
                 if self.player_rect.colliderect(brick["rect"]):
                     self.state = "won"
                     if not self.has_printed_success:
-                        print("success！")
+                        print("Congratulations on completing the game！")
                         self.has_printed_success = True
                                         
 
