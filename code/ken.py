@@ -42,6 +42,8 @@ class Mario(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
 
+    def shoot
+
 class Boss(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -66,6 +68,22 @@ class Boss(pygame.sprite.Sprite):
         fireball = Fireball(self.rect.x, self.rect.y)
         all_sprites.add(fireball)
         fireballs.add(fireball)
+
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((10, 5))
+        self.image.fill(GREEN)
+        self.rect = self.image.get.rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = 5
+
+    def update(self):
+        self.rect.x += self.speed
+        if self.rect.left > WIDTH:
+            self.kill()
 
 
 class Fireball(pygame.sprite.Sprite):
