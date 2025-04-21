@@ -7,6 +7,7 @@ class Level:
         self.screen = screen
         self.screen_width, self.screen_height = screen.get_size()
         self.font = pygame.font.SysFont('Arial', 24)
+        self.has_printed_success = False 
 
         self.world_width = 3200
         self.camera_x = 0
@@ -163,8 +164,11 @@ class Level:
         for brick in self.bricks:
             if brick["type"] == "portal" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
-                    print("success！")
                     self.state = "won"
+                    if not self.has_printed_success:
+                        print("success！")
+                        self.has_printed_success = True
+                                        
 
         self.player_rect.left = max(0, self.player_rect.left)
         self.player_rect.right = min(self.world_width, self.player_rect.right)
