@@ -51,6 +51,7 @@ class Boss(pygame.sprite.Sprite):
         self.rect.x = 700
         self.rect.y = HEIGHT/2
         self.speed = random.choice([-2, 2])
+        self.shoot_chance = 10
     
     def update(self):
         self.rect.y += self.speed
@@ -58,13 +59,35 @@ class Boss(pygame.sprite.Sprite):
         if self.rect.top == 0 or self.rect.bottom == HEIGHT:
             self.speed *= -1
 
+        if random.randint(1, 100) <= self.shoot_chance:
+            self.shoot()
+
+    def shoot(self):
+        fireball = Fireball(self.rect.x, self.rect.y)
+        all_sprites.add(fireball)
+        fireballs.add(fireball)
 
 
-        
+class Fireball(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((5, 5))
+        self.image.fill(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = 5
 
-boss = pygame.Rect(700, 250, 60, 60)
+    def update(self):
+        self.rect.x -= self.speed
+        if self.rect.right < 0:
+            self.kill()
+
+    
+
 
 all_sprites = pygame.sprite.Group()
+fireballs = pygame.sprite.Group()
 mario = Mario()
 boss = Boss()
 all_sprites.add(mario)
@@ -79,6 +102,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    
 
     all_sprites.update()
 
