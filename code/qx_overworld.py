@@ -1,5 +1,5 @@
 from qx_settings import *
-from qx_sprites import Sprite, AnimatedSprite, Node
+from qx_sprites import Sprite, AnimatedSprite, Node, Icon
 from qx_groups import WorldSprites
 from  random import randint
 
@@ -32,9 +32,13 @@ class Overworld:
 
         #nodes & player
         for obj in tmx_map.get_layer_by_name("Nodes"):
+         #nodes
          if obj.name == "Node":
           Node((obj.x,obj.y),overworld_frames["path"]["node"],self.all_sprites)
 
+        #player
+          self.icon = Icon((obj.x + tile_size/2, obj.y + tile_size/2), self.all_sprites, overworld_frames["icon"])
+
     def run(self,dt):
         self.all_sprites.update(dt)
-        self.all_sprites.draw((2500,900))
+        self.all_sprites.draw((1500,1200))
