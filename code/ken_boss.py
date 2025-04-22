@@ -2,7 +2,7 @@ import pygame
 import sys
 import random
 
-WIDTH, HEIGHT = 800, 400
+WIDTH, HEIGHT = 800, 600
 BLACK = (0, 0, 0)
 LAVA = (255, 69, 0)  #bottom
 WHITE = (255, 255, 255)
@@ -18,6 +18,8 @@ pygame.display.set_caption("Mario vs Boss")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 30)
 
+#background_img = pygame.image.load(os.path.join("img","background.png")).convert()
+ 
 
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
