@@ -34,7 +34,7 @@ class Overworld:
         #nodes & player
         for obj in tmx_map.get_layer_by_name("Nodes"):
          #player
-         if obj.name == "Node" and obj.properties["stage"] == self.data.current_level:
+         if obj.name == "Node" and int(obj.properties["stage"]) == self.data.current_level:
           self.icon = Icon((obj.x + tile_size/2, obj.y + tile_size/2), self.all_sprites, overworld_frames["icon"])
          
          #nodes
@@ -42,7 +42,7 @@ class Overworld:
           Node( pos = (obj.x,obj.y),
                surf = overworld_frames["path"]["node"],
                groups = self.all_sprites,
-               level = obj.properties["stage"],
+               level = int(obj.properties["stage"]),
                data = self.data)
 
     def run(self,dt):
