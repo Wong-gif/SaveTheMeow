@@ -1,12 +1,12 @@
 import pygame
 import sys
 
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1000, 600
 FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-PURPLE =  (255, 215, 0)
-GOLD = (150, 0, 150)
+GOLD =  (255, 215, 0)
+PURPLE = (150, 0, 150)
 
 pygame.init()
 
@@ -36,7 +36,7 @@ while running:
     coins_text = font.render(f"Coins : {player_coins}", True, (GOLD))
     gems_text = font.render(f"Gems : {player_gems}", True, (PURPLE))
     screen.blit(coins_text, (30, 20))
-    screen.blit(gems_text, (30, 50))
+    screen.blit(gems_text, (30 + coins_text.get_width() + 20, 20))
 
     for i, item in enumerate(market_item):
         col = 3
@@ -48,7 +48,7 @@ while running:
         name_text = font.render(item["name"], True, (BLACK))
         screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 155))
         
-        color = (PURPLE) if item["currency"] == "coins" else (GOLD)
+        color = (GOLD) if item["currency"] == "coins" else (PURPLE)
         price_text = font.render(f"{item['price']} {item['currency']}", True, color)
         screen.blit(price_text, (x + box.width // 2 - price_text.get_width() // 2, y + 180))
 
