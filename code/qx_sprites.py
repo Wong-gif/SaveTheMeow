@@ -27,3 +27,16 @@ class Node(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_frect(center = (pos[0] + tile_size/2, pos[1] + tile_size/2))
         self.z = Z_layers["path"]
+
+class Icon(pygame.sprite.Sprite):
+    def __init__(self,pos,groups,frames):
+        super().__init__(groups)
+
+        #images
+        self.frames, self.frame_index = frames, 0
+        self.state = "idle"
+        self.image = self.frames[self.state][self.frame_index]
+        self.z = Z_layers["main"]
+
+        #rect
+        self.rect = self.image.get_frect(center = pos)
