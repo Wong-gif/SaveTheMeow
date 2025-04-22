@@ -4,10 +4,11 @@ from qx_groups import WorldSprites
 from  random import randint
 
 class Overworld:
-    def __init__(self, tmx_map, overworld_frames):
+    def __init__(self, tmx_map,data, overworld_frames):
         self.display_surface = pygame.display.get_surface() 
+        self.data = data
 
-        self.all_sprites = WorldSprites()
+        self.all_sprites = WorldSprites(data)
 
         self.setup(tmx_map,overworld_frames)
 
@@ -32,12 +33,17 @@ class Overworld:
 
         #nodes & player
         for obj in tmx_map.get_layer_by_name("Nodes"):
+         #player
+         if obj.name == "Node" and obj.properties["stage"] == self.data.current_level:
+          self.icon = Icon((obj.x + tile_size/2, obj.y + tile_size/2), self.all_sprites, overworld_frames["icon"])
+         
          #nodes
          if obj.name == "Node":
-          Node((obj.x,obj.y),overworld_frames["path"]["node"],self.all_sprites)
-
-        #player
-          self.icon = Icon((obj.x + tile_size/2, obj.y + tile_size/2), self.all_sprites, overworld_frames["icon"])
+          Node( pos = (obj.x,obj.y),
+               surf = overworld_frames["path"]["node"],
+               groups = self.all_sprites,
+               level = obj.properties["stage"],
+               data = self.data)
 
     def run(self,dt):
         self.all_sprites.update(dt)
