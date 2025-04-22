@@ -19,7 +19,8 @@ class Game:
     def import_assets(self):
         self.overworld_frames = {
             "palms" : import_folder("graphics_qx","overworld","palm"),
-            "water" : import_folder("graphics_qx","overworld","water")
+            "water" : import_folder("graphics_qx","overworld","water"),
+            "path" : import_folder_dict("graphics_qx","overworld","path")
         }
 
     def run(self):
