@@ -28,9 +28,7 @@ try:
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 except:
     print("cannot load the image")
-    background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-    background.fill((135, 206, 235))  # 天蓝色背景
-
+    
 try:
     pygame.mixer.music.load("assets/sounds/background_music.mp3")
     pygame.mixer.music.set_volume(0.5)
