@@ -1,5 +1,5 @@
 from qx_settings import *
-from qx_sprites import Sprite, AnimatedSprite
+from qx_sprites import Sprite, AnimatedSprite, Node
 from qx_groups import WorldSprites
 from  random import randint
 
@@ -30,6 +30,11 @@ class Overworld:
             z = Z_layers[f"{"bg details" if obj.name == "grass" else "bg tiles"}"]
             Sprite((obj.x,obj.y), obj.image, self.all_sprites, z)
 
+        #nodes & player
+        for obj in tmx_map.get_layer_by_name("Nodes"):
+         if obj.name == "Node":
+          Node((obj.x,obj.y),overworld_frames["path"]["node"],self.all_sprites)
+
     def run(self,dt):
         self.all_sprites.update(dt)
-        self.all_sprites.draw((1500,900))
+        self.all_sprites.draw((2500,900))
