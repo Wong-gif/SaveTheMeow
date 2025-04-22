@@ -99,6 +99,7 @@ class Level:
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
 
+        #ground material
         for i, pos in enumerate(self.split_positions):
             if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 150:
                 self.ground_split_flags[i] = True
@@ -162,16 +163,16 @@ class Level:
         self.animation_frame += self.animation_speed
 
     def get_player_image(self):
-        if not self.on_ground:
+        if not self.on_ground:# if not in ground run jump photo
             return self.player_images['jump']
         moving = pygame.key.get_pressed()[pygame.K_LEFT] or pygame.key.get_pressed()[pygame.K_RIGHT]
         if moving:
             frame_index = int(self.animation_frame) % len(self.player_images['walk'])
             return self.player_images['walk'][frame_index]
-        return self.player_images['idle']
+        return self.player_images['idle']#if not moving anyone, run idle photo
 
     def draw(self):
-        self.screen.fill((135, 206, 235))
+        self.screen.fill((135, 206, 235))#blue background
 
         ground_segments = []
         last_x = 0
