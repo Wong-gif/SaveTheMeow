@@ -6,7 +6,7 @@ class Level:
     def __init__(self, screen):
         self.screen = screen
         self.screen_width, self.screen_height = screen.get_size()
-        self.font = pygame.font.SysFont('Arial', 24)
+        self.font = pygame.font.SysFont('Arial', 32)
         self.has_printed_success = False 
         self.world_width = 3200
         self.camera_x = 0
@@ -48,11 +48,11 @@ class Level:
             })
 
         self.bricks = [
-            {"rect": pygame.Rect(400, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1600, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1850, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1900, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(2800, 400, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(400, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1600, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1850, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1900, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(2800, 433, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(3100, 350, 80, 100), "type": "portal", "active": True}
         ]
 
