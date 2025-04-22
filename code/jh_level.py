@@ -210,7 +210,7 @@ class Level:
         self.screen.blit(time_text, (20, 50))
 
         if self.state == "won":
-            msg = self.font.render(f"🎉 u win! final score: {self.score}", True, (0, 0, 0))
+            msg = self.font.render(f"You win! final score: {self.score}", True, (0, 0, 0))
             self.screen.blit(msg, (self.screen_width // 2 - 150, self.screen_height // 2))
 
     def run(self):
