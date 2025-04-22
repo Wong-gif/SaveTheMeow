@@ -1,9 +1,10 @@
 from qx_settings import *
 
 class WorldSprites(pygame.sprite.Group):
-    def __init__(self):
+    def __init__(self,data):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
+        self.data = data
         self.offset = vector()
 
     def draw(self,target_pos):
@@ -11,4 +12,8 @@ class WorldSprites(pygame.sprite.Group):
         self.offset.y = -(target_pos[1] - window_height / 2)
 
         for sprite in sorted(self,key = lambda sprite: sprite.z):
-            self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset)
+            if sprite.z == Z_layers["path"]:
+                if sprite.level <= self.data.unlocked_level:
+                    self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset)
+            else:
+                    self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset)
