@@ -6,8 +6,8 @@ from jh_level import Level
 pygame.init()
 pygame.mixer.init()
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 800
 FPS = 60
 
 BLACK = (0, 0, 0)
@@ -28,9 +28,7 @@ try:
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 except:
     print("cannot load the image")
-    background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-    background.fill((135, 206, 235))  # 天蓝色背景
-
+    
 try:
     pygame.mixer.music.load("assets/sounds/background_music.mp3")
     pygame.mixer.music.set_volume(0.5)
