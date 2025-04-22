@@ -31,7 +31,7 @@ class Level:
         self.animation_frame = 0
         self.animation_speed = 0.15
 
-        self.split_positions = [1000, 3000]
+        self.split_positions = [1000, 2500]
         self.split_progresses = [0 for _ in self.split_positions]
         self.split_width = 220
         self.ground_split_flags = [False for _ in self.split_positions]
@@ -53,7 +53,7 @@ class Level:
             {"rect": pygame.Rect(1850, 400, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1900, 400, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(2800, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(3000, 355, 80, 100), "type": "portal", "active": True}
+            {"rect": pygame.Rect(3100, 350, 80, 100), "type": "portal", "active": True}
         ]
 
     def _load_game_assets(self):
@@ -78,13 +78,8 @@ class Level:
         self.spike_image = self._load_single_image("assets/images/spike.png")
 
     def _load_single_image(self, path):
-        try:
-            return pygame.image.load(path).convert_alpha()
-        except pygame.error as e:
-            print(f"Cannot load image: {path}")
-            print(f"Error: {e}")
-            return self._placeholder
-
+        return pygame.image.load(path).convert_alpha()
+    
     def update_camera(self):
         target_x = self.player_rect.centerx - self.screen_width // 2
         self.camera_x = max(0, min(target_x, self.world_width - self.screen_width))
@@ -159,23 +154,23 @@ class Level:
             self.__init__(self.screen)
 
         for brick in self.bricks:
-            if brick["type"] == "spike" and brick["active"] and not brick.get("visible", False):
-                if abs(self.player_rect.centerx - brick["rect"].centerx) < 80:
-                    brick["visible"] = True
-                    brick["rect"].y -= 30
-
-        for brick in self.bricks:
-            if brick["type"] == "spike" and brick.get("visible", False):
-                if self.player_rect.colliderect(brick["rect"]):
-                    print("Beware of traps！")
-                    self.__init__(self.screen)
+            if brick["type"] == "spike" and brick["active"]:
+                if not brick.get("visible", False):
+                    if abs(self.player_rect.centerx - brick["rect"].centerx) < 80:
+                        brick["visible"] = True
+                        brick["rect"].y -= 30
+                if brick.get("visible", False):
+                    spike_top = pygame.Rect(brick["rect"].x, brick["rect"].y, brick["rect"].width, 10)
+                    if self.player_rect.colliderect(spike_top):
+                        print("Beware of traps！")
+                        self.__init__(self.screen)
 
         for brick in self.bricks:
             if brick["type"] == "portal" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
                     self.state = "won"
                     if not self.has_printed_success:
-                        print("Congratulations on completing the game！")
+                        print("Congratulations！")
                         self.has_printed_success = True
                                         
 
@@ -230,13 +225,13 @@ class Level:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
 
-        score_text = self.font.render(f"score: {self.score}", True, (0, 0, 0))
-        time_text = self.font.render(f"time: {self.time_left}s", True, (0, 0, 0))
+        score_text = self.font.render(f"final score: {self.score}", True, (0, 0, 0))
+        time_text = self.font.render(f"time left: {self.time_left}s", True, (0, 0, 0))
         self.screen.blit(score_text, (20, 20))
         self.screen.blit(time_text, (20, 50))
 
         if self.state == "won":
-            msg = self.font.render(f"You win! final score: {self.score}", True, (0, 0, 0))
+            msg = self.font.render(f"Congratulations! final score: {self.score}", True, (0, 0, 0))
             self.screen.blit(msg, (self.screen_width // 2 - 150, self.screen_height // 2))
 
     def run(self):
