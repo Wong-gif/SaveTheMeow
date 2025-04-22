@@ -7,10 +7,9 @@ class Level:
         self.screen = screen
         self.screen_width, self.screen_height = screen.get_size()
         self.font = pygame.font.SysFont('Arial', 24)
-
-        self.world_width = 3000
+        self.has_printed_success = False 
+        self.world_width = 3200
         self.camera_x = 0
-
         self.state = "playing"
         self.score = 0
         self.time_left = 60
@@ -19,25 +18,7 @@ class Level:
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
 
-        self.player_images = self._load_images('player', {
-            'idle': 'player_stand.png',
-            'walk': ['player_walk.png'],
-            'jump': 'player_stand.png'
-        }, (50, 80))
-
-        try:
-            self.spike_image = pygame.image.load("assets/images/spike.png").convert_alpha()
-        except:
-            print("cannot load the image")
-            self.spike_image = pygame.Surface((40, 30), pygame.SRCALPHA)
-            pygame.draw.polygon(self.spike_image, (255, 0, 0), [(20, 0), (40, 30), (0, 30)])
-
-        try:
-            self.coin_image = pygame.image.load("assets/images/coin.png").convert_alpha()
-        except:
-            print("cannot load the image")
-            self.coin_image = pygame.Surface((10, 10), pygame.SRCALPHA)
-            pygame.draw.circle(self.coin_image, (255, 215, 0), (5, 5), 5)
+        self._load_game_assets()
 
         self.player_rect = self.player_images['idle'].get_rect()
         self.player_rect.midbottom = (100, 400)
@@ -62,24 +43,30 @@ class Level:
             {"rect": pygame.Rect(1600, 400, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1850, 400, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1900, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(2700, 380, 60, 90), "type": "portal", "active": True}
+            {"rect": pygame.Rect(2800, 400, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(3000, 355, 80, 100), "type": "portal", "active": True}
         ]
 
-    def _load_images(self, folder, image_dict, default_size):
-        images = {}
+    def _load_game_assets(self):
+        self._placeholder = pygame.Surface((32, 32), pygame.SRCALPHA)
+        pygame.draw.rect(self._placeholder, (255, 0, 255), (0, 0, 32, 32))
+        
+        self.player_images = {
+            'idle': self._load_single_image("assets/images/player/player_stand.png"),
+            'walk': [self._load_single_image("assets/images/player/player_walk.png")],
+            'jump': self._load_single_image("assets/images/player/player_stand.png")
+        }
+        
+        self.spike_image = self._load_single_image("assets/images/spike.png")
+        self.coin_image = self._load_single_image("assets/images/coin.png")
+
+    def _load_single_image(self, path):
         try:
-            for key, value in image_dict.items():
-                if isinstance(value, list):
-                    images[key] = [pygame.image.load(f'assets/images/{folder}/{img}').convert_alpha() for img in value]
-                else:
-                    images[key] = pygame.image.load(f'assets/images/{folder}/{value}').convert_alpha()
-        except:
-            print(f"\u65e0\u6cd5\u52a0\u8f7d{folder}\u56fe\u50cf")
-            for key in image_dict:
-                surf = pygame.Surface(default_size, pygame.SRCALPHA)
-                pygame.draw.rect(surf, (255, 0, 0), (0, 0, *default_size))
-                images[key] = [surf] if isinstance(image_dict[key], list) else surf
-        return images
+            return pygame.image.load(path).convert_alpha()
+        except pygame.error as e:
+            print(f"Cannot load image: {path}")
+            print(f"Error: {e}")
+            return self._placeholder
 
     def update_camera(self):
         target_x = self.player_rect.centerx - self.screen_width // 2
@@ -102,12 +89,12 @@ class Level:
 
     def update_physics(self):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_time_update > 1000:
+        if self.state == "playing" and current_time - self.last_time_update > 1000:
             self.time_left -= 1
             self.last_time_update = current_time
-        if self.time_left <= 0:
-            print("time up！game start again。")
-            self.__init__(self.screen)
+            if self.time_left <= 0:
+                print("time up！game start again。")
+                self.__init__(self.screen)
 
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
@@ -156,14 +143,17 @@ class Level:
         for brick in self.bricks:
             if brick["type"] == "spike" and brick.get("visible", False):
                 if self.player_rect.colliderect(brick["rect"]):
-                    print("U died！")
+                    print("Beware of traps！")
                     self.__init__(self.screen)
 
         for brick in self.bricks:
             if brick["type"] == "portal" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
-                    print("success！")
                     self.state = "won"
+                    if not self.has_printed_success:
+                        print("Congratulations on completing the game！")
+                        self.has_printed_success = True
+                                        
 
         self.player_rect.left = max(0, self.player_rect.left)
         self.player_rect.right = min(self.world_width, self.player_rect.right)
