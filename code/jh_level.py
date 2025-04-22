@@ -31,12 +31,21 @@ class Level:
         self.animation_frame = 0
         self.animation_speed = 0.15
 
-        self.split_positions = [800, 2500]
+        self.split_positions = [1000, 3000]
         self.split_progresses = [0 for _ in self.split_positions]
         self.split_width = 220
         self.ground_split_flags = [False for _ in self.split_positions]
 
-        self.coins = [pygame.Rect(random.randint(100, self.world_width - 100), random.randint(100, 400), 30, 30) for _ in range(10)]
+        self.coins = []
+        for _ in range(10):         
+            x = random.randint(100, self.world_width - 100)
+            y = random.randint(100, 400)
+            coin_rect = pygame.Rect(x, y, 30, 30)
+            self.coins.append({
+                "rect": coin_rect,
+                "angle": 0,
+                "rotation_speed": random.uniform(1, 3),
+            })
 
         self.bricks = [
             {"rect": pygame.Rect(400, 400, 40, 30), "type": "spike", "active": True, "visible": False},
@@ -99,6 +108,12 @@ class Level:
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
 
+
+        for coin in self.coins:           
+            # 更新旋转角度
+            coin["angle"] += coin["rotation_speed"]
+            coin["angle"] %= 360
+                    
         #ground material
         for i, pos in enumerate(self.split_positions):
             if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 150:
@@ -130,7 +145,7 @@ class Level:
             self.__init__(self.screen)
 
         for coin in self.coins[:]:
-            if self.player_rect.colliderect(coin):
+            if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
                 self.score += 2
                 self.coin_sound.play()
@@ -189,7 +204,10 @@ class Level:
             pygame.draw.rect(self.screen, (100, 200, 100), self.world_to_screen(ground))
 
         for coin in self.coins:
-            self.screen.blit(self.coin_image, self.world_to_screen(coin))
+            rotated_image = pygame.transform.rotate(self.coin_image, coin["angle"])
+            rotated_rect = rotated_image.get_rect(center=self.world_to_screen(coin["rect"]).center)
+            self.screen.blit(rotated_image, rotated_rect)
+           
 
         for brick in self.bricks:
             if not brick["active"]:
