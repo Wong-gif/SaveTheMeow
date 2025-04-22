@@ -1,13 +1,14 @@
 from qx_settings import *
-from qx_sprites import Sprite, AnimatedSprite
+from qx_sprites import Sprite, AnimatedSprite, Node, Icon
 from qx_groups import WorldSprites
 from  random import randint
 
 class Overworld:
-    def __init__(self, tmx_map, overworld_frames):
+    def __init__(self, tmx_map,data, overworld_frames):
         self.display_surface = pygame.display.get_surface() 
+        self.data = data
 
-        self.all_sprites = WorldSprites()
+        self.all_sprites = WorldSprites(data)
 
         self.setup(tmx_map,overworld_frames)
 
@@ -30,6 +31,20 @@ class Overworld:
             z = Z_layers[f"{"bg details" if obj.name == "grass" else "bg tiles"}"]
             Sprite((obj.x,obj.y), obj.image, self.all_sprites, z)
 
+        #nodes & player
+        for obj in tmx_map.get_layer_by_name("Nodes"):
+         #player
+         if obj.name == "Node" and int(obj.properties["stage"]) == self.data.current_level:
+          self.icon = Icon((obj.x + tile_size/2, obj.y + tile_size/2), self.all_sprites, overworld_frames["icon"])
+         
+         #nodes
+         if obj.name == "Node":
+          Node( pos = (obj.x,obj.y),
+               surf = overworld_frames["path"]["node"],
+               groups = self.all_sprites,
+               level = int(obj.properties["stage"]),
+               data = self.data)
+
     def run(self,dt):
         self.all_sprites.update(dt)
-        self.all_sprites.draw((1500,900))
+        self.all_sprites.draw((1500,1200))
