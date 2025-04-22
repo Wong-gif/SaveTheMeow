@@ -32,4 +32,4 @@ class Overworld:
 
     def run(self,dt):
         self.all_sprites.update(dt)
-        self.all_sprites.draw((1350,900))
+        self.all_sprites.draw((1500,900))
