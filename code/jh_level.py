@@ -6,7 +6,7 @@ class Level:
     def __init__(self, screen):
         self.screen = screen
         self.screen_width, self.screen_height = screen.get_size()
-        self.font = pygame.font.SysFont('Arial', 24)
+        self.font = pygame.font.SysFont('Arial', 32)
         self.has_printed_success = False 
         self.world_width = 3200
         self.camera_x = 0
@@ -31,20 +31,29 @@ class Level:
         self.animation_frame = 0
         self.animation_speed = 0.15
 
-        self.split_positions = [800, 2500]
+        self.split_positions = [1000, 2500]
         self.split_progresses = [0 for _ in self.split_positions]
         self.split_width = 220
         self.ground_split_flags = [False for _ in self.split_positions]
 
-        self.coins = [pygame.Rect(random.randint(100, self.world_width - 100), random.randint(100, 400), 30, 30) for _ in range(10)]
+        self.coins = []
+        for _ in range(10):         
+            x = random.randint(100, self.world_width - 100)
+            y = random.randint(100, 400)
+            coin_rect = pygame.Rect(x, y, 30, 30)
+            self.coins.append({
+                "rect": coin_rect,
+                "frame": 0,
+                "animation_speed": 0.2
+            })
 
         self.bricks = [
-            {"rect": pygame.Rect(400, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1600, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1850, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1900, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(2800, 400, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(3000, 355, 80, 100), "type": "portal", "active": True}
+            {"rect": pygame.Rect(400, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1600, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1850, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1900, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(2800, 433, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(3100, 350, 80, 100), "type": "portal", "active": True}
         ]
 
     def _load_game_assets(self):
@@ -56,18 +65,21 @@ class Level:
             'walk': [self._load_single_image("assets/images/player/player_walk.png")],
             'jump': self._load_single_image("assets/images/player/player_stand.png")
         }
-        
+
+        self.coin_frames = [
+            self._load_single_image("assets/images/coin/coin_frame_1.png"),
+            self._load_single_image("assets/images/coin/coin_frame_2.png"),
+            self._load_single_image("assets/images/coin/coin_frame_3.png"),
+            self._load_single_image("assets/images/coin/coin_frame_4.png"),
+            self._load_single_image("assets/images/coin/coin_frame_5.png"),
+            self._load_single_image("assets/images/coin/coin_frame_6.png"),
+        ]
+
         self.spike_image = self._load_single_image("assets/images/spike.png")
-        self.coin_image = self._load_single_image("assets/images/coin.png")
 
     def _load_single_image(self, path):
-        try:
-            return pygame.image.load(path).convert_alpha()
-        except pygame.error as e:
-            print(f"Cannot load image: {path}")
-            print(f"Error: {e}")
-            return self._placeholder
-
+        return pygame.image.load(path).convert_alpha()
+    
     def update_camera(self):
         target_x = self.player_rect.centerx - self.screen_width // 2
         self.camera_x = max(0, min(target_x, self.world_width - self.screen_width))
@@ -99,6 +111,19 @@ class Level:
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
 
+
+        for coin in self.coins:
+            coin["frame"] += coin["animation_speed"]
+            if coin["frame"] >= len(self.coin_frames):
+                coin["frame"] = 0 
+
+        for coin in self.coins[:]:  # 用 [:] 是为了在迭代中可以安全地 remove
+            if self.player_rect.colliderect(coin["rect"]):
+                self.coins.remove(coin)
+                self.score += 2
+                self.coin_sound.play()
+                   
+        #ground material
         for i, pos in enumerate(self.split_positions):
             if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 150:
                 self.ground_split_flags[i] = True
@@ -128,30 +153,24 @@ class Level:
             print("fall down, game start again")
             self.__init__(self.screen)
 
-        for coin in self.coins[:]:
-            if self.player_rect.colliderect(coin):
-                self.coins.remove(coin)
-                self.score += 2
-                self.coin_sound.play()
-
         for brick in self.bricks:
-            if brick["type"] == "spike" and brick["active"] and not brick.get("visible", False):
-                if abs(self.player_rect.centerx - brick["rect"].centerx) < 80:
-                    brick["visible"] = True
-                    brick["rect"].y -= 30
-
-        for brick in self.bricks:
-            if brick["type"] == "spike" and brick.get("visible", False):
-                if self.player_rect.colliderect(brick["rect"]):
-                    print("Beware of traps！")
-                    self.__init__(self.screen)
+            if brick["type"] == "spike" and brick["active"]:
+                if not brick.get("visible", False):
+                    if abs(self.player_rect.centerx - brick["rect"].centerx) < 80:
+                        brick["visible"] = True
+                        brick["rect"].y -= 30
+                if brick.get("visible", False):
+                    spike_top = pygame.Rect(brick["rect"].x, brick["rect"].y, brick["rect"].width, 10)
+                    if self.player_rect.colliderect(spike_top):
+                        print("Beware of traps！")
+                        self.__init__(self.screen)
 
         for brick in self.bricks:
             if brick["type"] == "portal" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
                     self.state = "won"
                     if not self.has_printed_success:
-                        print("Congratulations on completing the game！")
+                        print("Congratulations！")
                         self.has_printed_success = True
                                         
 
@@ -162,16 +181,16 @@ class Level:
         self.animation_frame += self.animation_speed
 
     def get_player_image(self):
-        if not self.on_ground:
+        if not self.on_ground:# if not in ground run jump photo
             return self.player_images['jump']
         moving = pygame.key.get_pressed()[pygame.K_LEFT] or pygame.key.get_pressed()[pygame.K_RIGHT]
         if moving:
             frame_index = int(self.animation_frame) % len(self.player_images['walk'])
             return self.player_images['walk'][frame_index]
-        return self.player_images['idle']
+        return self.player_images['idle']#if not moving anyone, run idle photo
 
     def draw(self):
-        self.screen.fill((135, 206, 235))
+        self.screen.fill((135, 206, 235))#blue background
 
         ground_segments = []
         last_x = 0
@@ -188,7 +207,10 @@ class Level:
             pygame.draw.rect(self.screen, (100, 200, 100), self.world_to_screen(ground))
 
         for coin in self.coins:
-            self.screen.blit(self.coin_image, self.world_to_screen(coin))
+            frame_index = int(coin["frame"]) % len(self.coin_frames)
+            image = self.coin_frames[frame_index]
+            self.screen.blit(image, self.world_to_screen(coin["rect"]))
+           
 
         for brick in self.bricks:
             if not brick["active"]:
@@ -203,13 +225,13 @@ class Level:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
 
-        score_text = self.font.render(f"score: {self.score}", True, (0, 0, 0))
-        time_text = self.font.render(f"time: {self.time_left}s", True, (0, 0, 0))
+        score_text = self.font.render(f"final score: {self.score}", True, (0, 0, 0))
+        time_text = self.font.render(f"time left: {self.time_left}s", True, (0, 0, 0))
         self.screen.blit(score_text, (20, 20))
         self.screen.blit(time_text, (20, 50))
 
         if self.state == "won":
-            msg = self.font.render(f"🎉 u win! final score: {self.score}", True, (0, 0, 0))
+            msg = self.font.render(f"Congratulations! final score: {self.score}", True, (0, 0, 0))
             self.screen.blit(msg, (self.screen_width // 2 - 150, self.screen_height // 2))
 
     def run(self):
