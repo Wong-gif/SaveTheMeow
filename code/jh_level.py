@@ -43,8 +43,8 @@ class Level:
             coin_rect = pygame.Rect(x, y, 30, 30)
             self.coins.append({
                 "rect": coin_rect,
-                "angle": 0,
-                "rotation_speed": random.uniform(1, 3),
+                "frame": 0,
+                "animation_speed": 0.2
             })
 
         self.bricks = [
@@ -65,9 +65,17 @@ class Level:
             'walk': [self._load_single_image("assets/images/player/player_walk.png")],
             'jump': self._load_single_image("assets/images/player/player_stand.png")
         }
-        
+
+        self.coin_frames = [
+            self._load_single_image("assets/images/coin/coin_frame_1.png"),
+            self._load_single_image("assets/images/coin/coin_frame_2.png"),
+            self._load_single_image("assets/images/coin/coin_frame_3.png"),
+            self._load_single_image("assets/images/coin/coin_frame_4.png"),
+            self._load_single_image("assets/images/coin/coin_frame_5.png"),
+            self._load_single_image("assets/images/coin/coin_frame_6.png"),
+        ]
+
         self.spike_image = self._load_single_image("assets/images/spike.png")
-        self.coin_image = self._load_single_image("assets/images/coin.png")
 
     def _load_single_image(self, path):
         try:
@@ -109,11 +117,17 @@ class Level:
         self.player_rect.y += self.velocity_y
 
 
-        for coin in self.coins:           
-            # 更新旋转角度
-            coin["angle"] += coin["rotation_speed"]
-            coin["angle"] %= 360
-                    
+        for coin in self.coins:
+            coin["frame"] += coin["animation_speed"]
+            if coin["frame"] >= len(self.coin_frames):
+                coin["frame"] = 0 
+
+        for coin in self.coins[:]:  # 用 [:] 是为了在迭代中可以安全地 remove
+            if self.player_rect.colliderect(coin["rect"]):
+                self.coins.remove(coin)
+                self.score += 2
+                self.coin_sound.play()
+                   
         #ground material
         for i, pos in enumerate(self.split_positions):
             if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 150:
@@ -143,12 +157,6 @@ class Level:
         if self.player_rect.bottom > self.screen_height:
             print("fall down, game start again")
             self.__init__(self.screen)
-
-        for coin in self.coins[:]:
-            if self.player_rect.colliderect(coin["rect"]):
-                self.coins.remove(coin)
-                self.score += 2
-                self.coin_sound.play()
 
         for brick in self.bricks:
             if brick["type"] == "spike" and brick["active"] and not brick.get("visible", False):
@@ -204,9 +212,9 @@ class Level:
             pygame.draw.rect(self.screen, (100, 200, 100), self.world_to_screen(ground))
 
         for coin in self.coins:
-            rotated_image = pygame.transform.rotate(self.coin_image, coin["angle"])
-            rotated_rect = rotated_image.get_rect(center=self.world_to_screen(coin["rect"]).center)
-            self.screen.blit(rotated_image, rotated_rect)
+            frame_index = int(coin["frame"]) % len(self.coin_frames)
+            image = self.coin_frames[frame_index]
+            self.screen.blit(image, self.world_to_screen(coin["rect"]))
            
 
         for brick in self.bricks:
