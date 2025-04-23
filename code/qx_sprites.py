@@ -22,17 +22,23 @@ class AnimatedSprite(Sprite):
         self.animate(dt)
 
 class Node(pygame.sprite.Sprite):
-    def __init__(self,pos,surf,groups,level,data):
+    def __init__(self,pos,surf,groups,level,data,paths):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_frect(center = (pos[0] + tile_size/2, pos[1] + tile_size/2))
         self.z = Z_layers["path"]
         self.level = level
         self.data = data
+        self.paths = paths
+
+    def can_move(self,direction):
+        if direction in list(self.paths.keys()):
+            return True
 
 class Icon(pygame.sprite.Sprite):
     def __init__(self,pos,groups,frames):
         super().__init__(groups)
+        self.icon = True
 
         #images
         self.frames, self.frame_index = frames, 0

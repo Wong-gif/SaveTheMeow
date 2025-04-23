@@ -190,7 +190,7 @@
   <object id="48" name="grass" gid="128" x="1406" y="852" width="32" height="20"/>
   <object id="49" name="grass" gid="128" x="1356" y="972" width="32" height="20"/>
   <object id="50" name="grass" gid="128" x="1250" y="1020" width="32" height="20"/>
-  <object id="51" name="grass" gid="128" x="1310" y="1046" width="32" height="20"/>
+  <object id="51" name="grass" gid="128" x="1308" y="1043" width="32" height="20"/>
   <object id="52" name="grass" gid="128" x="1242" y="1708" width="32" height="20"/>
   <object id="53" name="grass" gid="128" x="952" y="1648" width="32" height="20"/>
   <object id="54" name="grass" gid="128" x="966" y="1528" width="32" height="20"/>
