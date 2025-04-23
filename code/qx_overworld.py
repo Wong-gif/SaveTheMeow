@@ -59,7 +59,7 @@ class Overworld:
                paths = available_paths)
           
     def input(self):
-      keys = pygame.keys.get_pressed()
+      keys = pygame.key.get_pressed()
       if self.current_node:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
 
