@@ -8,11 +8,9 @@ animation_speed = 6
 
 Z_layers = {
     "bg" : 0,
-    "clouds" : 1,
-    "bg tiles" : 2,
-    "path" : 3,
-    "bg details" : 4,
-    "main" : 5,
-    "water" : 6,
-    "fg" : 7
+    "bg tiles" : 1,
+    "path" : 2,
+    "bg details" : 3,
+    "main" : 4,
+    "water" : 5,
 }
