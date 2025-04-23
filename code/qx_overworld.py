@@ -31,6 +31,14 @@ class Overworld:
             z = Z_layers[f"{"bg details" if obj.name == "grass" else "bg tiles"}"]
             Sprite((obj.x,obj.y), obj.image, self.all_sprites, z)
 
+        #path
+        self.paths = {}
+        for obj in tmx_map.get_layer_by_name("Paths"):
+          pos = [int((p.x + tile_size/2),(p.y + tile_size/2)) for p in obj.points]
+          start = obj.properties["start"]
+          end = obj.properties["end"]
+          self.paths[end] = {"pos":pos, "start":start}
+
         #nodes & player
         for obj in tmx_map.get_layer_by_name("Nodes"):
          #player
