@@ -22,4 +22,7 @@ class WorldSprites(pygame.sprite.Group):
         #main
         for sprite in sorted(self, key = lambda sprite: sprite.rect.centery):
             if sprite.z == Z_layers["main"]:
-                self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset)
+                if hasattr(sprite, "icon"):
+                 self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset + vector(0,-28))  
+                else:
+                 self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset)

@@ -33,6 +33,7 @@ class Node(pygame.sprite.Sprite):
 class Icon(pygame.sprite.Sprite):
     def __init__(self,pos,groups,frames):
         super().__init__(groups)
+        self.icon = True
 
         #images
         self.frames, self.frame_index = frames, 0
