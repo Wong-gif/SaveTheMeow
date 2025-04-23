@@ -2,7 +2,7 @@ import pygame
 import sys
 import os
 
-WIDTH, HEIGHT = 1000, 600
+WIDTH, HEIGHT = 1200, 800
 FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -37,6 +37,9 @@ market_item = [
     {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
 ]
 
 running = True
@@ -51,22 +54,22 @@ while running:
     screen.blit(gems_text, (30 + coins_text.get_width() + 20, 20))
 
     for i, item in enumerate(market_item):
-        col = 3
-        x = 50 + (i % col) * 250
+        col = 4
+        x = 50 + (i % col) * 220
         y = 80 + (i // col) * 250
-        box = pygame.Rect(x, y, 180, 130)
+        box = pygame.Rect(x, y, 190, 130)
         pygame.draw.rect(screen, (180, 180, 180), box)
         
         name_text = font.render(item["name"], True, (BLACK))
-        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 155))
+        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 135))
         
         color = (GOLD) if item["currency"] == "coins" else (PURPLE)
         price_text = font.render(f"{item['price']} {item['currency']}", True, color)
-        screen.blit(price_text, (x + box.width // 2 - price_text.get_width() // 2, y + 180))
+        screen.blit(price_text, (x + box.width // 2 - price_text.get_width() // 2, y + 160))
         
         if not item["bought"]:
-            buy_button = pygame.Rect(x + 30, y + 100, 120, 25) #Buy button box
-            pygame.draw.rect(screen, (GREEN), buy_button)
+            buy_button = pygame.Rect(x + 35, y + 100, 120, 25) #Buy button box
+            pygame.draw.rect(screen, GREEN, buy_button)
             
             buy_text = font.render("Buy", True, WHITE) #Buy text
             text_x = buy_button.x + buy_button.width // 2 - buy_text.get_width() // 2
