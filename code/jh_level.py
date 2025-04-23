@@ -211,7 +211,7 @@ class Level:
             elif brick["type"] == "portal":
                 pygame.draw.rect(self.screen, (0, 255, 255), self.world_to_screen(brick["rect"]))
 
-        current_image = self.get_player_image()
+        current_image = self.get_player_image()# talking about the player face, when the player turn right face follow right.
         if not self.facing_right:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
