@@ -46,7 +46,7 @@ while running:
 
     for i, item in enumerate(market_item):
         col = 3
-        x =  + (i % col) * 250
+        x = 50 + (i % col) * 250
         y = 100 + (i // col) * 250
         box = pygame.Rect(x, y, 200, 150)
         pygame.draw.rect(screen, (180, 180, 180), box)
