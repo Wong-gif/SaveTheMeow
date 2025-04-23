@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 
 WIDTH, HEIGHT = 1000, 600
 FPS = 60
@@ -10,10 +11,12 @@ PURPLE = (150, 0, 150)
 GREEN = (0, 200, 0)
 
 pygame.init()
-
+pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Weapon Market")
 clock = pygame.time.Clock()
+
+#click_sound = pygame.mixer.Sound(os.path.join("sound", ""))
 
 font = pygame.font.SysFont("arial", 20)
 
@@ -31,6 +34,9 @@ market_item = [
     {"name": "Golden Sword", "price": 100, "currency": "gems", "bought": False},
     {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Golden Sword", "price": 100, "currency": "gems", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
 ]
 
 running = True
@@ -46,9 +52,9 @@ while running:
 
     for i, item in enumerate(market_item):
         col = 3
-        x = 100 + (i % col) * 250
-        y = 100 + (i // col) * 250
-        box = pygame.Rect(x, y, 200, 150)
+        x = 50 + (i % col) * 250
+        y = 80 + (i // col) * 250
+        box = pygame.Rect(x, y, 180, 130)
         pygame.draw.rect(screen, (180, 180, 180), box)
         
         name_text = font.render(item["name"], True, (BLACK))
@@ -59,7 +65,7 @@ while running:
         screen.blit(price_text, (x + box.width // 2 - price_text.get_width() // 2, y + 180))
         
         if not item["bought"]:
-            buy_button = pygame.Rect(x + 50, y + 100, 100, 30) #Buy button box
+            buy_button = pygame.Rect(x + 30, y + 100, 120, 25) #Buy button box
             pygame.draw.rect(screen, (GREEN), buy_button)
             
             buy_text = font.render("Buy", True, WHITE) #Buy text
