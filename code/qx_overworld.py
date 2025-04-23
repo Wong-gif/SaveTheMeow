@@ -47,11 +47,13 @@ class Overworld:
          
          #nodes
          if obj.name == "Node":
+          available_paths = {k:v for k,v in obj.properties.items() if k in("left","right","up","down")}
           Node( pos = (obj.x,obj.y),
                surf = overworld_frames["path"]["node"],
                groups = self.all_sprites,
                level = int(obj.properties["stage"]),
-               data = self.data)
+               data = self.data,
+               paths = available_paths)
 
     def run(self,dt):
         self.all_sprites.update(dt)
