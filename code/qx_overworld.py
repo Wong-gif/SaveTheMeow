@@ -64,5 +64,6 @@ class Overworld:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
 
     def run(self,dt):
+        self.input()
         self.all_sprites.update(dt)
         self.all_sprites.draw(self.icon.rect.center)
