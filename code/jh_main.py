@@ -2,14 +2,12 @@ import pygame
 import sys
 from jh_level import Level
 
-# pygame and mix the sound
 pygame.init()
 pygame.mixer.init()
 
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 FPS = 60
-
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 DARK_GREEN = (0, 200, 0)
@@ -22,20 +20,17 @@ MENU = 0
 GAME = 1
 current_state = MENU
 
-# 尝试加载背景和音乐（添加错误处理）
 try:
     background = pygame.image.load('assets/images/background.png').convert()
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 except:
-    print("cannot load the image")
-    
+    print("cannot load the image")    
 try:
     pygame.mixer.music.load("assets/sounds/background_music.mp3")
     pygame.mixer.music.set_volume(0.5)
 except:
     print("cannot play the sound")
 
-# 初始化关卡
 level = Level(screen)
 
 class Button:
@@ -69,16 +64,13 @@ start_button = Button(
     "Start The Game"
 )
 
-# 主游戏循环
 running = True
 while running:
     clock.tick(FPS)
     
-    # 事件处理
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        
         
         if current_state == MENU:
             if start_button.is_clicked(event):
@@ -88,13 +80,12 @@ while running:
                 except:
                     pass 
     
-    # 状态渲染
     if current_state == MENU:
-        # 绘制菜单
+       
         screen.blit(background, (0, 0))
         start_button.draw(screen)
     elif current_state == GAME:
-        # 运行游戏逻辑
+       
         level.run()
     
     pygame.display.update()
