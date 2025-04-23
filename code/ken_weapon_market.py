@@ -25,12 +25,12 @@ message = ""
 message_timer = 0
 
 market_item = [
-    {"name": "Golden Sword", "price": 1000, "currency": "coins"},
-    {"name": "Golden Sword", "price": 1000, "currency": "gems"},
-    {"name": "Golden Sword", "price": 1000, "currency": "coins"},
-    {"name": "Golden Sword", "price": 1000, "currency": "gems"},
-    {"name": "Golden Sword", "price": 1000, "currency": "coins"},
-    {"name": "Golden Sword", "price": 1000, "currency": "gems"},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "gems", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "gems", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Golden Sword", "price": 100, "currency": "gems", "bought": False},
 ]
 
 running = True
@@ -46,7 +46,7 @@ while running:
 
     for i, item in enumerate(market_item):
         col = 3
-        x = 50 + (i % col) * 250
+        x = 100 + (i % col) * 250
         y = 100 + (i // col) * 250
         box = pygame.Rect(x, y, 200, 150)
         pygame.draw.rect(screen, (180, 180, 180), box)
@@ -57,13 +57,22 @@ while running:
         color = (GOLD) if item["currency"] == "coins" else (PURPLE)
         price_text = font.render(f"{item['price']} {item['currency']}", True, color)
         screen.blit(price_text, (x + box.width // 2 - price_text.get_width() // 2, y + 180))
-
-        buy_button = pygame.Rect(x + 50, y + 100, 100, 30)
-        pygame.draw.rect(screen, (GREEN), buy_button)
-        buy_text = font.render("Buy", True, WHITE)
-        screen.blit(buy_text, (buy_button.x + 25, buy_button.y + 5))
-
-        buy_buttons.append(buy_button)
+        
+        if not item["bought"]:
+            buy_button = pygame.Rect(x + 50, y + 100, 100, 30) #Buy button box
+            pygame.draw.rect(screen, (GREEN), buy_button)
+            
+            buy_text = font.render("Buy", True, WHITE) #Buy text
+            text_x = buy_button.x + buy_button.width // 2 - buy_text.get_width() // 2
+            text_y = buy_button.y + buy_button.height // 2 - buy_text.get_height() // 2
+            screen.blit(buy_text, (text_x, text_y))
+            buy_buttons.append(buy_button)
+        else :
+            sold_out_text = font.render("Sold out", True, WHITE) #Sold out text
+            text_x = box.x + box.width // 2 - sold_out_text.get_width() // 2
+            text_y = box.y + box.height // 2 - sold_out_text.get_height() // 2
+            screen.blit(sold_out_text, (text_x, text_y))
+            buy_buttons.append(None)
 
 
 
@@ -72,18 +81,20 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             mx, my = pygame.mouse.get_pos()
-            for i, btn in enumerate(buy_buttons):
-                if btn.collidepoint(mx, my):  # 🔴 All logic stays inside this block
+            for i, button in enumerate(buy_buttons):
+                if button and button.collidepoint(mx, my):  # All logic stays inside this block
                     item = market_item[i]
                     currency = item["currency"]
                     price = item["price"]
 
                     if currency == "coins" and player_coins >= price:
                         player_coins -= price
+                        item["bought"] = True
                         message = f"Bought {item['name']} for {price} coins!"
                         message_timer = pygame.time.get_ticks() + 2000
                     elif currency == "gems" and player_gems >= price:
                         player_gems -= price
+                        item["bought"] = True
                         message = f"Bought {item['name']} for {price} gems!"
                         message_timer = pygame.time.get_ticks() + 2000
                     else:
