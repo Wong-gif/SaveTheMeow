@@ -9,8 +9,11 @@ class Overworld:
         self.data = data
 
         self.all_sprites = WorldSprites(data)
+        self.node_sprites = pygame.sprite.Group()
 
         self.setup(tmx_map,overworld_frames)
+
+        self.current_node = [node for node in self.node_sprites if node.level == 0][0]
 
     def setup(self,tmx_map,overworld_frames):
         #layers
@@ -50,10 +53,15 @@ class Overworld:
           available_paths = {k:v for k,v in obj.properties.items() if k in("left","right","up","down")}
           Node( pos = (obj.x,obj.y),
                surf = overworld_frames["path"]["node"],
-               groups = self.all_sprites,
+               groups = (self.all_sprites,self.node_sprites),
                level = int(obj.properties["stage"]),
                data = self.data,
                paths = available_paths)
+          
+    def input(self):
+      keys = pygame.keys.get_pressed()
+      if self.current_node:
+        if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
 
     def run(self,dt):
         self.all_sprites.update(dt)
