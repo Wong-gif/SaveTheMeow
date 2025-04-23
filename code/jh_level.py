@@ -99,6 +99,7 @@ class Level:
             self.velocity_y = self.jump_power
             self.on_ground = False
 
+    # time setting
     def update_physics(self):
         current_time = pygame.time.get_ticks()
         if self.state == "playing" and current_time - self.last_time_update > 1000:
@@ -111,13 +112,12 @@ class Level:
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
 
-
         for coin in self.coins:
             coin["frame"] += coin["animation_speed"]
             if coin["frame"] >= len(self.coin_frames):
                 coin["frame"] = 0 
 
-        for coin in self.coins[:]:  # 用 [:] 是为了在迭代中可以安全地 remove
+        for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
                 self.score += 2
@@ -128,21 +128,10 @@ class Level:
             if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 150:
                 self.ground_split_flags[i] = True
             if self.ground_split_flags[i] and self.split_progresses[i] < self.split_width:
-                self.split_progresses[i] += 22
-
-        ground_segments = []
-        last_x = 0
-        for i, pos in enumerate(self.split_positions):
-            progress = self.split_progresses[i]
-            gap_start = pos - progress // 2
-            if gap_start > last_x:
-                ground_segments.append(pygame.Rect(last_x, 450, gap_start - last_x, 150))
-            last_x = pos + progress // 2
-        if last_x < self.world_width:
-            ground_segments.append(pygame.Rect(last_x, 450, self.world_width - last_x, 150))
+                self.split_progresses[i] += 22 # the speed of open the ground
 
         self.on_ground = False
-        for ground in ground_segments:
+        for ground in self.generate_ground_segments():
             if self.player_rect.colliderect(ground):
                 self.on_ground = True
                 self.player_rect.bottom = ground.top
@@ -173,25 +162,13 @@ class Level:
                         print("Congratulations！")
                         self.has_printed_success = True
                                         
-
         self.player_rect.left = max(0, self.player_rect.left)
         self.player_rect.right = min(self.world_width, self.player_rect.right)
 
         self.update_camera()
         self.animation_frame += self.animation_speed
 
-    def get_player_image(self):
-        if not self.on_ground:# if not in ground run jump photo
-            return self.player_images['jump']
-        moving = pygame.key.get_pressed()[pygame.K_LEFT] or pygame.key.get_pressed()[pygame.K_RIGHT]
-        if moving:
-            frame_index = int(self.animation_frame) % len(self.player_images['walk'])
-            return self.player_images['walk'][frame_index]
-        return self.player_images['idle']#if not moving anyone, run idle photo
-
-    def draw(self):
-        self.screen.fill((135, 206, 235))#blue background
-
+    def generate_ground_segments(self):
         ground_segments = []
         last_x = 0
         for i, pos in enumerate(self.split_positions):
@@ -203,7 +180,22 @@ class Level:
         if last_x < self.world_width:
             ground_segments.append(pygame.Rect(last_x, 450, self.world_width - last_x, 150))
 
-        for ground in ground_segments:
+        return ground_segments
+
+    def get_player_image(self):
+        if not self.on_ground:# if not in ground， run jump photo
+            return self.player_images['jump']
+        moving = pygame.key.get_pressed()[pygame.K_LEFT] or pygame.key.get_pressed()[pygame.K_RIGHT]
+        if moving:
+            frame_index = int(self.animation_frame) % len(self.player_images['walk'])
+            return self.player_images['walk'][frame_index]
+        return self.player_images['idle']#if not moving anyone, run idle photo
+
+    def draw(self):
+        self.screen.fill((135, 206, 235))#blue background
+
+        ground_segments = self.generate_ground_segments()
+        for ground in ground_segments: 
             pygame.draw.rect(self.screen, (100, 200, 100), self.world_to_screen(ground))
 
         for coin in self.coins:
@@ -211,7 +203,6 @@ class Level:
             image = self.coin_frames[frame_index]
             self.screen.blit(image, self.world_to_screen(coin["rect"]))
            
-
         for brick in self.bricks:
             if not brick["active"]:
                 continue
@@ -220,7 +211,7 @@ class Level:
             elif brick["type"] == "portal":
                 pygame.draw.rect(self.screen, (0, 255, 255), self.world_to_screen(brick["rect"]))
 
-        current_image = self.get_player_image()
+        current_image = self.get_player_image()# talking about the player face, when the player turn right face follow right.
         if not self.facing_right:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
