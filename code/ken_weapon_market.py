@@ -16,7 +16,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Weapon Market")
 clock = pygame.time.Clock()
 
-#click_sound = pygame.mixer.Sound(os.path.join("sound", ""))
+click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
 font = pygame.font.SysFont("arial", 20)
 
@@ -92,6 +92,7 @@ while running:
             mx, my = pygame.mouse.get_pos()
             for i, button in enumerate(buy_buttons):
                 if button and button.collidepoint(mx, my):  # All logic stays inside this block
+                    click_sound.play()
                     item = market_item[i]
                     currency = item["currency"]
                     price = item["price"]
@@ -99,20 +100,20 @@ while running:
                     if currency == "coins" and player_coins >= price:
                         player_coins -= price
                         item["bought"] = True
+                        click_sound.play()
                         message = f"Bought {item['name']} for {price} coins!"
                         message_timer = pygame.time.get_ticks() + 2000
                     elif currency == "gems" and player_gems >= price:
                         player_gems -= price
                         item["bought"] = True
+                        click_sound.play()
                         message = f"Bought {item['name']} for {price} gems!"
                         message_timer = pygame.time.get_ticks() + 2000
                     else:
                         message = "Not enough resources!"
                         message_timer = pygame.time.get_ticks() + 2000
     
-        
-
-
+    
     pygame.display.update()
     if message and pygame.time.get_ticks() < message_timer:
         msg_text = font.render(message, True, (255, 0, 0))
