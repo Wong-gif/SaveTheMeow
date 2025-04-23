@@ -21,6 +21,8 @@ player_coins = 1500
 player_gems = 500
 
 buy_buttons = []
+message = ""
+message_timer = 0
 
 market_item = [
     {"name": "Golden Sword", "price": 1000, "currency": "coins"},
@@ -65,11 +67,37 @@ while running:
 
 
 
-    for event in pygame.event.get(): 
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mx, my = pygame.mouse.get_pos()
+            for i, btn in enumerate(buy_buttons):
+                if btn.collidepoint(mx, my):  # 🔴 All logic stays inside this block
+                    item = market_item[i]
+                    currency = item["currency"]
+                    price = item["price"]
+
+                    if currency == "coins" and player_coins >= price:
+                        player_coins -= price
+                        message = f"Bought {item['name']} for {price} coins!"
+                        message_timer = pygame.time.get_ticks() + 2000
+                    elif currency == "gems" and player_gems >= price:
+                        player_gems -= price
+                        message = f"Bought {item['name']} for {price} gems!"
+                        message_timer = pygame.time.get_ticks() + 2000
+                    else:
+                        message = "Not enough resources!"
+                        message_timer = pygame.time.get_ticks() + 2000
+    
+        
+
 
     pygame.display.update()
+    if message and pygame.time.get_ticks() < message_timer:
+        msg_text = font.render(message, True, (255, 0, 0))
+        screen.blit(msg_text, (WIDTH // 2 - msg_text.get_width() // 2, HEIGHT - 40))
+
 
 pygame.quit()
 sys.exit
