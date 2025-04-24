@@ -70,7 +70,13 @@ class Overworld:
       path = self.paths[path_key]["pos"][:] if not path_reverse else self.paths[path_key]["pos"][::-1]
       self.icon.start_move(path)
 
+    def get_current_node(self):
+      nodes = pygame.sprite.spritecollide(self.icon, self.node_sprites, False)
+      if nodes:
+        self.current_node = nodes[0]
+
     def run(self,dt):
         self.input()
+        self.get_current_node()
         self.all_sprites.update(dt)
         self.all_sprites.draw(self.icon.rect.center)
