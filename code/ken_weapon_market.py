@@ -23,6 +23,8 @@ coin_icon = pygame.image.load(os.path.join("assets", "images", "dollar.png")).co
 coin_icon = pygame.transform.scale(coin_icon, (25, 25))
 gem_icon = pygame.image.load(os.path.join("assets", "images", "gem.png")).convert_alpha()
 gem_icon = pygame.transform.scale(gem_icon, (25, 25))
+girl_image = pygame.image.load(os.path.join("assets", "images", "girl.png")).convert_alpha()
+girl_image = pygame.transform.scale(girl_image, (450, 725))
 
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
@@ -94,7 +96,7 @@ while running:
                 pygame.draw.rect(screen, hover_color, buy_button)
             else :
                 pygame.draw.rect(screen, normal_color, buy_button)
-                
+
             buy_text = font.render("Buy", True, WHITE) #Buy text
             text_x = buy_button.x + buy_button.width // 2 - buy_text.get_width() // 2
             text_y = buy_button.y + buy_button.height // 2 - buy_text.get_height() // 2
@@ -148,7 +150,8 @@ while running:
         msg_bg.fill(GREY)  
         screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
         screen.blit(msg_text, (msg_x, msg_y))         # Draw message
-
+    
+    screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700)) 
 
     pygame.display.update()
     
