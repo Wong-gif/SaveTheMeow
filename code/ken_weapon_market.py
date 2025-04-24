@@ -13,6 +13,7 @@ LIGHT_GREEN = (0, 255, 0)
 GREY = (200, 200, 200)
 BLUE = (135, 206, 235)
 RED = (255, 0, 0)
+BROWN = (139, 69, 19)
 
 pygame.init()
 pygame.mixer.init()
@@ -60,19 +61,19 @@ def draw_stat_box(surface, x, y, width, height, color, alpha):
 running = True
 while running:
     clock.tick(FPS)
-    screen.fill(WHITE)
+    screen.fill(BROWN)
     buy_buttons = []
 
-    draw_stat_box(screen, 20, 15, 320, 35, GREY, 50)  # Background
+    draw_stat_box(screen, 50, 15, 225, 35, GREY, 150)  # Background
+    
+    screen.blit(coin_icon, (70, 20))
+    coins_text = font.render(f"{player_coins}", True, WHITE)
+    screen.blit(coins_text, (100, 20))
+    
+    screen.blit(gem_icon, (120 + coins_text.get_width() + 30, 20))
+    gems_text = font.render(f"{player_gems}", True, WHITE)
+    screen.blit(gems_text, (120 + coins_text.get_width() + 60, 20))
 
-    coins_text = font.render(f"Coins : {player_coins}", True, (GOLD))
-    screen.blit(coins_text, (70, 20))
-    screen.blit(coin_icon, (40, 20))
-
-    gems_text = font.render(f"Gems : {player_gems}", True, (PURPLE))
-    screen.blit(gems_text, (75 + coins_text.get_width() + 60, 20))
-    screen.blit(gem_icon, (75 + coins_text.get_width() + 30, 20))
- 
     for i, item in enumerate(market_item):
         col = 3
         x = 230 + (i % col) * 230
@@ -83,9 +84,16 @@ while running:
         name_text = font.render(item["name"], True, (BLACK))
         screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 135))
         
-        color = (GOLD) if item["currency"] == "coins" else (PURPLE)
-        price_text = font.render(f"{item['price']} {item['currency']}", True, color)
-        screen.blit(price_text, (x + box.width // 2 - price_text.get_width() // 2, y + 160))
+        price_text = font.render(str(item['price']) , True, WHITE)
+        price_text_x = x + box.width // 2 - price_text.get_width() + 30// 2
+        price_text_y = y + 160
+
+        if item["currency"] == "coins":
+            screen.blit(coin_icon, (price_text_x, price_text_y))   
+        else:
+            screen.blit(gem_icon, (price_text_x, price_text_y))   
+            
+        screen.blit(price_text, (price_text_x + 30, price_text_y))
         
         if not item["bought"]:
             buy_button = pygame.Rect(x + 35, y + 100, 130, 25) #Buy button box
@@ -164,7 +172,7 @@ while running:
 
 
     
-    screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700)) 
+    screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
 
     pygame.display.update()
     
