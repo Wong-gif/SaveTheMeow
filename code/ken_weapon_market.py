@@ -10,6 +10,7 @@ GOLD =  (255, 215, 0)
 PURPLE = (150, 0, 150)
 GREEN = (0, 200, 0)
 GREY = (200, 200, 200)
+BLUE = (135, 206, 235)
 
 pygame.init()
 pygame.mixer.init()
@@ -18,7 +19,10 @@ pygame.display.set_caption("Weapon Market")
 clock = pygame.time.Clock()
 
 coin_icon = pygame.image.load(os.path.join("assets", "images", "dollar.png")).convert_alpha()
-coin_icon = pygame.transform.scale(coin_icon, (24, 24))
+coin_icon = pygame.transform.scale(coin_icon, (25, 25))
+gem_icon = pygame.image.load(os.path.join("assets", "images", "gem.png")).convert_alpha()
+gem_icon = pygame.transform.scale(gem_icon, (25, 25))
+
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
@@ -49,15 +53,16 @@ market_item = [
 running = True
 while running:
     clock.tick(FPS)
-    screen.fill(WHITE)
+    screen.fill(BLUE)
     buy_buttons = []
 
     coins_text = font.render(f"Coins : {player_coins}", True, (WHITE))
-    screen.blit(coins_text, (30, 20))
+    screen.blit(coins_text, (70, 20))
     screen.blit(coin_icon, (40, 20))
 
     gems_text = font.render(f"Gems : {player_gems}", True, (PURPLE))
-    screen.blit(gems_text, (30 + coins_text.get_width() + 20, 20))
+    screen.blit(gems_text, (75 + coins_text.get_width() + 60, 20))
+    screen.blit(gem_icon, (75 + coins_text.get_width() + 30, 20))
 
     for i, item in enumerate(market_item):
         col = 4
