@@ -41,18 +41,15 @@ message = ""
 message_timer = 0
 
 market_item = [
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "gems", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "gems", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "gems", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Hawk's Eye", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Luna Bow", "price": 100, "currency": "gems", "bought": False},
+    {"name": "Phoenix Feather", "price": 100, "currency": "gems", "bought": False},
+    {"name": "Hydro Strike", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Libra of Eternity", "price": 100, "currency": "gems", "bought": False},
+    {"name": "Aegis Shield", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Thunder Axe", "price": 100, "currency": "gems", "bought": False},
+    {"name": "Essence of Renewal", "price": 100, "currency": "coins", "bought": False},
 ]
 
 def draw_stat_box(surface, x, y, width, height, color, alpha):
@@ -66,7 +63,7 @@ while running:
     screen.fill(WHITE)
     buy_buttons = []
 
-    draw_stat_box(screen, 20, 15, 320, 35, (100, 100, 100), 50)  # Background
+    draw_stat_box(screen, 20, 15, 320, 35, GREY, 50)  # Background
 
     coins_text = font.render(f"Coins : {player_coins}", True, (GOLD))
     screen.blit(coins_text, (70, 20))
@@ -95,9 +92,9 @@ while running:
             hover_color = LIGHT_GREEN
             normal_color = GREEN
             if buy_button.collidepoint(pygame.mouse.get_pos()):
-                pygame.draw.rect(screen, hover_color, buy_button)
+                pygame.draw.rect(screen, hover_color, buy_button, border_radius=12)
             else :
-                pygame.draw.rect(screen, normal_color, buy_button)
+                pygame.draw.rect(screen, normal_color, buy_button ,border_radius=12)
 
             buy_text = font.render("Buy", True, WHITE) #Buy text
             text_x = buy_button.x + buy_button.width // 2 - buy_text.get_width() // 2
@@ -151,12 +148,12 @@ while running:
        
         msg_bg = pygame.Surface((msg_text.get_width() + 20, msg_text.get_height() + 10)) # Background box
         msg_bg.set_alpha(100)  # Transparency
-        msg_bg.fill(GREY)  
+        msg_bg.fill(GREY)
         screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
         screen.blit(msg_text, (msg_x, msg_y))         # Draw message
 
     inventory_box = pygame.Rect(10, 100, 200, 35)  # Inventory background box
-    pygame.draw.rect(screen, BLACK, inventory_box)
+    pygame.draw.rect(screen, BLACK, inventory_box ,border_radius=12)
 
     inventory_title_text = font.render("Inventory:", True, WHITE)
     screen.blit(inventory_title_text, (20, 105))
