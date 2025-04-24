@@ -9,6 +9,7 @@ WHITE = (255, 255, 255)
 GOLD =  (255, 215, 0)
 PURPLE = (150, 0, 150)
 GREEN = (0, 200, 0)
+LIGHT_GREEN = (0, 255, 0)
 GREY = (200, 200, 200)
 BLUE = (135, 206, 235)
 
@@ -50,20 +51,27 @@ market_item = [
     {"name": "Golden Sword", "price": 100, "currency": "coins", "bought": False},
 ]
 
+def draw_stat_box(surface, x, y, width, height, color, alpha):
+    s = pygame.Surface((width, height), pygame.SRCALPHA)  # Transparent surface
+    pygame.draw.rect(s, (*color, alpha), s.get_rect(), border_radius=12)  # Rounded rectangle
+    surface.blit(s, (x, y))  # Draw it on your screen
+
 running = True
 while running:
     clock.tick(FPS)
-    screen.fill(BLUE)
+    screen.fill(WHITE)
     buy_buttons = []
 
-    coins_text = font.render(f"Coins : {player_coins}", True, (WHITE))
+    draw_stat_box(screen, 20, 15, 320, 35, (100, 100, 100), 50)  # Background
+
+    coins_text = font.render(f"Coins : {player_coins}", True, (GOLD))
     screen.blit(coins_text, (70, 20))
     screen.blit(coin_icon, (40, 20))
 
     gems_text = font.render(f"Gems : {player_gems}", True, (PURPLE))
     screen.blit(gems_text, (75 + coins_text.get_width() + 60, 20))
     screen.blit(gem_icon, (75 + coins_text.get_width() + 30, 20))
-
+ 
     for i, item in enumerate(market_item):
         col = 4
         x = 50 + (i % col) * 220
@@ -80,8 +88,13 @@ while running:
         
         if not item["bought"]:
             buy_button = pygame.Rect(x + 35, y + 100, 120, 25) #Buy button box
-            pygame.draw.rect(screen, GREEN, buy_button)
-            
+            hover_color = LIGHT_GREEN
+            normal_color = GREEN
+            if buy_button.collidepoint(pygame.mouse.get_pos()):
+                pygame.draw.rect(screen, hover_color, buy_button)
+            else :
+                pygame.draw.rect(screen, normal_color, buy_button)
+                
             buy_text = font.render("Buy", True, WHITE) #Buy text
             text_x = buy_button.x + buy_button.width // 2 - buy_text.get_width() // 2
             text_y = buy_button.y + buy_button.height // 2 - buy_text.get_height() // 2
@@ -127,7 +140,7 @@ while running:
     if message and pygame.time.get_ticks() < message_timer:
         msg_text = font.render(message, True, (255, 0, 0))
         msg_x = WIDTH // 2 - msg_text.get_width() // 2
-        msg_y = HEIGHT - 40
+        msg_y = HEIGHT - 30
 
        
         msg_bg = pygame.Surface((msg_text.get_width() + 20, msg_text.get_height() + 10)) # Background box
