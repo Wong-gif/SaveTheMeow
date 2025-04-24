@@ -9,12 +9,16 @@ WHITE = (255, 255, 255)
 GOLD =  (255, 215, 0)
 PURPLE = (150, 0, 150)
 GREEN = (0, 200, 0)
+GREY = (200, 200, 200)
 
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Weapon Market")
 clock = pygame.time.Clock()
+
+coin_icon = pygame.image.load(os.path.join("assets", "images", "dollar.png")).convert_alpha()
+coin_icon = pygame.transform.scale(coin_icon, (24, 24))
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
@@ -48,9 +52,11 @@ while running:
     screen.fill(WHITE)
     buy_buttons = []
 
-    coins_text = font.render(f"Coins : {player_coins}", True, (GOLD))
-    gems_text = font.render(f"Gems : {player_gems}", True, (PURPLE))
+    coins_text = font.render(f"Coins : {player_coins}", True, (WHITE))
     screen.blit(coins_text, (30, 20))
+    screen.blit(coin_icon, (40, 20))
+
+    gems_text = font.render(f"Gems : {player_gems}", True, (PURPLE))
     screen.blit(gems_text, (30 + coins_text.get_width() + 20, 20))
 
     for i, item in enumerate(market_item):
@@ -58,7 +64,7 @@ while running:
         x = 50 + (i % col) * 220
         y = 80 + (i // col) * 250
         box = pygame.Rect(x, y, 190, 130)
-        pygame.draw.rect(screen, (180, 180, 180), box)
+        pygame.draw.rect(screen, GREY, box)
         
         name_text = font.render(item["name"], True, (BLACK))
         screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 135))
@@ -112,13 +118,21 @@ while running:
                     else:
                         message = "Not enough resources!"
                         message_timer = pygame.time.get_ticks() + 2000
-    
-    
-    pygame.display.update()
+
     if message and pygame.time.get_ticks() < message_timer:
         msg_text = font.render(message, True, (255, 0, 0))
-        screen.blit(msg_text, (WIDTH // 2 - msg_text.get_width() // 2, HEIGHT - 40))
+        msg_x = WIDTH // 2 - msg_text.get_width() // 2
+        msg_y = HEIGHT - 40
+
+       
+        msg_bg = pygame.Surface((msg_text.get_width() + 20, msg_text.get_height() + 10)) # Background box
+        msg_bg.set_alpha(100)  # Transparency
+        msg_bg.fill(GREY)  
+        screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
+        screen.blit(msg_text, (msg_x, msg_y))         # Draw message
 
 
+    pygame.display.update()
+    
 pygame.quit()
 sys.exit
