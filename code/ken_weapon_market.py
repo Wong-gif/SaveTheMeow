@@ -12,6 +12,7 @@ GREEN = (0, 200, 0)
 LIGHT_GREEN = (0, 255, 0)
 GREY = (200, 200, 200)
 BLUE = (135, 206, 235)
+RED = (255, 0, 0)
 
 pygame.init()
 pygame.mixer.init()
@@ -24,7 +25,7 @@ coin_icon = pygame.transform.scale(coin_icon, (25, 25))
 gem_icon = pygame.image.load(os.path.join("assets", "images", "gem.png")).convert_alpha()
 gem_icon = pygame.transform.scale(gem_icon, (25, 25))
 girl_image = pygame.image.load(os.path.join("assets", "images", "girl.png")).convert_alpha()
-girl_image = pygame.transform.scale(girl_image, (450, 725))
+girl_image = pygame.transform.scale(girl_image, (450, 700))
 
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
@@ -35,6 +36,7 @@ player_coins = 1500
 player_gems = 500
 
 buy_buttons = []
+inventory = []
 message = ""
 message_timer = 0
 
@@ -75,10 +77,10 @@ while running:
     screen.blit(gem_icon, (75 + coins_text.get_width() + 30, 20))
  
     for i, item in enumerate(market_item):
-        col = 4
-        x = 50 + (i % col) * 220
+        col = 3
+        x = 230 + (i % col) * 230
         y = 80 + (i // col) * 250
-        box = pygame.Rect(x, y, 190, 130)
+        box = pygame.Rect(x, y, 200, 130)
         pygame.draw.rect(screen, GREY, box)
         
         name_text = font.render(item["name"], True, (BLACK))
@@ -89,7 +91,7 @@ while running:
         screen.blit(price_text, (x + box.width // 2 - price_text.get_width() // 2, y + 160))
         
         if not item["bought"]:
-            buy_button = pygame.Rect(x + 35, y + 100, 120, 25) #Buy button box
+            buy_button = pygame.Rect(x + 35, y + 100, 130, 25) #Buy button box
             hover_color = LIGHT_GREEN
             normal_color = GREEN
             if buy_button.collidepoint(pygame.mouse.get_pos()):
@@ -126,12 +128,14 @@ while running:
                     if currency == "coins" and player_coins >= price:
                         player_coins -= price
                         item["bought"] = True
+                        inventory.append(item["name"])
                         click_sound.play()
                         message = f"Bought {item['name']} for {price} coins!"
                         message_timer = pygame.time.get_ticks() + 2000
                     elif currency == "gems" and player_gems >= price:
                         player_gems -= price
                         item["bought"] = True
+                        inventory.append(item["name"])
                         click_sound.play()
                         message = f"Bought {item['name']} for {price} gems!"
                         message_timer = pygame.time.get_ticks() + 2000
@@ -140,7 +144,7 @@ while running:
                         message_timer = pygame.time.get_ticks() + 2000
 
     if message and pygame.time.get_ticks() < message_timer:
-        msg_text = font.render(message, True, (255, 0, 0))
+        msg_text = font.render(message, True, RED)
         msg_x = WIDTH // 2 - msg_text.get_width() // 2
         msg_y = HEIGHT - 30
 
@@ -150,6 +154,18 @@ while running:
         msg_bg.fill(GREY)  
         screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
         screen.blit(msg_text, (msg_x, msg_y))         # Draw message
+
+    inventory_box = pygame.Rect(10, 100, 200, 35)  # Inventory background box
+    pygame.draw.rect(screen, BLACK, inventory_box)
+
+    inventory_title_text = font.render("Inventory:", True, WHITE)
+    screen.blit(inventory_title_text, (20, 105))
+
+    for i, item_name in enumerate(inventory):
+        item_text = font.render(item_name, True, BLACK)
+        screen.blit(item_text, (30, 135 + i * 25))
+
+
     
     screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700)) 
 
