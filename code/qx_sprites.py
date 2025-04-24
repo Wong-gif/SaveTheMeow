@@ -39,6 +39,7 @@ class Icon(pygame.sprite.Sprite):
     def __init__(self,pos,groups,frames):
         super().__init__(groups)
         self.icon = True
+        self.path = None
 
         #images
         self.frames, self.frame_index = frames, 0
@@ -48,3 +49,12 @@ class Icon(pygame.sprite.Sprite):
 
         #rect
         self.rect = self.image.get_frect(center = pos)
+
+    def start_move(self,path):
+        self.rect_center = path[0]
+        self.path = path[1:]
+        self.find_path()
+
+    def find_path(self):
+        if self.path:
+            if self.rect.centerx == self.path[0][0]: #vertical
