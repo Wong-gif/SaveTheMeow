@@ -57,12 +57,23 @@ class Level:
         ]
 
     def _load_game_assets(self):
+
+        bg = pygame.image.load("assets/images/game1.png").convert()
+        bg_width = bg.get_width()
+        self.background = pygame.Surface((self.world_width, self.screen_height))
+
+        for x in range(0, self.world_width, bg_width):
+            self.background.blit(bg, (x, 0))
+
         self._placeholder = pygame.Surface((32, 32), pygame.SRCALPHA)
         pygame.draw.rect(self._placeholder, (255, 0, 255), (0, 0, 32, 32))
         
         self.player_images = {
             'idle': self._load_single_image("assets/images/player/player_stand.png"),
-            'walk': [self._load_single_image("assets/images/player/player_walk.png")],
+            'walk': [
+                self._load_single_image("assets/images/player/player_walk1.png"),
+                self._load_single_image("assets/images/player/player_walk2.png")
+                ],
             'jump': self._load_single_image("assets/images/player/player_stand.png")
         }
 
@@ -78,7 +89,9 @@ class Level:
         self.spike_image = self._load_single_image("assets/images/spike.png")
 
     def _load_single_image(self, path):
-        return pygame.image.load(path).convert_alpha()
+        image = pygame.image.load(path).convert_alpha()  # 使用透明通道加载图片
+        image.set_colorkey((0, 255, 255))  # 设置青色为透明（0, 255, 255）
+        return image
     
     def update_camera(self):
         target_x = self.player_rect.centerx - self.screen_width // 2
@@ -120,7 +133,7 @@ class Level:
         for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
-                self.score += 2
+                self.score += 10
                 self.coin_sound.play()
                    
         #ground material
@@ -192,11 +205,7 @@ class Level:
         return self.player_images['idle']#if not moving anyone, run idle photo
 
     def draw(self):
-        self.screen.fill((135, 206, 235))#blue background
-
-        ground_segments = self.generate_ground_segments()
-        for ground in ground_segments: 
-            pygame.draw.rect(self.screen, (100, 200, 100), self.world_to_screen(ground))
+        self.screen.blit(self.background, (-self.camera_x, 0))
 
         for coin in self.coins:
             frame_index = int(coin["frame"]) % len(self.coin_frames)
