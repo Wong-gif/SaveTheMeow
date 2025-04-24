@@ -62,6 +62,13 @@ class Overworld:
       keys = pygame.key.get_pressed()
       if self.current_node:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
+          self.move("down")
+
+    def move(self,direction):
+      path_key = int(self.current_node.paths[direction][0])
+      path_reverse = True if self.current_node.paths[direction][-1] == "r" else False
+      path = self.paths[path_key]["pos"][:] if not path_reverse else self.paths[path_key]["pos"][::-1]
+      self.icon.start_move(path)
 
     def run(self,dt):
         self.input()
