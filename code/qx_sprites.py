@@ -66,6 +66,13 @@ class Icon(pygame.sprite.Sprite):
         else:
             self.direction = vector()
 
+    def point_collision(self):
+        if self.direction.y == 1 and self.rect.centery >= self.path [0][1]:
+            self.rect.center = self.path[0][1]
+            del self.path[0]
+            self.find_path()
+
     def update(self,dt):
         if self.path:
+            self.point_collision()
             self.rect.center += self.direction * self.speed * dt
