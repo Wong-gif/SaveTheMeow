@@ -40,6 +40,7 @@ class Icon(pygame.sprite.Sprite):
         super().__init__(groups)
         self.icon = True
         self.path = None
+        self.direction = vector()
 
         #images
         self.frames, self.frame_index = frames, 0
@@ -58,3 +59,8 @@ class Icon(pygame.sprite.Sprite):
     def find_path(self):
         if self.path:
             if self.rect.centerx == self.path[0][0]: #vertical
+                self.direction = vector(0,1 if self.path[0][1] > self.rect.centery else -1)
+            else: #horizontal
+                self.direction = vector(1 if self.path[0][0] > self.rect.centerx else -1,0)
+        else:
+            self.direction = vector()
