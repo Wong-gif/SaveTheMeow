@@ -37,14 +37,18 @@ class Button:
     def __init__(self, x, y, width, height, text):
         self.rect = pygame.Rect(x, y, width, height)#position
         self.text = text
-        self.font = pygame.font.SysFont('Arial', 32)
+        self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 28)
         self.normal_color = GREEN
         self.hover_color = DARK_GREEN
     
     def draw(self, surface):
         mouse_pos = pygame.mouse.get_pos()
         color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.normal_color
-        
+
+        shadow_offset = 5
+        shadow_rect = self.rect.move(shadow_offset, shadow_offset)
+
+        pygame.draw.rect(surface, (50, 50, 50), shadow_rect, border_radius=10)
         pygame.draw.rect(surface, color, self.rect, border_radius=10)
         pygame.draw.rect(surface, BLACK, self.rect, 2, border_radius=10)
         
@@ -58,9 +62,9 @@ class Button:
         return False
 
 start_button = Button(
-    SCREEN_WIDTH//2 - 100, 
-    SCREEN_HEIGHT//2 + 70, 
-    200, 60, 
+    SCREEN_WIDTH//2 - 250, 
+    SCREEN_HEIGHT//2 - 40, 
+    500, 80, 
     "Start The Game"
 )
 
