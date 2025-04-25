@@ -16,6 +16,8 @@ class Level:
         self.last_time_update = pygame.time.get_ticks()
         self.jump_sound = pygame.mixer.Sound('assets/sounds/player_jump.wav')
         self.jump_sound.set_volume(0.2)
+        self.portal_frame_index = 0
+        self.portal_animation_speed = 0.2
 
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
@@ -49,13 +51,18 @@ class Level:
                 "animation_speed": 0.2
             })
 
+        self.portal_frames = []
+        for i in range(16):
+            frame = pygame.image.load(f"assets/images/portal/portal_{i}.png").convert_alpha()
+            self.portal_frames.append(frame)
+
         self.bricks = [
             {"rect": pygame.Rect(400, 433, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1600, 433, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1850, 433, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1900, 433, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(2800, 433, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(3100, 350, 80, 100), "type": "portal", "active": True}
+            {"rect": pygame.Rect(3100, 370, 40, 40), "type": "portal", "active": True}
         ]
 
     def _load_game_assets(self):
@@ -130,6 +137,9 @@ class Level:
 
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
+        self.portal_frame_index += self.portal_animation_speed
+        if self.portal_frame_index >= len(self.portal_frames):
+           self.portal_frame_index = 0
 
         for coin in self.coins:
             coin["frame"] += coin["animation_speed"]
@@ -241,8 +251,10 @@ class Level:
             if brick["type"] == "spike" and brick.get("visible", False):
                 self.screen.blit(self.spike_image, self.world_to_screen(brick["rect"]))
             elif brick["type"] == "portal":
-                pygame.draw.rect(self.screen, (0, 255, 255), self.world_to_screen(brick["rect"]))
-
+                frame = self.portal_frames[int(self.portal_frame_index)]
+                portal_pos = self.world_to_screen(brick["rect"])
+                self.screen.blit(frame, portal_pos)
+                
         current_image = self.get_player_image()# talking about the player face, when the player turn right face follow right.
         if not self.facing_right:
             current_image = pygame.transform.flip(current_image, True, False)
