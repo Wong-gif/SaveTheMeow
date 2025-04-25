@@ -1,5 +1,5 @@
 from qx_settings import *
-from qx_sprites import Sprite, AnimatedSprite, Node, Icon
+from qx_sprites import Sprite, AnimatedSprite, Node, Icon, PathSprite
 from qx_groups import WorldSprites
 from  random import randint
 
@@ -76,18 +76,26 @@ class Overworld:
             path_dir = (end - start) / tile_size
             start_tile = vector(int(start[0]/tile_size), int(start[1]/tile_size))
 
-            if path_dir.x:
-              dir_x  = 1 if path_dir.x > 0 else -1
-              for x in range(dir_x, int(path_dir.x) + dir_x, dir_x):
-                path_tiles[path_id].append(start_tile + vector(x,0))
-
             if path_dir.y:
               dir_y = 1 if path_dir.y > 0 else -1
               for y in range(dir_y, int(path_dir.y) + dir_y, dir_y):
                 path_tiles[path_id].append(start_tile + vector(0,y))
 
+            if path_dir.x:
+              dir_x  = 1 if path_dir.x > 0 else -1
+              for x in range(dir_x, int(path_dir.x) + dir_x, dir_x):
+                path_tiles[path_id].append(start_tile + vector(x,0))
+
         path_tiles[path_id].append(end_node)
 
+      #create sprites
+      for key, path in path_tiles.items():
+        for tile in path:
+            PathSprite(
+              pos = (tile.x * tile_size, tile.y * tile_size), 
+              surf = pygame.Surface((tile_size,tile_size)),
+              groups = self.all_sprites,
+              level = key)
           
     def input(self):
       keys = pygame.key.get_pressed()
