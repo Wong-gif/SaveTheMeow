@@ -1,6 +1,7 @@
 import pygame
 import sys
 from jh_level import Level
+from jh_next_level import NextLevelScreen
 
 pygame.init()
 pygame.mixer.init()
@@ -19,6 +20,7 @@ clock = pygame.time.Clock()
 MENU = 0
 GAME = 1
 current_state = MENU
+NEXT_LEVEL = 2
 
 try:
     background = pygame.image.load('assets/images/background.png').convert()
@@ -32,6 +34,7 @@ except:
     print("cannot play the sound")
 
 level = Level(screen)
+next_level_screen = NextLevelScreen(screen)
 
 class Button:
     def __init__(self, x, y, width, height, text):
@@ -85,13 +88,17 @@ while running:
                     pass 
     
     if current_state == MENU:
-       
         screen.blit(background, (0, 0))
         start_button.draw(screen)
+
     elif current_state == GAME:
-       
         level.run()
-    
+        if level.state == "next_level":
+            current_state = NEXT_LEVEL
+
+    elif current_state == NEXT_LEVEL:
+        next_level_screen.run()
+
     pygame.display.update()
 
 pygame.quit()
