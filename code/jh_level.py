@@ -25,7 +25,7 @@ class Level:
         self._load_game_assets()
 
         self.player_rect = self.player_images['idle'].get_rect()
-        self.player_rect.midbottom = (100, 400)
+        self.player_rect.midbottom = (100, 70)
         self.player_speed = 5
         self.velocity_y = 0
         self.jump_power = -20
@@ -43,7 +43,7 @@ class Level:
         self.coins = []
         for _ in range(10):         
             x = random.randint(100, self.world_width - 100)
-            y = random.randint(100, 400)
+            y = random.randint(300, 495)
             coin_rect = pygame.Rect(x, y, 30, 30)
             self.coins.append({
                 "rect": coin_rect,
@@ -57,12 +57,12 @@ class Level:
             self.portal_frames.append(frame)
 
         self.bricks = [
-            {"rect": pygame.Rect(400, 433, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1600, 433, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1850, 433, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(1900, 433, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(2800, 433, 40, 30), "type": "spike", "active": True, "visible": False},
-            {"rect": pygame.Rect(3100, 370, 40, 40), "type": "portal", "active": True}
+            {"rect": pygame.Rect(400, 585, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1600, 585, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1850, 585, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(1890, 585, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(2800, 585, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(3100, 521, 40, 40), "type": "portal", "active": True}
         ]
 
     def _load_game_assets(self):
@@ -75,7 +75,7 @@ class Level:
             self.background.blit(sky, (x, 0))
 
         self.ground_image_full = pygame.image.load("assets/images/ground_tile.png").convert_alpha()
-        self.ground_image_full = pygame.transform.smoothscale(self.ground_image_full, (self.world_width, 150))
+        self.ground_image_full = pygame.transform.smoothscale(self.ground_image_full, (self.world_width, 100))
 
         self._placeholder = pygame.Surface((32, 32), pygame.SRCALPHA)
         pygame.draw.rect(self._placeholder, (255, 0, 255), (0, 0, 32, 32))
@@ -132,7 +132,7 @@ class Level:
             self.time_left -= 1
             self.last_time_update = current_time
             if self.time_left <= 0:
-                print("time up！game start again。")
+                print("Times up！Game Restart")
                 self.__init__(self.screen)
 
         self.velocity_y += self.gravity
@@ -161,7 +161,7 @@ class Level:
 
         self.on_ground = False
         for start_x, width in self.generate_ground_segments():
-            ground_rect = pygame.Rect(start_x, 450, width, 150)
+            ground_rect = pygame.Rect(start_x, 605, width, 100)
             if self.player_rect.colliderect(ground_rect):
                 self.on_ground = True
                 self.player_rect.bottom = ground_rect.top
@@ -169,7 +169,7 @@ class Level:
                 break
 
         if self.player_rect.bottom > self.screen_height:
-            print("fall down, game start again")
+            print("Fall Down, Game Start Again")
             self.__init__(self.screen)
 
         for brick in self.bricks:
@@ -233,13 +233,9 @@ class Level:
         # ground crack
         for start_x, width in self.generate_ground_segments():
             if width > 0:
-                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 150))
-                self.screen.blit(ground_surface, (start_x - self.camera_x, 450))
+                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100))
+                self.screen.blit(ground_surface, (start_x - self.camera_x, 600))
 
-            if width > 0:
-                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 150))
-                self.screen.blit(ground_surface, (start_x - self.camera_x, 450))
-    
         for coin in self.coins:
             frame_index = int(coin["frame"]) % len(self.coin_frames)
             image = self.coin_frames[frame_index]
