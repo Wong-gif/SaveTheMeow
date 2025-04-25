@@ -39,6 +39,9 @@ class Icon(pygame.sprite.Sprite):
     def __init__(self,pos,groups,frames):
         super().__init__(groups)
         self.icon = True
+        self.path = None
+        self.direction = vector()
+        self.speed = 400
 
         #images
         self.frames, self.frame_index = frames, 0
@@ -48,3 +51,35 @@ class Icon(pygame.sprite.Sprite):
 
         #rect
         self.rect = self.image.get_frect(center = pos)
+
+    def start_move(self,path):
+        self.rect_center = path[0]
+        self.path = path[1:]
+        self.find_path()
+
+    def find_path(self):
+        if self.path:
+            if self.rect.centerx == self.path[0][0]: #vertical
+                self.direction = vector(0,1 if self.path[0][1] > self.rect.centery else - 1)
+            else: #horizontal
+                self.direction = vector(1 if self.path[0][0] > self.rect.centerx else - 1, 0)
+        else:
+            self.direction = vector()
+
+    def point_collision(self):
+        if self.direction.y == 1 and self.rect.centery >= self.path [0][1] or \
+           self.direction.y == -1 and self.rect.centery <= self.path [0][1]:
+            self.rect.centery = self.path[0][1]
+            del self.path[0]
+            self.find_path()
+        
+        if self.direction.x == 1 and self.rect.centerx >= self.path[0][0] or \
+           self.direction.x == -1 and self.rect.centerx <= self.path[0][0]:
+            self.rect.centerx = self.path[0][0]
+            del self.path[0]
+            self.find_path()
+
+    def update(self,dt):
+        if self.path:
+            self.point_collision()
+            self.rect.center += self.direction * self.speed * dt
