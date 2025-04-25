@@ -22,18 +22,17 @@ font = pygame.font.SysFont(None, 30)
 fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (30, 30))
 
-def draw_mario_health(surf, hp, x, y):
+def draw_health_bar(surf, hp, max_hp, x, y):
     if hp < 0:
         hp = 0
     HEALTH_LENGTH = 100
-    HEALTH_HEIGHT =  10
-    fill = (hp/100)*HEALTH_LENGTH
+    HEALTH_HEIGHT = 10
+    fill = (hp / 100) * HEALTH_LENGTH
     outline_rect = pygame.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
     fill_rect = pygame.Rect(x, y, fill, HEALTH_HEIGHT)
-    pygame.draw.rect(surf, GREEN, fill_rect)  #画出来（血）
-    pygame.draw.rect(surf, WHITE, outline_rect, 2)  #画出来（外框）
+    pygame.draw.rect(surf, GREEN, fill_rect) #生命线
+    pygame.draw.rect(surf, WHITE, outline_rect, 2) #框
 
- 
 
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
@@ -74,6 +73,7 @@ class Boss(pygame.sprite.Sprite):
         self.rect.y = HEIGHT/2
         self.speed = random.choice([-2, 2])
         self.shoot_chance = 10
+        self.health = 1000000
     
     def update(self):
         self.rect.y += self.speed
@@ -156,15 +156,25 @@ while running:
             if fireball.hit_count >= 5:
                 fireball.kill()
 
-    hits = pygame.sprite.spritecollide(mario, fireballs, True)
-    for hit in hits:
+    boss_hits = pygame.sprite.spritecollide(boss, bullets, True)
+    for hit in boss_hits:
+        boss.health -= 10
+        if boss.health <= 0:
+            print("Boss defeated!")
+            all_sprites.remove(boss)
+            running = False
+
+    mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
+    for hit in mario_hits:
         mario.health -= 10
         if mario.health <= 0:
             running = False
     
 
     all_sprites.draw(screen)
-    draw_mario_health(screen, mario.health, 5, 15)
+    draw_health_bar(screen, mario.health, 100, 5, 15)  # Mario HP
+    draw_health_bar(screen, boss.health, 100, WIDTH - 150, 15)  # Boss HP
+
     pygame.display.update()
 
 
