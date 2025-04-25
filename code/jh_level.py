@@ -187,7 +187,7 @@ class Level:
         for brick in self.bricks:
             if brick["type"] == "portal" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
-                    self.state = "won"
+                    self.state = "next_level"
                     if not self.has_printed_success:
                         print("Congratulations！")
                         self.has_printed_success = True
@@ -250,10 +250,14 @@ class Level:
                 continue
             if brick["type"] == "spike" and brick.get("visible", False):
                 self.screen.blit(self.spike_image, self.world_to_screen(brick["rect"]))
-            elif brick["type"] == "portal":
-                frame = self.portal_frames[int(self.portal_frame_index)]
-                portal_pos = self.world_to_screen(brick["rect"])
-                self.screen.blit(frame, portal_pos)
+            elif brick["type"] == "portal" and brick["active"]:
+                frame_index = int(self.portal_frame_index) % len(self.portal_frames)
+                frame = self.portal_frames[frame_index]
+                self.screen.blit(frame, self.world_to_screen(brick["rect"]))
+            if self.player_rect.colliderect(brick["rect"]):
+                self.state = "next_level"
+                print("Entered portal, switching screen...")
+
                 
         current_image = self.get_player_image()# talking about the player face, when the player turn right face follow right.
         if not self.facing_right:
@@ -264,10 +268,6 @@ class Level:
         time_text = self.font.render(f"Time: {self.time_left}s", True, (0, 0, 0))
         self.screen.blit(score_text, (20, 20))
         self.screen.blit(time_text, (20, 50))
-
-        if self.state == "won":
-            msg = self.font.render(f"Congratulations! final score: {self.score}", True, (0, 0, 0))
-            self.screen.blit(msg, (self.screen_width // 2 - 150, self.screen_height // 2))
 
     def run(self):
         self.handle_input()
