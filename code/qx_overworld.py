@@ -15,6 +15,7 @@ class Overworld:
 
         self.current_node = [node for node in self.node_sprites if node.level == 0][0]
 
+        self.path_frames = overworld_frames["path"]
         self.create_path_sprites()
 
     def setup(self,tmx_map,overworld_frames):
@@ -90,12 +91,22 @@ class Overworld:
 
       #create sprites
       for key, path in path_tiles.items():
-        for tile in path:
-            PathSprite(
-              pos = (tile.x * tile_size, tile.y * tile_size), 
-              surf = pygame.Surface((tile_size,tile_size)),
-              groups = self.all_sprites,
-              level = key)
+        for index,tile in enumerate(path):
+            if index > 0 and index < len(path) - 1:
+              prev_tile = path[index - 1] - tile
+              next_tile = path[index + 1] - tile
+
+              surf = pygame.Surface((tile_size,tile_size))
+              if prev_tile.x == next_tile.x:
+                surf = self.path_frames["vertical"]
+              elif prev_tile.y == next_tile.y:
+                surf = self.path_frames["horizontal"]
+
+              PathSprite(
+               pos = (tile.x * tile_size, tile.y * tile_size), 
+               surf = surf,
+               groups = self.all_sprites,
+               level = key)
           
     def input(self):
       keys = pygame.key.get_pressed()
