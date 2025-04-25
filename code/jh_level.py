@@ -154,7 +154,7 @@ class Level:
                    
         #ground material        
         for i, pos in enumerate(self.split_positions):
-            if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 150:
+            if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 200:
                 self.ground_split_flags[i] = True
             if self.ground_split_flags[i] and self.split_progresses[i] < self.split_width:
                 self.split_progresses[i] += 22 # the speed of open the ground
@@ -207,10 +207,10 @@ class Level:
             gap_end = pos + progress // 2
 
         # 左边的地面段
-        if gap_start > last_x:
-            ground_segments.append((last_x, gap_start - last_x))  # (起点x, 宽度)
+            if gap_start > last_x:
+                ground_segments.append((last_x, gap_start - last_x))  # (起点x, 宽度)
 
-        last_x = gap_end
+            last_x = gap_end
 
     # 最后一段地面
         if last_x < self.world_width:
