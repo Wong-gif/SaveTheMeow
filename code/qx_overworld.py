@@ -15,6 +15,8 @@ class Overworld:
 
         self.current_node = [node for node in self.node_sprites if node.level == 0][0]
 
+        self.create_path_sprites()
+
     def setup(self,tmx_map,overworld_frames):
         #layers
         for layer in ["main","top"]:
@@ -57,6 +59,35 @@ class Overworld:
                level = int(obj.properties["stage"]),
                data = self.data,
                paths = available_paths)
+          
+    def create_path_sprites(self):
+      #get tiles from path
+      nodes = {node.level: vector(node.grid_pos) for node in self.node_sprites}
+      path_tiles = {}
+
+      for path_id, data in self.paths.items():
+        path = data["pos"]
+        start_node, end_node = nodes[data["start"]], nodes[path_id]
+        path_tiles[path_id] = [start_node]
+
+        for index, points in enumerate(path):
+          if index < len(path) - 1:
+            start,end = vector(points), vector(path[index + 1])
+            path_dir = (end - start) / tile_size
+            start_tile = vector(int(start[0]/tile_size), int(start[1]/tile_size))
+
+            if path_dir.x:
+              dir_x  = 1 if path_dir.x > 0 else -1
+              for x in range(dir_x, int(path_dir.x) + dir_x, dir_x):
+                path_tiles[path_id].append(start_tile + vector(x,0))
+
+            if path_dir.y:
+              dir_y = 1 if path_dir.y > 0 else -1
+              for y in range(dir_y, int(path_dir.y) + dir_y, dir_y):
+                path_tiles[path_id].append(start_tile + vector(0,y))
+
+        path_tiles[path_id].append(end_node)
+
           
     def input(self):
       keys = pygame.key.get_pressed()
