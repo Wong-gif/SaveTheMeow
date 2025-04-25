@@ -14,6 +14,8 @@ class Level:
         self.score = 0
         self.time_left = 60
         self.last_time_update = pygame.time.get_ticks()
+        self.jump_sound = pygame.mixer.Sound('assets/sounds/player_jump.wav')
+        self.jump_sound.set_volume(0.2)
 
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
@@ -58,12 +60,15 @@ class Level:
 
     def _load_game_assets(self):
 
-        bg = pygame.image.load("assets/images/game1.png").convert()
-        bg_width = bg.get_width()
-        self.background = pygame.Surface((self.world_width, self.screen_height))
+        sky = pygame.image.load("assets/images/sky.png").convert()
+        sky = pygame.transform.smoothscale(sky, (self.screen_width, self.screen_height))
 
-        for x in range(0, self.world_width, bg_width):
-            self.background.blit(bg, (x, 0))
+        self.background = pygame.Surface((self.world_width, self.screen_height))
+        for x in range(0, self.world_width, self.screen_width):
+            self.background.blit(sky, (x, 0))
+
+        self.ground_image_full = pygame.image.load("assets/images/ground_tile.png").convert_alpha()
+        self.ground_image_full = pygame.transform.smoothscale(self.ground_image_full, (self.world_width, 150))
 
         self._placeholder = pygame.Surface((32, 32), pygame.SRCALPHA)
         pygame.draw.rect(self._placeholder, (255, 0, 255), (0, 0, 32, 32))
@@ -111,6 +116,7 @@ class Level:
         if keys[pygame.K_SPACE] and self.on_ground:
             self.velocity_y = self.jump_power
             self.on_ground = False
+            self.jump_sound.play()
 
     # time setting
     def update_physics(self):
@@ -136,7 +142,7 @@ class Level:
                 self.score += 10
                 self.coin_sound.play()
                    
-        #ground material
+        #ground material        
         for i, pos in enumerate(self.split_positions):
             if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 150:
                 self.ground_split_flags[i] = True
@@ -144,10 +150,11 @@ class Level:
                 self.split_progresses[i] += 22 # the speed of open the ground
 
         self.on_ground = False
-        for ground in self.generate_ground_segments():
-            if self.player_rect.colliderect(ground):
+        for start_x, width in self.generate_ground_segments():
+            ground_rect = pygame.Rect(start_x, 450, width, 150)
+            if self.player_rect.colliderect(ground_rect):
                 self.on_ground = True
-                self.player_rect.bottom = ground.top
+                self.player_rect.bottom = ground_rect.top
                 self.velocity_y = 0
                 break
 
@@ -187,13 +194,20 @@ class Level:
         for i, pos in enumerate(self.split_positions):
             progress = self.split_progresses[i]
             gap_start = pos - progress // 2
-            if gap_start > last_x:
-                ground_segments.append(pygame.Rect(last_x, 450, gap_start - last_x, 150))
-            last_x = pos + progress // 2
+            gap_end = pos + progress // 2
+
+        # 左边的地面段
+        if gap_start > last_x:
+            ground_segments.append((last_x, gap_start - last_x))  # (起点x, 宽度)
+
+        last_x = gap_end
+
+    # 最后一段地面
         if last_x < self.world_width:
-            ground_segments.append(pygame.Rect(last_x, 450, self.world_width - last_x, 150))
+            ground_segments.append((last_x, self.world_width - last_x))
 
         return ground_segments
+
 
     def get_player_image(self):
         if not self.on_ground:# if not in ground， run jump photo
@@ -206,7 +220,16 @@ class Level:
 
     def draw(self):
         self.screen.blit(self.background, (-self.camera_x, 0))
+        # ground crack
+        for start_x, width in self.generate_ground_segments():
+            if width > 0:
+                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 150))
+                self.screen.blit(ground_surface, (start_x - self.camera_x, 450))
 
+            if width > 0:
+                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 150))
+                self.screen.blit(ground_surface, (start_x - self.camera_x, 450))
+    
         for coin in self.coins:
             frame_index = int(coin["frame"]) % len(self.coin_frames)
             image = self.coin_frames[frame_index]
@@ -225,8 +248,8 @@ class Level:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
 
-        score_text = self.font.render(f"final score: {self.score}", True, (0, 0, 0))
-        time_text = self.font.render(f"time left: {self.time_left}s", True, (0, 0, 0))
+        score_text = self.font.render(f"Coin: {self.score}", True, (0, 0, 0))
+        time_text = self.font.render(f"Time: {self.time_left}s", True, (0, 0, 0))
         self.screen.blit(score_text, (20, 20))
         self.screen.blit(time_text, (20, 50))
 
