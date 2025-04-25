@@ -40,8 +40,8 @@ class Overworld:
         self.paths = {}
         for obj in tmx_map.get_layer_by_name("Paths"):
           pos = [(int(p.x + tile_size/2),int(p.y + tile_size/2)) for p in obj.points]
-          start = obj.properties["start"]
-          end = obj.properties["end"]
+          start = int(obj.properties["start"])
+          end = int(obj.properties["end"])
           self.paths[end] = {"pos" : pos, "start" : start}
 
         #nodes & player
@@ -110,7 +110,7 @@ class Overworld:
           self.move("up")
 
     def move(self,direction):
-      path_key = self.current_node.paths[direction][0]
+      path_key = int(self.current_node.paths[direction][0])
       path_reverse = True if self.current_node.paths[direction][-1] == "r" else False
       path = self.paths[path_key]["pos"][:] if not path_reverse else self.paths[path_key]["pos"][::-1]
       self.icon.start_move(path)
