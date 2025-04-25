@@ -37,10 +37,10 @@ class Overworld:
         #path
         self.paths = {}
         for obj in tmx_map.get_layer_by_name("Paths"):
-          pos = [int((p.x + tile_size/2),(p.y + tile_size/2)) for p in obj.points]
+          pos = [(int(p.x + tile_size/2),int(p.y + tile_size/2)) for p in obj.points]
           start = obj.properties["start"]
           end = obj.properties["end"]
-          self.paths[end] = {"pos":pos, "start":start}
+          self.paths[end] = {"pos" : pos, "start" : start}
 
         #nodes & player
         for obj in tmx_map.get_layer_by_name("Nodes"):
@@ -60,10 +60,29 @@ class Overworld:
           
     def input(self):
       keys = pygame.key.get_pressed()
-      if self.current_node:
+      if self.current_node and not self.icon.path:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
+          self.move("down")
+        if keys[pygame.K_LEFT] and self.current_node.can_move("left"):
+          self.move("left")
+        if keys[pygame.K_RIGHT] and self.current_node.can_move("right"):
+          self.move("right")
+        if keys[pygame.K_UP] and self.current_node.can_move("up"):
+          self.move("up")
+
+    def move(self,direction):
+      path_key = self.current_node.paths[direction][0]
+      path_reverse = True if self.current_node.paths[direction][-1] == "r" else False
+      path = self.paths[path_key]["pos"][:] if not path_reverse else self.paths[path_key]["pos"][::-1]
+      self.icon.start_move(path)
+
+    def get_current_node(self):
+      nodes = pygame.sprite.spritecollide(self.icon, self.node_sprites, False)
+      if nodes:
+        self.current_node = nodes[0]
 
     def run(self,dt):
         self.input()
+        self.get_current_node()
         self.all_sprites.update(dt)
         self.all_sprites.draw(self.icon.rect.center)
