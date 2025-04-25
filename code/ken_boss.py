@@ -1,8 +1,9 @@
 import pygame
 import sys
+import os
 import random
 
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1200, 800
 BLACK = (0, 0, 0)
 LAVA = (255, 69, 0)  #bottom
 WHITE = (255, 255, 255)
@@ -18,7 +19,8 @@ pygame.display.set_caption("Mario vs Boss")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 30)
 
-#background_img = pygame.image.load(os.path.join("img","background.png")).convert()
+fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
+fireball_img = pygame.transform.scale(fireball_img, (30, 30))
  
 
 class Mario(pygame.sprite.Sprite):
@@ -30,6 +32,7 @@ class Mario(pygame.sprite.Sprite):
         self.rect.x = 50
         self.rect.centery = HEIGHT/2
         self.speedy = 10
+        self.health = 100
 
 
     def update(self):
@@ -55,7 +58,7 @@ class Boss(pygame.sprite.Sprite):
         self.image = pygame.Surface((60, 60))
         self.image.fill(ORANGE)
         self.rect = self.image.get_rect()
-        self.rect.x = 700
+        self.rect.x = 1100
         self.rect.y = HEIGHT/2
         self.speed = random.choice([-2, 2])
         self.shoot_chance = 10
@@ -94,12 +97,12 @@ class Bullet(pygame.sprite.Sprite):
 class Fireball(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((5, 5))
-        self.image.fill(BLACK)
+        self.image = fireball_img
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.speed = 5
+        self.speed = 1
         self.hit_count = 3
 
     def update(self):
@@ -141,10 +144,11 @@ while running:
             if fireball.hit_count >= 5:
                 fireball.kill()
 
-    hits = pygame.sprite.spritecollide(mario, fireballs, False)
-    if hits:
-        print("Game over")
-        running = False
+    hits = pygame.sprite.spritecollide(mario, fireballs, True)
+    for hit in hits:
+        mario.health -= 10
+        if mario.health <= 0:
+            running = False
     
 
     all_sprites.draw(screen)
