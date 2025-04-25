@@ -79,7 +79,20 @@ class Icon(pygame.sprite.Sprite):
             del self.path[0]
             self.find_path()
 
+    def animate(self,dt):
+        self.frame_index += animation_speed * dt
+        self.image = self.frames[self.state][int(self.frame_index % len(self.frames[self.state]))]
+
+    def get_state(self):
+        self.state = "idle"
+        if self.direction == vector(1,0) : self.state = "right"
+        if self.direction == vector(-1,0) : self.state = "left"
+        if self.direction == vector(0,1) : self.state = "down"
+        if self.direction == vector(0,-1) : self.state = "up"
+
     def update(self,dt):
         if self.path:
             self.point_collision()
             self.rect.center += self.direction * self.speed * dt
+        self.get_state()
+        self.animate(dt)
