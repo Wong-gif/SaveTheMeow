@@ -21,6 +21,18 @@ font = pygame.font.SysFont(None, 30)
 
 fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (30, 30))
+
+def draw_mario_health(surf, hp, x, y):
+    if hp < 0:
+        hp = 0
+    HEALTH_LENGTH = 100
+    HEALTH_HEIGHT =  10
+    fill = (hp/100)*HEALTH_LENGTH
+    outline_rect = pygame.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
+    fill_rect = pygame.Rect(x, y, fill, HEALTH_HEIGHT)
+    pygame.draw.rect(surf, GREEN, fill_rect)  #画出来（血）
+    pygame.draw.rect(surf, WHITE, outline_rect, 2)  #画出来（外框）
+
  
 
 class Mario(pygame.sprite.Sprite):
@@ -152,6 +164,7 @@ while running:
     
 
     all_sprites.draw(screen)
+    draw_mario_health(screen, mario.health, 5, 15)
     pygame.display.update()
 
 
