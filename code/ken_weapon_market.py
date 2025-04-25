@@ -81,20 +81,26 @@ while running:
         box = pygame.Rect(x, y, 200, 130)
         pygame.draw.rect(screen, GREY, box)
         
-        name_text = font.render(item["name"], True, (BLACK))
+        name_text = font.render(item["name"], True, (BLACK))  #Name text
         screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 135))
         
-        price_text = font.render(str(item['price']) , True, WHITE)
-        price_text_x = x + box.width // 2 - price_text.get_width() + 30// 2
-        price_text_y = y + 160
+        price_text = font.render(str(item['price']) , True, WHITE)  #Price text
 
         if item["currency"] == "coins":
-            screen.blit(coin_icon, (price_text_x, price_text_y))   
+            icon = coin_icon   
         else:
-            screen.blit(gem_icon, (price_text_x, price_text_y))   
+            icon = gem_icon   
             
-        screen.blit(price_text, (price_text_x + 30, price_text_y))
-        
+        icon_width = icon.get_width()
+        text_width = price_text.get_width()
+        total_width = icon_width + 5 + text_width  #icon + space + text
+
+        center_iconprice_x = x + box.width // 2 - total_width // 2   #Center the whole thing
+        iconprice_y = y + 160
+
+        screen.blit(icon, (center_iconprice_x, iconprice_y))
+        screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
+
         if not item["bought"]:
             buy_button = pygame.Rect(x + 35, y + 100, 130, 25) #Buy button box
             hover_color = LIGHT_GREEN
