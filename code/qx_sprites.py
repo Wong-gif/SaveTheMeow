@@ -30,6 +30,7 @@ class Node(pygame.sprite.Sprite):
         self.level = level
         self.data = data
         self.paths = paths
+        self.grid_pos = (int(pos[0] /tile_size), int(pos[1] /tile_size))
 
     def can_move(self,direction):
         if direction in list(self.paths.keys()):
