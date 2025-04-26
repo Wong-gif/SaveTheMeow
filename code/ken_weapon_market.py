@@ -96,10 +96,10 @@ while running:
         box = pygame.Rect(x, y, 200, 130)
         pygame.draw.rect(screen, GREY, box)
 
-        if item["name"] in weapon_images:
+        if item["name"] in weapon_images:  #武器照片
            img = weapon_images[item["name"]]
            img_x = x + box.width // 2 - img.get_width() // 2
-           img_y = y + 10  # top padding
+           img_y = y + 10  
            screen.blit(img, (img_x, img_y))
         
         name_text = font.render(item["name"], True, (BLACK))  #Name text
