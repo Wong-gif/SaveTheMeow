@@ -23,11 +23,11 @@ class NextLevel:
         self.facing_right = True
 
         self.platforms = [
-            pygame.Rect(100, 600, 300, 30),
-            pygame.Rect(600, 500, 300, 30),
-            pygame.Rect(1200, 400, 300, 30),
-            pygame.Rect(1800, 300, 300, 30),
-            pygame.Rect(2500, 600, 400, 30),
+            pygame.Rect(100, 600, 1000, 30),
+            pygame.Rect(500, 500, 800, 30),
+            pygame.Rect(1000, 400, 1300, 30),
+            pygame.Rect(2000, 300, 850, 30),
+            pygame.Rect(2800, 600, 600, 30),
         ]
 
     def _load_game_assets(self):
@@ -46,10 +46,9 @@ class NextLevel:
             'jump': self._load_single_image("assets/images/player/player_stand.png")
         }
 
-        # 地面图
-        self.ground_image = pygame.image.load("assets/images/level2_ground.png").convert_alpha()
-        self.ground_image = pygame.transform.scale(self.ground_image, (self.world_width, 100))
-        self.ground_rect = pygame.Rect(0, self.screen_height - 100, self.world_width, 100)
+        
+        self.platform_image = pygame.image.load("assets/images/platform.png").convert_alpha()
+        self.platform_image = pygame.transform.scale(self.platform_image, (300, 30))
 
     def _load_single_image(self, path):
         image = pygame.image.load(path).convert_alpha()
@@ -57,13 +56,15 @@ class NextLevel:
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
+
         if keys[pygame.K_LEFT]:
             self.player_rect.x -= self.player_speed
             self.facing_right = False
         if keys[pygame.K_RIGHT]:
             self.player_rect.x += self.player_speed
             self.facing_right = True
-        if keys[pygame.K_SPACE] and self.on_ground:
+
+        if keys[pygame.K_SPACE]:
             self.velocity_y = self.jump_power
             self.on_ground = False
 
@@ -75,13 +76,6 @@ class NextLevel:
         self.player_rect.y += self.velocity_y
 
         self.animation_frame += self.animation_speed
-
-        if self.player_rect.bottom >= self.screen_height - 100:
-            self.player_rect.bottom = self.screen_height - 100
-            self.velocity_y = 0
-            self.on_ground = True
-        else:
-            self.on_ground = False
 
         self.on_ground = False
         for platform in self.platforms:
@@ -104,10 +98,11 @@ class NextLevel:
 
     def draw(self):
         self.screen.blit(self.background, (-self.camera_x, 0))
-        self.screen.blit(self.ground_image, self.world_to_screen(self.ground_rect))
-
+    
         for platform in self.platforms:
-            pygame.draw.rect(self.screen, (139, 69, 19), self.world_to_screen(platform))
+            platform_screen_pos = self.world_to_screen(platform)
+            stretched_image = pygame.transform.scale(self.platform_image, (platform.width, platform.height))
+            self.screen.blit(stretched_image, platform_screen_pos)
 
         # 玩家
         if not self.on_ground:
