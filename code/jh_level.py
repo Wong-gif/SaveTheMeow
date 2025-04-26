@@ -18,6 +18,9 @@ class Level:
         self.jump_sound.set_volume(0.2)
         self.portal_frame_index = 0
         self.portal_animation_speed = 0.2
+        self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 27)
+        self.coin_icon = pygame.image.load("assets/images/ui/coin_icon.png").convert_alpha()
+        self.time_icon = pygame.image.load("assets/images/ui/time_icon.png").convert_alpha()
 
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
@@ -67,14 +70,14 @@ class Level:
 
     def _load_game_assets(self):
 
-        sky = pygame.image.load("assets/images/sky.png").convert()
+        sky = pygame.image.load("assets/images/level1_background.png").convert()
         sky = pygame.transform.smoothscale(sky, (self.screen_width, self.screen_height))
 
         self.background = pygame.Surface((self.world_width, self.screen_height))
         for x in range(0, self.world_width, self.screen_width):
             self.background.blit(sky, (x, 0))
 
-        self.ground_image_full = pygame.image.load("assets/images/ground_tile.png").convert_alpha()
+        self.ground_image_full = pygame.image.load("assets/images/ground.png").convert_alpha()
         self.ground_image_full = pygame.transform.smoothscale(self.ground_image_full, (self.world_width, 100))
 
         self._placeholder = pygame.Surface((32, 32), pygame.SRCALPHA)
@@ -260,10 +263,14 @@ class Level:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
 
-        score_text = self.font.render(f"Coin: {self.score}", True, (0, 0, 0))
-        time_text = self.font.render(f"Time: {self.time_left}s", True, (0, 0, 0))
-        self.screen.blit(score_text, (20, 20))
-        self.screen.blit(time_text, (20, 50))
+        ui_bar = pygame.Surface((380, 50), pygame.SRCALPHA)
+        self.screen.blit(ui_bar, (20, 20))
+        self.screen.blit(self.coin_icon, (22, 24))
+        score_text = self.font.render(f"Coin:{self.score}", True, (0, 0, 0))
+        self.screen.blit(score_text, (70, 35))
+        self.screen.blit(self.time_icon, (310, 30))
+        time_text = self.font.render(f"Time:{self.time_left}s", True, (0, 0, 0))
+        self.screen.blit(time_text, (350, 35))
 
     def run(self):
         self.handle_input()
