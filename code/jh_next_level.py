@@ -22,6 +22,14 @@ class NextLevel:
         self.on_ground = False
         self.facing_right = True
 
+        self.platforms = [
+            pygame.Rect(100, 600, 300, 30),
+            pygame.Rect(600, 500, 300, 30),
+            pygame.Rect(1200, 400, 300, 30),
+            pygame.Rect(1800, 300, 300, 30),
+            pygame.Rect(2500, 600, 400, 30),
+        ]
+
     def _load_game_assets(self):
         # 加载并拉长背景
         bg = pygame.image.load("assets/images/level2_background.png").convert()
@@ -65,6 +73,7 @@ class NextLevel:
     def update_physics(self):
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
+
         self.animation_frame += self.animation_speed
 
         if self.player_rect.bottom >= self.screen_height - 100:
@@ -74,6 +83,18 @@ class NextLevel:
         else:
             self.on_ground = False
 
+        self.on_ground = False
+        for platform in self.platforms:
+            if self.player_rect.colliderect(platform) and self.velocity_y >= 0:
+                self.player_rect.bottom = platform.top
+                self.velocity_y = 0
+                self.on_ground = True
+                break
+
+        if self.player_rect.top > self.screen_height:
+            print("Fall Down! Game Restart")
+            self.__init__(self.screen)
+
     def update_camera(self):
         target_x = self.player_rect.centerx - self.screen_width // 2
         self.camera_x = max(0, min(target_x, self.world_width - self.screen_width))
@@ -82,11 +103,11 @@ class NextLevel:
         return rect.move(-self.camera_x, 0)
 
     def draw(self):
-        # 背景跟camera动
         self.screen.blit(self.background, (-self.camera_x, 0))
-
-        # 地面跟camera动
         self.screen.blit(self.ground_image, self.world_to_screen(self.ground_rect))
+
+        for platform in self.platforms:
+            pygame.draw.rect(self.screen, (139, 69, 19), self.world_to_screen(platform))
 
         # 玩家
         if not self.on_ground:
