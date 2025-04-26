@@ -1,7 +1,7 @@
 import pygame
 import sys
 from jh_level import Level
-from jh_next_level import NextLevelScreen
+from jh_next_level import NextLevel
 
 pygame.init()
 pygame.mixer.init()
@@ -34,7 +34,7 @@ except:
     print("cannot play the sound")
 
 level = Level(screen)
-next_level_screen = NextLevelScreen(screen)
+next_level_screen = NextLevel(screen)
 
 class Button:
     def __init__(self, x, y, width, height, text):
