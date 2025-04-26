@@ -27,7 +27,7 @@ def draw_health_bar(surf, hp, max_hp, x, y):
         hp = 0
     HEALTH_LENGTH = 100
     HEALTH_HEIGHT = 10
-    fill = (hp / 100) * HEALTH_LENGTH
+    fill = (hp / max_hp) * HEALTH_LENGTH
     outline_rect = pygame.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
     fill_rect = pygame.Rect(x, y, fill, HEALTH_HEIGHT)
     pygame.draw.rect(surf, GREEN, fill_rect) #生命线
@@ -73,12 +73,12 @@ class Boss(pygame.sprite.Sprite):
         self.rect.y = HEIGHT/2
         self.speed = random.choice([-2, 2])
         self.shoot_chance = 10
-        self.health = 1000000
+        self.health = 100000
     
     def update(self):
         self.rect.y += self.speed
 
-        if self.rect.top == 0 or self.rect.bottom == HEIGHT:
+        if self.rect.top == 0 or self.rect.bottom >= HEIGHT:
             self.speed *= -1
 
         if random.randint(1, 100) <= self.shoot_chance:
@@ -114,8 +114,8 @@ class Fireball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.speed = 1
-        self.hit_count = 3
+        self.speed = random.randint(3, 6)
+        self.hit_count = 0
 
     def update(self):
         self.rect.x -= self.speed
@@ -132,6 +132,8 @@ mario = Mario()
 boss = Boss()
 all_sprites.add(mario)
 all_sprites.add(boss)
+winner = None
+
 
 # Game loop
 running = True
@@ -153,16 +155,17 @@ while running:
         for fireball in hit_fireballs:
             bullet.kill()  # Remove bullet on hit
             fireball.hit_count += 1  
-            if fireball.hit_count >= 5:
+            if fireball.hit_count >= 3:
                 fireball.kill()
 
     boss_hits = pygame.sprite.spritecollide(boss, bullets, True)
     for hit in boss_hits:
-        boss.health -= 10
+        boss.health -= 100000
         if boss.health <= 0:
             print("Boss defeated!")
             all_sprites.remove(boss)
             running = False
+            winner = "Mario"
 
     mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
     for hit in mario_hits:
@@ -173,9 +176,19 @@ while running:
 
     all_sprites.draw(screen)
     draw_health_bar(screen, mario.health, 100, 5, 15)  # Mario HP
-    draw_health_bar(screen, boss.health, 100, WIDTH - 150, 15)  # Boss HP
+    draw_health_bar(screen, boss.health, 100000, WIDTH - 150, 15)  # Boss HP
 
+    
+    
+    
+    
+    
+if winner == "Mario":
+    screen.fill(WHITE)
+    text = font.render("You Win!", True, GREEN)
+    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2))
     pygame.display.update()
+    pygame.time.delay(2000)
 
 
 
