@@ -78,8 +78,12 @@ class Boss(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += self.speed
 
-        if self.rect.top == 0 or self.rect.bottom >= HEIGHT:
+        if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
             self.speed *= -1
+            self.speed += random.choice([-1, 0, 1])
+            if self.speed == 0:
+                self.speed = random.choice([-2, 2])
+
 
         if random.randint(1, 100) <= self.shoot_chance:
             self.shoot()
@@ -132,7 +136,6 @@ mario = Mario()
 boss = Boss()
 all_sprites.add(mario)
 all_sprites.add(boss)
-winner = None
 
 
 # Game loop
@@ -165,7 +168,7 @@ while running:
             print("Boss defeated!")
             all_sprites.remove(boss)
             running = False
-            winner = "Mario"
+           
 
     mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
     for hit in mario_hits:
@@ -178,19 +181,7 @@ while running:
     draw_health_bar(screen, mario.health, 100, 5, 15)  # Mario HP
     draw_health_bar(screen, boss.health, 100000, WIDTH - 150, 15)  # Boss HP
 
-    
-    
-    
-    
-    
-if winner == "Mario":
-    screen.fill(WHITE)
-    text = font.render("You Win!", True, GREEN)
-    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2))
     pygame.display.update()
-    pygame.time.delay(2000)
-
-
-
+   
 pygame.quit()
 sys.exit()
