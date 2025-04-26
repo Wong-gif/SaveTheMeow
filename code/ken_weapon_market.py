@@ -28,6 +28,20 @@ gem_icon = pygame.transform.scale(gem_icon, (25, 25))
 girl_image = pygame.image.load(os.path.join("assets", "images", "girl.png")).convert_alpha()
 girl_image = pygame.transform.scale(girl_image, (450, 700))
 
+weapon_images = {
+    "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
+    #"Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "hawks_eye.png")).convert_alpha(),
+    "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
+    #"Hydro Strike": pygame.image.load(os.path.join("assets", "images", "hydro_strike.png")).convert_alpha(),
+    #"Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "libra_eternity.png")).convert_alpha(),
+    #"Aegis Shield": pygame.image.load(os.path.join("assets", "images", "aegis_shield.png")).convert_alpha(),
+    #"Thunder Axe": pygame.image.load(os.path.join("assets", "images", "thunder_axe.png")).convert_alpha(),
+    #"Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "essence_renewal.png")).convert_alpha()
+}
+
+for key in weapon_images:
+    weapon_images[key] = pygame.transform.scale(weapon_images[key], (90, 90))
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
@@ -52,6 +66,7 @@ market_item = [
     {"name": "Thunder Axe", "price": 100, "currency": "gems", "bought": False},
     {"name": "Essence of Renewal", "price": 100, "currency": "coins", "bought": False},
 ]
+
 
 def draw_stat_box(surface, x, y, width, height, color, alpha):
     s = pygame.Surface((width, height), pygame.SRCALPHA)  # Transparent surface
@@ -80,6 +95,12 @@ while running:
         y = 80 + (i // col) * 250
         box = pygame.Rect(x, y, 200, 130)
         pygame.draw.rect(screen, GREY, box)
+
+        if item["name"] in weapon_images:
+           img = weapon_images[item["name"]]
+           img_x = x + box.width // 2 - img.get_width() // 2
+           img_y = y + 10  # top padding
+           screen.blit(img, (img_x, img_y))
         
         name_text = font.render(item["name"], True, (BLACK))  #Name text
         screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 135))
