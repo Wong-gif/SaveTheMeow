@@ -75,7 +75,7 @@ def draw_stat_box(surface, x, y, width, height, color, alpha):
     pygame.draw.rect(s, (*color, alpha), s.get_rect(), border_radius=12)  # Rounded rectangle
     surface.blit(s, (x, y))  # Draw it on your screen
 
-arrow_rect = arrow_image.get_rect(topleft=(10, 5))  # Set position
+arrow_rect = pygame.Rect(10, 5, 50, 30)  # Set position
 
 def draw_arrow(surface, arrow_image, arrow_rect):
     mx, my = pygame.mouse.get_pos()
@@ -84,7 +84,7 @@ def draw_arrow(surface, arrow_image, arrow_rect):
         actual_arrow.fill((255, 255, 255, 50), special_flags=pygame.BLEND_RGBA_ADD)
         screen.blit(actual_arrow, arrow_rect)
     else:
-        screen.blit(arrow_image, arrow_rect)
+        screen.blit(arrow_image, arrow_rect) # make the image follow the rect
 
 running = True
 while running:
