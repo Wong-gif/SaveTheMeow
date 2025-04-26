@@ -59,5 +59,5 @@ def all_character_import(*path):
     for _,__,image_names in walk(join(*path)):
         for image in image_names:
             image_name = image.split(".")[0]
-            new_dict[image_name] = character_importer(4,4*path,image_name)
+            new_dict[image_name] = character_importer(4,4,*path,image_name)
     return new_dict
