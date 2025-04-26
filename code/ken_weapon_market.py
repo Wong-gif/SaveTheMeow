@@ -27,6 +27,8 @@ gem_icon = pygame.image.load(os.path.join("assets", "images", "gem.png")).conver
 gem_icon = pygame.transform.scale(gem_icon, (25, 25))
 girl_image = pygame.image.load(os.path.join("assets", "images", "girl.png")).convert_alpha()
 girl_image = pygame.transform.scale(girl_image, (450, 700))
+arrow_image = pygame.image.load(os.path.join("assets", "images", "arrow.png")).convert_alpha()
+arrow_image = pygame.transform.scale(arrow_image, (50, 60))
 
 weapon_images = {
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
@@ -73,21 +75,29 @@ def draw_stat_box(surface, x, y, width, height, color, alpha):
     pygame.draw.rect(s, (*color, alpha), s.get_rect(), border_radius=12)  # Rounded rectangle
     surface.blit(s, (x, y))  # Draw it on your screen
 
+arrow_rect = arrow_image.get_rect(topleft=(10, 3))  # Position the arrow at top-left
+
+
 running = True
 while running:
     clock.tick(FPS)
     screen.fill(BROWN)
     buy_buttons = []
+    
+    screen.blit(arrow_image, arrow_rect)  # Draw the arrow
 
-    draw_stat_box(screen, 50, 15, 225, 35, GREY, 150)  # Background
+    title_text = font.render("Weapon Market", True, WHITE)
+    screen.blit(title_text, (70, 20))
+
+    draw_stat_box(screen, 230, 15, 225, 35, GREY, 150)  # Background
     
-    screen.blit(coin_icon, (70, 20))
+    screen.blit(coin_icon, (250, 20))
     coins_text = font.render(f"{player_coins}", True, WHITE)
-    screen.blit(coins_text, (100, 20))
+    screen.blit(coins_text, (280, 20))
     
-    screen.blit(gem_icon, (120 + coins_text.get_width() + 30, 20))
+    screen.blit(gem_icon, (300 + coins_text.get_width() + 30, 20))
     gems_text = font.render(f"{player_gems}", True, WHITE)
-    screen.blit(gems_text, (120 + coins_text.get_width() + 60, 20))
+    screen.blit(gems_text, (300 + coins_text.get_width() + 60, 20))
 
     for i, item in enumerate(market_item):
         col = 3
@@ -150,6 +160,12 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             mx, my = pygame.mouse.get_pos()
+
+            if arrow_rect.collidepoint(mx, my):
+                print("Arrow clicked! Leaving the market...")
+                running = False 
+
+
             for i, button in enumerate(buy_buttons):
                 if button and button.collidepoint(mx, my):  # All logic stays inside this block
                     click_sound.play()
