@@ -21,18 +21,15 @@ class NextLevel:
         self.facing_right = True
 
     def _load_assets(self):
-        bg = pygame.image.load("assets/images/abc.png").convert()
-        self.background = pygame.Surface((self.world_width, self.screen_height))
-        for x in range(0, self.world_width, bg.get_width()):
-            scaled_bg = pygame.transform.scale(bg, (bg.get_width(), self.screen_height))
-            self.background.blit(scaled_bg, (x, 0))
-
+        bg = pygame.image.load("assets/images/level2_background.png").convert()
+        self.background = pygame.transform.scale(bg, (self.world_width, self.screen_height))
+        
         # 加载玩家
         self.player_image = pygame.image.load("assets/images/player/player_stand.png").convert_alpha()
 
         # 加载背景音乐
         try:
-            pygame.mixer.music.load("assets/sounds/background.music.wav")
+            pygame.mixer.music.load("assets/sounds/background_music.wav")
             pygame.mixer.music.set_volume(0.5)
             pygame.mixer.music.play(-1)
         except Exception as e:
@@ -62,6 +59,13 @@ class NextLevel:
             self.on_ground = True
         else:
             self.on_ground = False
+
+        # 限制玩家不要走出屏幕
+        if self.player_rect.left < self.camera_x:
+            self.player_rect.left = self.camera_x
+        if self.player_rect.right > self.camera_x + self.screen_width:
+            self.player_rect.right = self.camera_x + self.screen_width
+
 
         self.update_camera()
 
