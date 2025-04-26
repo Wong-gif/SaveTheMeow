@@ -7,11 +7,13 @@ class NextLevel:
         self.screen_width, self.screen_height = screen.get_size()
         self.font = pygame.font.SysFont('Arial', 32)
         self.camera_x = 0
-        self.world_width = 3200  # 可根据地图大小调整
+        self.world_width = 3200  # 世界宽度设置为3200px
 
-        self._load_assets()
+        self._load_game_assets()
+        self.animation_frame = 0
+        self.animation_speed = 0.15
 
-        self.player_rect = self.player_image.get_rect()
+        self.player_rect = self.player_images['idle'].get_rect()
         self.player_rect.midbottom = (100, self.screen_height - 100)
         self.player_speed = 5
         self.velocity_y = 0
@@ -20,20 +22,30 @@ class NextLevel:
         self.on_ground = False
         self.facing_right = True
 
-    def _load_assets(self):
+    def _load_game_assets(self):
+        # 加载并拉长背景
         bg = pygame.image.load("assets/images/level2_background.png").convert()
-        self.background = pygame.transform.scale(bg, (self.world_width, self.screen_height))
+        bg = pygame.transform.scale(bg, (self.world_width, self.screen_height))
+        self.background = bg
 
-        # 加载玩家
-        self.player_image = pygame.image.load("assets/images/player/player_stand.png").convert_alpha()
+        # 玩家图片
+        self.player_images = {
+            'idle': self._load_single_image("assets/images/player/player_stand.png"),
+            'walk': [
+                self._load_single_image("assets/images/player/player_walk1.png"),
+                self._load_single_image("assets/images/player/player_walk2.png")
+            ],
+            'jump': self._load_single_image("assets/images/player/player_stand.png")
+        }
 
-        # 加载背景音乐
-        try:
-            pygame.mixer.music.load("assets/sounds/background_music.mp3")
-            pygame.mixer.music.set_volume(0.5)
-            pygame.mixer.music.play(-1)
-        except Exception as e:
-            print("背景音乐播放失败：", e)
+        # 地面图
+        self.ground_image = pygame.image.load("assets/images/level2_ground.png").convert_alpha()
+        self.ground_image = pygame.transform.scale(self.ground_image, (self.world_width, 100))
+        self.ground_rect = pygame.Rect(0, self.screen_height - 100, self.world_width, 100)
+
+    def _load_single_image(self, path):
+        image = pygame.image.load(path).convert_alpha()
+        return image
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
@@ -47,27 +59,20 @@ class NextLevel:
             self.velocity_y = self.jump_power
             self.on_ground = False
 
+        self.player_rect.left = max(0, self.player_rect.left)
+        self.player_rect.right = min(self.world_width, self.player_rect.right)
+
     def update_physics(self):
-        # 简化版，玩家在空气中
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
+        self.animation_frame += self.animation_speed
 
-        # 碰到底部就站住
-        if self.player_rect.bottom >= self.screen_height:
-            self.player_rect.bottom = self.screen_height
+        if self.player_rect.bottom >= self.screen_height - 100:
+            self.player_rect.bottom = self.screen_height - 100
             self.velocity_y = 0
             self.on_ground = True
         else:
             self.on_ground = False
-
-        # 限制玩家不要走出屏幕
-        if self.player_rect.left < self.camera_x:
-            self.player_rect.left = self.camera_x
-        if self.player_rect.right > self.camera_x + self.screen_width:
-            self.player_rect.right = self.camera_x + self.screen_width
-
-
-        self.update_camera()
 
     def update_camera(self):
         target_x = self.player_rect.centerx - self.screen_width // 2
@@ -77,19 +82,31 @@ class NextLevel:
         return rect.move(-self.camera_x, 0)
 
     def draw(self):
+        # 背景跟camera动
         self.screen.blit(self.background, (-self.camera_x, 0))
 
-        # 玩家渲染
-        image = self.player_image
+        # 地面跟camera动
+        self.screen.blit(self.ground_image, self.world_to_screen(self.ground_rect))
+
+        # 玩家
+        if not self.on_ground:
+            image = self.player_images['jump']
+        else:
+            keys = pygame.key.get_pressed()
+            moving = keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]
+            if moving:
+                frame_index = int(self.animation_frame) % len(self.player_images['walk'])
+                image = self.player_images['walk'][frame_index]
+            else:
+                image = self.player_images['idle']
+
         if not self.facing_right:
             image = pygame.transform.flip(image, True, False)
-        self.screen.blit(image, self.world_to_screen(self.player_rect))
 
-        text = self.font.render("Next Level", True, (0, 0, 0))
-        self.screen.blit(text, (20, 20))
+        self.screen.blit(image, self.world_to_screen(self.player_rect))
 
     def run(self):
         self.handle_input()
         self.update_physics()
+        self.update_camera()
         self.draw()
-
