@@ -75,8 +75,16 @@ def draw_stat_box(surface, x, y, width, height, color, alpha):
     pygame.draw.rect(s, (*color, alpha), s.get_rect(), border_radius=12)  # Rounded rectangle
     surface.blit(s, (x, y))  # Draw it on your screen
 
-arrow_rect = arrow_image.get_rect(topleft=(10, 3))  # Position the arrow at top-left
+arrow_rect = arrow_image.get_rect(topleft=(10, 5))  # Set position
 
+def draw_arrow(surface, arrow_image, arrow_rect):
+    mx, my = pygame.mouse.get_pos()
+    if arrow_rect.collidepoint(mx, my):
+        actual_arrow = arrow_image.copy()
+        actual_arrow.fill((255, 255, 255, 50), special_flags=pygame.BLEND_RGBA_ADD)
+        screen.blit(actual_arrow, arrow_rect)
+    else:
+        screen.blit(arrow_image, arrow_rect)
 
 running = True
 while running:
@@ -84,7 +92,7 @@ while running:
     screen.fill(BROWN)
     buy_buttons = []
     
-    screen.blit(arrow_image, arrow_rect)  # Draw the arrow
+    draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
     title_text = font.render("Weapon Market", True, WHITE)
     screen.blit(title_text, (70, 20))
@@ -160,9 +168,7 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             mx, my = pygame.mouse.get_pos()
-
             if arrow_rect.collidepoint(mx, my):
-                print("Arrow clicked! Leaving the market...")
                 running = False 
 
 
