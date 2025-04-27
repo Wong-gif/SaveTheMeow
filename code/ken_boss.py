@@ -88,8 +88,8 @@ class Boss(pygame.sprite.Sprite):
         self.rect.x = 1100
         self.rect.y = HEIGHT/2
         self.speed = random.choice([-2, 2])
-        self.shoot_chance = 10
-        self.health = 100000
+        self.shoot_chance = 5
+        self.health = 10000
     
     def update(self):
         self.rect.y += self.speed
@@ -104,10 +104,15 @@ class Boss(pygame.sprite.Sprite):
         if random.randint(1, 100) <= self.shoot_chance:
             self.shoot()
 
+        if self.health < 9000:
+            self.shoot_chance = 50
+
     def shoot(self):
         fireball = Fireball(self.rect.x, self.rect.y)
         all_sprites.add(fireball)
         fireballs.add(fireball)
+
+
 
 
 
@@ -131,7 +136,6 @@ class Fireball(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = fireball_img
-        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -181,7 +185,7 @@ while running:
 
     boss_hits = pygame.sprite.spritecollide(boss, bullets, True)
     for hit in boss_hits:
-        boss.health -= 100000
+        boss.health -= 100
         if boss.health <= 0:
             print("Boss defeated!")
             all_sprites.remove(boss)
@@ -199,7 +203,7 @@ while running:
 
     all_sprites.draw(screen)
     draw_health_bar(screen, mario.health, 100, 5, 15)  # Mario HP
-    draw_health_bar(screen, boss.health, 100000, WIDTH - 150, 15)  # Boss HP
+    draw_health_bar(screen, boss.health, 10000, boss.rect.x - 20, boss.rect.top - 20)  # Boss HP
 
     pygame.display.update()
    
