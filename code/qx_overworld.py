@@ -1,6 +1,7 @@
 from qx_settings import *
 from qx_sprites import Sprite, AnimatedSprite, Node, Icon, PathSprite
 from qx_groups import WorldSprites
+from qx_entites import Character
 from  random import randint
 
 class Overworld:
@@ -36,6 +37,14 @@ class Overworld:
          else:
             z = Z_layers[f"{"bg details" if obj.name == "grass" else "bg tiles"}"]
             Sprite((obj.x,obj.y), obj.image, self.all_sprites, z)
+          
+        for obj in tmx_map.get_layer_by_name("Entities"):
+          if obj.name == "Character":
+            Character(
+              pos = (obj.x, obj.y),
+              frames = overworld_frames["characters"][obj.properties["graphic"]],
+              groups = self.all_sprites
+            )
 
         #path
         self.paths = {}
