@@ -44,7 +44,7 @@ weapon_images = {
 }
 
 for key in weapon_images:
-    weapon_images[key] = pygame.transform.scale(weapon_images[key], (120, 120))
+    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (120, 120))
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
