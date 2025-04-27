@@ -74,7 +74,7 @@ class Mario(pygame.sprite.Sprite):
            self.rect.right = WIDTH
 
     def shoot(self):
-        bullet = Bullet(self.rect.x, self.rect.y)
+        bullet = Bullet(self.rect.centerx, self.rect.centery)
         all_sprites.add(bullet)
         bullets.add(bullet)
         shoot_sound.play()
@@ -105,7 +105,7 @@ class Boss(pygame.sprite.Sprite):
             self.shoot()
 
         if self.health < 9000:
-            self.shoot_chance = 50
+            self.shoot_chance = 1000
 
     def shoot(self):
         fireball = Fireball(self.rect.x, self.rect.y)

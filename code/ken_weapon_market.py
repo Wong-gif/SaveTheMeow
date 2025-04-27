@@ -12,6 +12,7 @@ GREEN = (0, 200, 0)
 LIGHT_GREEN = (0, 255, 0)
 GREY = (200, 200, 200)
 BLUE = (135, 206, 235)
+LIGHT_BLUE = (135, 206, 250),
 RED = (255, 0, 0)
 BROWN = (139, 69, 19)
 
@@ -32,14 +33,14 @@ arrow_image = pygame.transform.scale(arrow_image, (50, 60))
 
 weapon_images = {
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    #"Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "hawks_eye.png")).convert_alpha(),
+    #"Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawks_eye.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
     "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
-    #"Hydro Strike": pygame.image.load(os.path.join("assets", "images", "hydro_strike.png")).convert_alpha(),
-    #"Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "libra_eternity.png")).convert_alpha(),
-    #"Aegis Shield": pygame.image.load(os.path.join("assets", "images", "aegis_shield.png")).convert_alpha(),
-    #"Thunder Axe": pygame.image.load(os.path.join("assets", "images", "thunder_axe.png")).convert_alpha(),
-    #"Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "essence_renewal.png")).convert_alpha()
+    "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
+    "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
+    "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
+    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+    #"Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
 }
 
 for key in weapon_images:
@@ -89,7 +90,7 @@ def draw_arrow(surface, arrow_image, arrow_rect):
 running = True
 while running:
     clock.tick(FPS)
-    screen.fill(BROWN)
+    screen.fill(LIGHT_BLUE)
     buy_buttons = []
     
     draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
@@ -117,7 +118,7 @@ while running:
         if item["name"] in weapon_images:  #武器照片
            img = weapon_images[item["name"]]
            img_x = x + box.width // 2 - img.get_width() // 2
-           img_y = y + 10  
+           img_y = y + 5  
            screen.blit(img, (img_x, img_y))
         
         name_text = font.render(item["name"], True, (BLACK))  #Name text
