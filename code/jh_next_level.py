@@ -27,16 +27,19 @@ class NextLevel:
     def __init__(self, screen):
         self.screen = screen
         self.screen_width, self.screen_height = screen.get_size()
-        self.world_width = 3200  # 世界宽度
+        self.world_width = 3200 
         self.camera_x = 0
         self.score = 0
         self.time_left = 60
         self.last_time_update = pygame.time.get_ticks()
+        self.spike_image = pygame.image.load("assets/images/spike.png").convert_alpha()
+        self.spike_visible = False # make the spike cannot see first
+        self.spike_rect = self.spike_image.get_rect()
+        self.spike_rect.topleft = (830, 555)  # Place spike in the second ground
 
-        # 玩家初始化
         self._load_game_assets()
         self.player_rect = self.player_images['idle'].get_rect()
-        self.player_rect.midbottom = (180, 70)  # 玩家初始位置
+        self.player_rect.midbottom = (180, 70)  # player position
         self.player_speed = 5
         self.velocity_y = 0
         self.jump_power = -20
@@ -46,28 +49,23 @@ class NextLevel:
         self.animation_frame = 0
         self.animation_speed = 0.15
 
-        # 按钮的初始化（normal和pressed状态）
         self.button_normal = pygame.image.load("assets/images/button_normal.png").convert_alpha()
         self.button_pressed = pygame.image.load("assets/images/button_pressed.png").convert_alpha()
         self.button = Button(self.button_normal, self.button_pressed, 0, self.screen_height - 250)
 
-        # 平台初始化
         self.platform_image = pygame.image.load("assets/images/rui.png").convert_alpha()
         self.platform_rect = self.platform_image.get_rect()
         self.platform_rect.midbottom = (490, 500)  # platform position
-        self.platform_visible = False  # 平台初始不可见
+        self.platform_visible = False  # same as the top, cannot see first
 
     def _load_game_assets(self):
-        # 加载背景图像
         sky = pygame.image.load("assets/images/level2_background.png").convert()
         sky = pygame.transform.smoothscale(sky, (3200, self.screen_height))
         self.background = sky
 
-        # 加载地面图像
         self.ground_image_full = pygame.image.load("assets/images/platform.png").convert_alpha()
         self.ground_image_full = pygame.transform.smoothscale(self.ground_image_full, (self.world_width, 100))
 
-        # 加载玩家图像
         self.player_images = {
             'idle': self._load_single_image("assets/images/player/player_stand.png"),
             'walk': [
@@ -115,7 +113,6 @@ class NextLevel:
                 self.velocity_y = 0
                 break
 
-
         if self.platform_visible and self.player_rect.colliderect(self.platform_rect):
             self.on_ground = True
             self.player_rect.bottom = self.platform_rect.top  # 玩家站在平台上
@@ -125,11 +122,20 @@ class NextLevel:
         if self.button.check_player_collision(self.world_to_screen(self.player_rect)):
             self.platform_visible = True  # 按钮被点击后，显示平台
 
+        if self.player_rect.colliderect(self.spike_rect):
+            print("Beware of traps")
+            self.__init__(self.screen)
+
         # 玩家是否跌落，重置
         if self.player_rect.bottom > self.screen_height:
             print("Fall Down, Game Start Again")
             self.__init__(self.screen)
-
+            
+        if not self.spike_visible:  # 如果还没出现
+           distance_to_spike = abs(self.player_rect.centerx - self.spike_rect.centerx)
+           if distance_to_spike < 150:
+               self.spike_visible = True
+               
         self.update_camera()
         self.animation_frame += self.animation_speed
 
@@ -138,7 +144,6 @@ class NextLevel:
         return [
             (0, 300),    # 第一段
             (700, 500),  # 第二段
-            (1500, 400),  # 第三段
         ]
 
     def get_player_image(self):
@@ -152,7 +157,7 @@ class NextLevel:
 
     def draw(self):
         self.screen.blit(self.background, (-self.camera_x, 0))
-
+    
         # 绘制每个地面区段
         for start_x, width in self.generate_ground_segments():
             if width > 0:
@@ -161,6 +166,9 @@ class NextLevel:
 
         # 绘制按钮
         self.button.draw(self.screen, self.camera_x)
+
+        if self.spike_visible:
+            self.screen.blit(self.spike_image, self.world_to_screen(self.spike_rect))
 
         # 只有按钮被点击后才绘制平台
         if self.platform_visible:
