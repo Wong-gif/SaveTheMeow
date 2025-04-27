@@ -33,18 +33,18 @@ arrow_image = pygame.transform.scale(arrow_image, (50, 60))
 
 weapon_images = {
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    #"Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawks_eye.png")).convert_alpha(),
+    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
     "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
     "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
     "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
-    #"Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
+    "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
 }
 
 for key in weapon_images:
-    weapon_images[key] = pygame.transform.scale(weapon_images[key], (90, 90))
+    weapon_images[key] = pygame.transform.scale(weapon_images[key], (120, 120))
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
@@ -112,7 +112,7 @@ while running:
         col = 3
         x = 230 + (i % col) * 230
         y = 80 + (i // col) * 250
-        box = pygame.Rect(x, y, 200, 130)
+        box = pygame.Rect(x, y, 200, 160)
         pygame.draw.rect(screen, GREY, box)
 
         if item["name"] in weapon_images:  #武器照片
@@ -122,7 +122,7 @@ while running:
            screen.blit(img, (img_x, img_y))
         
         name_text = font.render(item["name"], True, (BLACK))  #Name text
-        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 135))
+        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 165))
         
         price_text = font.render(str(item['price']) , True, WHITE)  #Price text
 
@@ -136,13 +136,13 @@ while running:
         total_width = icon_width + 5 + text_width  #icon + space + text
 
         center_iconprice_x = x + box.width // 2 - total_width // 2   #Center the whole thing
-        iconprice_y = y + 160
+        iconprice_y = y + 190
 
         screen.blit(icon, (center_iconprice_x, iconprice_y))
         screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
 
         if not item["bought"]:
-            buy_button = pygame.Rect(x + 35, y + 100, 130, 25) #Buy button box
+            buy_button = pygame.Rect(x + 35, y + 130, 130, 25) #Buy button box
             hover_color = LIGHT_GREEN
             normal_color = GREEN
             if buy_button.collidepoint(pygame.mouse.get_pos()):
