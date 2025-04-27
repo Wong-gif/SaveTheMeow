@@ -75,7 +75,7 @@ def draw_stat_box(surface, x, y, width, height, color, alpha):
     pygame.draw.rect(s, (*color, alpha), s.get_rect(), border_radius=12)  # Rounded rectangle
     surface.blit(s, (x, y))  # Draw it on your screen
 
-arrow_rect = pygame.Rect(10, 5, 50, 30)  # Set position
+arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
 
 def draw_arrow(surface, arrow_image, arrow_rect):
     mx, my = pygame.mouse.get_pos()
@@ -169,6 +169,14 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mx, my = pygame.mouse.get_pos()
             if arrow_rect.collidepoint(mx, my):
+                click_sound.play()
+                for alpha in range(0, 300, 15):    # Fade out function
+                    fade = pygame.Surface((WIDTH, HEIGHT))
+                    fade.fill((0, 0, 0))
+                    fade.set_alpha(alpha)
+                    screen.blit(fade, (0, 0))
+                    pygame.display.update()
+                    pygame.time.delay(30)
                 running = False 
 
 

@@ -16,11 +16,16 @@ pygame.init()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Mario vs Boss")
+pygame.mixer.init()
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 30)
 
 fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (30, 30))
+
+
+shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
+
 
 def draw_health_bar(surf, hp, max_hp, x, y):
     if hp < 0:
@@ -62,11 +67,12 @@ class Mario(pygame.sprite.Sprite):
         bullet = Bullet(self.rect.x, self.rect.y)
         all_sprites.add(bullet)
         bullets.add(bullet)
+        shoot_sound.play()
         
 class Boss(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((60, 60))
+        self.image = pygame.Surface((60, 100))
         self.image.fill(ORANGE)
         self.rect = self.image.get_rect()
         self.rect.x = 1100
@@ -92,6 +98,7 @@ class Boss(pygame.sprite.Sprite):
         fireball = Fireball(self.rect.x, self.rect.y)
         all_sprites.add(fireball)
         fireballs.add(fireball)
+
 
 
 class Bullet(pygame.sprite.Sprite):
