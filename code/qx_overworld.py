@@ -43,8 +43,8 @@ class Overworld:
             Character(
               pos = (obj.x, obj.y),
               frames = overworld_frames["characters"][obj.properties["graphic"]],
-              groups = self.all_sprites
-            )
+              groups = self.all_sprites,
+              facing_direction = obj.properties["direction"])
 
         #path
         self.paths = {}
