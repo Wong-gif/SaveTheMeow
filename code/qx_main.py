@@ -26,7 +26,6 @@ class Game:
             "icon" : import_sub_folders("graphics_qx","overworld1","icon"),
             "characters" : all_character_import("graphics_qx","characters")
         }
-        print(self.overworld_frames["characters"])
 
 
     def run(self):
