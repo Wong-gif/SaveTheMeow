@@ -23,10 +23,8 @@ class Game:
             "palms" : import_folder("graphics_qx","overworld","palm"),
             "water" : import_folder("graphics_qx","overworld","water"),
             "path" : import_folder_dict("graphics_qx","overworld","path"),
-            "icon" : import_sub_folders("graphics_qx","overworld1","icon"),
-            "characters" : all_character_import("graphics_qx","characters")
+            "icon" : import_sub_folders("graphics_qx","overworld1","icon")
         }
-        print(self.overworld_frames["characters"])
 
 
     def run(self):

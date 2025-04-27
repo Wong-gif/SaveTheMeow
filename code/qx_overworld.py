@@ -54,6 +54,7 @@ class Overworld:
          #nodes
          if obj.name == "Node":
           available_paths = {k:v for k,v in obj.properties.items() if k in("left","right","up","down")}
+
           Node( pos = (obj.x,obj.y),
                surf = overworld_frames["path"]["node"],
                groups = (self.all_sprites,self.node_sprites),
