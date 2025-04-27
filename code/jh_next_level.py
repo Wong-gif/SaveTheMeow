@@ -52,11 +52,17 @@ class NextLevel:
         self.button_normal = pygame.image.load("assets/images/button_normal.png").convert_alpha()
         self.button_pressed = pygame.image.load("assets/images/button_pressed.png").convert_alpha()
         self.button = Button(self.button_normal, self.button_pressed, 0, self.screen_height - 250)
+        self.button2 = Button(self.button_normal, self.button_pressed, 900, 600 - self.button_normal.get_height())
 
         self.platform_image = pygame.image.load("assets/images/rui.png").convert_alpha()
         self.platform_rect = self.platform_image.get_rect()
         self.platform_rect.midbottom = (490, 500)  # platform position
         self.platform_visible = False  # same as the top, cannot see first
+
+        self.platform2_image = pygame.image.load("assets/images/rui.png").convert_alpha()
+        self.platform2_rect = self.platform2_image.get_rect()
+        self.platform2_rect.midbottom = (1100, 450) 
+        self.platform2_visible = False
 
     def _load_game_assets(self):
         sky = pygame.image.load("assets/images/level2_background.png").convert()
@@ -118,9 +124,17 @@ class NextLevel:
             self.player_rect.bottom = self.platform_rect.top  # 玩家站在平台上
             self.velocity_y = 0  # 停止垂直运动
 
+        if self.platform2_visible and self.player_rect.colliderect(self.platform2_rect):
+            self.on_ground = True
+            self.player_rect.bottom = self.platform2_rect.top
+            self.velocity_y = 0
+
         # 检查按钮点击
         if self.button.check_player_collision(self.world_to_screen(self.player_rect)):
             self.platform_visible = True  # 按钮被点击后，显示平台
+
+        if self.button2.check_player_collision(self.world_to_screen(self.player_rect)):
+            self.platform2_visible = True
 
         if self.player_rect.colliderect(self.spike_rect):
             print("Beware of traps")
@@ -166,6 +180,7 @@ class NextLevel:
 
         # 绘制按钮
         self.button.draw(self.screen, self.camera_x)
+        self.button2.draw(self.screen, self.camera_x)
 
         if self.spike_visible:
             self.screen.blit(self.spike_image, self.world_to_screen(self.spike_rect))
@@ -173,6 +188,9 @@ class NextLevel:
         # 只有按钮被点击后才绘制平台
         if self.platform_visible:
             self.screen.blit(self.platform_image, self.world_to_screen(self.platform_rect))
+        if self.platform2_visible:
+            self.screen.blit(self.platform2_image, self.world_to_screen(self.platform2_rect))
+
 
         # 绘制玩家
         current_image = self.get_player_image()  # 处理玩家面向方向
