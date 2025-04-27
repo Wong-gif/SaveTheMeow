@@ -49,6 +49,7 @@ class Mario(pygame.sprite.Sprite):
         self.rect.centery = HEIGHT/2
         self.speedy = 10
         self.health = 100
+        self.lives = 3
 
 
     def update(self):
@@ -57,11 +58,20 @@ class Mario(pygame.sprite.Sprite):
             self.rect.y -= self.speedy
         if key_pressed[pygame.K_DOWN]:
             self.rect.y += self.speedy
+        if key_pressed[pygame.K_LEFT]:
+           self.rect.x -= self.speedy
+        if key_pressed[pygame.K_RIGHT]:
+           self.rect.x += self.speedy
 
         if self.rect.top < 0:
             self.rect.top = 0
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
+
+        if self.rect.left < 0:
+           self.rect.left = 0
+        if self.rect.right > WIDTH:
+           self.rect.right = WIDTH
 
     def shoot(self):
         bullet = Bullet(self.rect.x, self.rect.y)
@@ -157,7 +167,8 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 mario.shoot(  )
-    
+
+                
 
     all_sprites.update()
     for bullet in bullets:
@@ -181,6 +192,8 @@ while running:
     for hit in mario_hits:
         mario.health -= 10
         if mario.health <= 0:
+            mario.lives -= 1
+            
             running = False
     
 
