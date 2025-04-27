@@ -32,32 +32,3 @@ def import_sub_folders(*path):
         for sub_folder in sub_folders:
             frames[sub_folder] = import_folder(*path,sub_folder)
     return frames
-
-def import_tilemap(cols, rows, *path):
-	frames = {}
-	surf = import_image(*path)
-	cell_width, cell_height = surf.get_width() / cols, surf.get_height() / rows
-	for col in range(cols):
-		for row in range(rows):
-			cutout_rect = pygame.Rect(col * cell_width, row * cell_height,cell_width,cell_height)
-			cutout_surf = pygame.Surface((cell_width, cell_height))
-			cutout_surf.fill('green')
-			cutout_surf.set_colorkey('green')
-			cutout_surf.blit(surf, (0,0), cutout_rect)
-			frames[(col, row)] = cutout_surf
-	return frames
-
-def character_importer(cols,rows,*path):
-    frame_dict = import_tilemap(cols,rows,*path)
-    new_dict = {}
-    for row, direction in enumerate(("dow,", "left", "right", "up")):
-         new_dict[direction] = [frame_dict[(col,row)] for col in range(cols)]
-    return new_dict
-
-def all_character_import(*path):
-    new_dict = {}
-    for _,__,image_names in walk(join(*path)):
-        for image in image_names:
-            image_name = image.split(".")[0]
-            new_dict[image_name] = character_importer(4,4,*path,image_name)
-    return new_dict
