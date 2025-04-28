@@ -18,8 +18,31 @@ pygame.display.set_caption("Mario vs Boss")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 30)
 
+<<<<<<< HEAD
+fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
+fireball_img = pygame.transform.scale(fireball_img, (30, 30))
+background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.png")).convert_alpha()
+background_img = pygame.transform.scale(background_img, (WIDTH, 300))
+
+
+shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
+
+
+def draw_health_bar(surf, hp, max_hp, x, y):
+    if hp < 0:
+        hp = 0
+    HEALTH_LENGTH = 100
+    HEALTH_HEIGHT = 10
+    fill = (hp / max_hp) * HEALTH_LENGTH
+    outline_rect = pygame.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
+    fill_rect = pygame.Rect(x, y, fill, HEALTH_HEIGHT)
+    pygame.draw.rect(surf, GREEN, fill_rect) #生命线
+    pygame.draw.rect(surf, WHITE, outline_rect, 2) #框
+
+=======
 #background_img = pygame.image.load(os.path.join("img","background.png")).convert()
  
+>>>>>>> main
 
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
@@ -69,6 +92,12 @@ class Boss(pygame.sprite.Sprite):
         if random.randint(1, 100) <= self.shoot_chance:
             self.shoot()
 
+<<<<<<< HEAD
+        if self.health < 9000:
+            self.shoot_chance = 100
+
+=======
+>>>>>>> main
     def shoot(self):
         fireball = Fireball(self.rect.x, self.rect.y)
         all_sprites.add(fireball)
@@ -123,6 +152,7 @@ running = True
 while running:
     clock.tick(60)
     screen.fill(WHITE)
+    #screen.blit(background_img, (0, 500))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
