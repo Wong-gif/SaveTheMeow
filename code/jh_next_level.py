@@ -5,23 +5,19 @@ class Button:
     def __init__(self, normal_image, pressed_image, x, y):
         self.normal_image = normal_image
         self.pressed_image = pressed_image
-        self.image = self.normal_image  # 默认是normal状态
+        self.image = normal_image
         self.world_x = x
         self.world_y = y
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
+        self.rect = self.image.get_rect(topleft=(x, y))
 
     def draw(self, screen, camera_x):
         screen.blit(self.image, (self.world_x - camera_x, self.world_y))
 
     def check_player_collision(self, player_rect):
-        # 用世界坐标的rect检测碰撞
-        self.rect.topleft = (self.world_x, self.world_y)
         if self.rect.colliderect(player_rect):
             self.image = self.pressed_image
             return True
         return False
-
    
 class NextLevel:
     def __init__(self, screen):
@@ -35,7 +31,21 @@ class NextLevel:
         self.spike_image = pygame.image.load("assets/images/spike.png").convert_alpha()
         self.spike_visible = False # make the spike cannot see first
         self.spike_rect = self.spike_image.get_rect()
-        self.spike_rect.topleft = (830, 555)  # Place spike in the second ground
+        self.spike_rect.topleft = (1130, 555) # 1st spike position 
+        self.spike1_rect = self.spike_image.get_rect()
+        self.spike1_rect.topleft = (2000, 555)
+        self.spike2_rect = self.spike_image.get_rect()
+        self.spike2_rect.topleft = (2030, 555)
+        self.spike3_rect = self.spike_image.get_rect()
+        self.spike3_rect.topleft = (2060, 555)
+        self.spike4_rect = self.spike_image.get_rect()
+        self.spike4_rect.topleft = (2220, 555)
+        self.spike5_rect = self.spike_image.get_rect()
+        self.spike5_rect.topleft = (2250, 555)
+        self.spike6_rect = self.spike_image.get_rect()
+        self.spike6_rect.topleft = (2280, 555)
+
+
 
         self._load_game_assets()
         self.player_rect = self.player_images['idle'].get_rect()
@@ -52,7 +62,7 @@ class NextLevel:
         self.button_normal = pygame.image.load("assets/images/button_normal.png").convert_alpha()
         self.button_pressed = pygame.image.load("assets/images/button_pressed.png").convert_alpha()
         self.button = Button(self.button_normal, self.button_pressed, 0, self.screen_height - 250)
-        self.button2 = Button(self.button_normal, self.button_pressed, 900, 600 - self.button_normal.get_height())
+        self.button2 = Button(self.button_normal, self.button_pressed, 700, self.screen_height - 250)
 
         self.platform_image = pygame.image.load("assets/images/rui.png").convert_alpha()
         self.platform_rect = self.platform_image.get_rect()
@@ -61,8 +71,18 @@ class NextLevel:
 
         self.platform2_image = pygame.image.load("assets/images/rui.png").convert_alpha()
         self.platform2_rect = self.platform2_image.get_rect()
-        self.platform2_rect.midbottom = (1100, 450) 
+        self.platform2_rect.midbottom = (1300, 580) 
         self.platform2_visible = False
+
+        self.platform3_image = pygame.image.load("assets/images/rui.png").convert_alpha()
+        self.platform3_rect = self.platform3_image.get_rect()
+        self.platform3_rect.midbottom = (1550, 510)  
+        self.platform3_visible = False 
+
+        self.platform4_image = pygame.image.load("assets/images/rui.png").convert_alpha()
+        self.platform4_rect = self.platform4_image.get_rect()
+        self.platform4_rect.midbottom = (1800, 440) 
+        self.platform4_visible = False
 
     def _load_game_assets(self):
         sky = pygame.image.load("assets/images/level2_background.png").convert()
@@ -119,22 +139,25 @@ class NextLevel:
                 self.velocity_y = 0
                 break
 
-        if self.platform_visible and self.player_rect.colliderect(self.platform_rect):
-            self.on_ground = True
-            self.player_rect.bottom = self.platform_rect.top  # 玩家站在平台上
-            self.velocity_y = 0  # 停止垂直运动
-
-        if self.platform2_visible and self.player_rect.colliderect(self.platform2_rect):
-            self.on_ground = True
-            self.player_rect.bottom = self.platform2_rect.top
-            self.velocity_y = 0
+        for platform, visible in [
+            (self.platform_rect, self.platform_visible),
+            (self.platform2_rect, self.platform2_visible),
+            (self.platform3_rect, self.platform3_visible),
+            (self.platform4_rect, self.platform4_visible),
+            ]:
+            if visible and self.player_rect.colliderect(platform):
+                self.on_ground = True
+                self.player_rect.bottom = platform.top
+                self.velocity_y = 0
 
         # 检查按钮点击
-        if self.button.check_player_collision(self.world_to_screen(self.player_rect)):
+        if self.button.check_player_collision(self.player_rect):
             self.platform_visible = True  # 按钮被点击后，显示平台
 
-        if self.button2.check_player_collision(self.world_to_screen(self.player_rect)):
+        if self.button2.check_player_collision(self.player_rect):
             self.platform2_visible = True
+            self.platform3_visible = True
+            self.platform4_visible = True
 
         if self.player_rect.colliderect(self.spike_rect):
             print("Beware of traps")
@@ -149,6 +172,16 @@ class NextLevel:
            distance_to_spike = abs(self.player_rect.centerx - self.spike_rect.centerx)
            if distance_to_spike < 150:
                self.spike_visible = True
+            
+        if self.spike_visible:
+            self.screen.blit(self.spike_image, self.world_to_screen(self.spike_rect))
+
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike2_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike3_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike4_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike5_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike6_rect))
                
         self.update_camera()
         self.animation_frame += self.animation_speed
@@ -156,8 +189,9 @@ class NextLevel:
     def generate_ground_segments(self):
         # 地面区段，返回多个地面段的位置和宽度
         return [
-            (0, 300),    # 第一段
-            (700, 500),  # 第二段
+            (0, 300),    # 1st ground
+            (700, 500),  # 2nd ground
+            (2000,900), # 3rd ground
         ]
 
     def get_player_image(self):
@@ -185,12 +219,24 @@ class NextLevel:
         if self.spike_visible:
             self.screen.blit(self.spike_image, self.world_to_screen(self.spike_rect))
 
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike2_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike3_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike4_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike5_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike6_rect))
+
+
+
         # 只有按钮被点击后才绘制平台
         if self.platform_visible:
             self.screen.blit(self.platform_image, self.world_to_screen(self.platform_rect))
         if self.platform2_visible:
             self.screen.blit(self.platform2_image, self.world_to_screen(self.platform2_rect))
-
+        if self.platform3_visible:
+            self.screen.blit(self.platform3_image, self.world_to_screen(self.platform3_rect))
+        if self.platform4_visible:
+            self.screen.blit(self.platform4_image, self.world_to_screen(self.platform4_rect))
 
         # 绘制玩家
         current_image = self.get_player_image()  # 处理玩家面向方向
