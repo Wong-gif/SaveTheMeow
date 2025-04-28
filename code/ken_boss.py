@@ -22,6 +22,8 @@ font = pygame.font.SysFont(None, 30)
 
 fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (30, 30))
+background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.png")).convert_alpha()
+background_img = pygame.transform.scale(background_img, (WIDTH, 300))
 
 
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
@@ -105,7 +107,7 @@ class Boss(pygame.sprite.Sprite):
             self.shoot()
 
         if self.health < 9000:
-            self.shoot_chance = 1000
+            self.shoot_chance = 100
 
     def shoot(self):
         fireball = Fireball(self.rect.x, self.rect.y)
@@ -164,6 +166,7 @@ running = True
 while running:
     clock.tick(60)
     screen.fill(WHITE)
+    #screen.blit(background_img, (0, 500))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

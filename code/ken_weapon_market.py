@@ -12,7 +12,7 @@ GREEN = (0, 200, 0)
 LIGHT_GREEN = (0, 255, 0)
 GREY = (200, 200, 200)
 BLUE = (135, 206, 235)
-LIGHT_BLUE = (135, 206, 250),
+LIGHT_BLUE = (135, 206, 250)
 RED = (255, 0, 0)
 BROWN = (139, 69, 19)
 
@@ -41,6 +41,18 @@ weapon_images = {
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
     "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
+}
+
+weapon_effects = {
+    "Lion Sword": {"attack_bonus": 30, "description": "增加30点攻击力"},
+    "Hawk's Eye": {"crit_chance": 0.2, "description": "暴击率提升20%"},
+    "Luna Bow": {"attack_bonus": 20, "description": "远程攻击加20点伤害"},
+    "Phoenix Feather": {"revive": True, "description": "死亡时复活一次"},
+    "Hydro Strike": {"splash_damage": 0.5, "description": "对其他敌人造成50%伤害"},
+    "Libra of Eternity": {"defense_bonus": 25, "description": "防御力+25"},
+    "Aegis Shield": {"block_chance": 0.3, "description": "30%概率格挡攻击"},
+    "Thunder Axe": {"stun_chance": 0.2, "description": "20%几率击晕敌人"},
+    "Essence of Renewal": {"heal": 50, "description": "每回合恢复50点生命"},
 }
 
 for key in weapon_images:
@@ -86,6 +98,19 @@ def draw_arrow(surface, arrow_image, arrow_rect):
         screen.blit(actual_arrow, arrow_rect)
     else:
         screen.blit(arrow_image, arrow_rect) # make the image follow the rect
+
+def add_weapon(self, weapon_name):
+    self.inventory.append(weapon_name)
+    effects = weapon_effects.get(weapon_name, {})
+    for key, value in effects.items():
+        if key == "description":
+            continue
+        if hasattr(self, key):
+            current_value = getattr(self, key)
+            setattr(self, key, current_value + value)
+        else:
+            setattr(self, key, value)
+
 
 running = True
 while running:
