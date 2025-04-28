@@ -31,10 +31,21 @@ class NextLevel:
         self.spike_image = pygame.image.load("assets/images/spike.png").convert_alpha()
         self.spike_visible = False # make the spike cannot see first
         self.spike_rect = self.spike_image.get_rect()
+        self.spike_rect.topleft = (1130, 555) # 1st spike position 
         self.spike1_rect = self.spike_image.get_rect()
-        self.spike1_rect.topleft = (1130, 555) # 2rd spike position 
+        self.spike1_rect.topleft = (2000, 555)
         self.spike2_rect = self.spike_image.get_rect()
-        self.spike2_rect.topleft = (2000, 555)
+        self.spike2_rect.topleft = (2030, 555)
+        self.spike3_rect = self.spike_image.get_rect()
+        self.spike3_rect.topleft = (2060, 555)
+        self.spike4_rect = self.spike_image.get_rect()
+        self.spike4_rect.topleft = (2220, 555)
+        self.spike5_rect = self.spike_image.get_rect()
+        self.spike5_rect.topleft = (2250, 555)
+        self.spike6_rect = self.spike_image.get_rect()
+        self.spike6_rect.topleft = (2280, 555)
+
+
 
         self._load_game_assets()
         self.player_rect = self.player_images['idle'].get_rect()
@@ -163,9 +174,14 @@ class NextLevel:
                self.spike_visible = True
             
         if self.spike_visible:
-            self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
+            self.screen.blit(self.spike_image, self.world_to_screen(self.spike_rect))
 
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
         self.screen.blit(self.spike_image, self.world_to_screen(self.spike2_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike3_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike4_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike5_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike6_rect))
                
         self.update_camera()
         self.animation_frame += self.animation_speed
@@ -201,9 +217,16 @@ class NextLevel:
         self.button2.draw(self.screen, self.camera_x)
 
         if self.spike_visible:
-            self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
+            self.screen.blit(self.spike_image, self.world_to_screen(self.spike_rect))
 
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
         self.screen.blit(self.spike_image, self.world_to_screen(self.spike2_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike3_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike4_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike5_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike6_rect))
+
+
 
         # 只有按钮被点击后才绘制平台
         if self.platform_visible:
