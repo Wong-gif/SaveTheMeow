@@ -31,7 +31,10 @@ class NextLevel:
         self.spike_image = pygame.image.load("assets/images/spike.png").convert_alpha()
         self.spike_visible = False # make the spike cannot see first
         self.spike_rect = self.spike_image.get_rect()
-        self.spike_rect.topleft = (1130, 555)  # Place spike in the second ground
+        self.spike1_rect = self.spike_image.get_rect()
+        self.spike1_rect.topleft = (1130, 555) # 2rd spike position 
+        self.spike2_rect = self.spike_image.get_rect()
+        self.spike2_rect.topleft = (2000, 555)
 
         self._load_game_assets()
         self.player_rect = self.player_images['idle'].get_rect()
@@ -158,6 +161,11 @@ class NextLevel:
            distance_to_spike = abs(self.player_rect.centerx - self.spike_rect.centerx)
            if distance_to_spike < 150:
                self.spike_visible = True
+            
+        if self.spike_visible:
+            self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
+
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike2_rect))
                
         self.update_camera()
         self.animation_frame += self.animation_speed
@@ -165,8 +173,9 @@ class NextLevel:
     def generate_ground_segments(self):
         # 地面区段，返回多个地面段的位置和宽度
         return [
-            (0, 300),    # 第一段
-            (700, 500),  # 第二段
+            (0, 300),    # 1st ground
+            (700, 500),  # 2nd ground
+            (2000,900), # 3rd ground
         ]
 
     def get_player_image(self):
@@ -192,7 +201,9 @@ class NextLevel:
         self.button2.draw(self.screen, self.camera_x)
 
         if self.spike_visible:
-            self.screen.blit(self.spike_image, self.world_to_screen(self.spike_rect))
+            self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
+
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike2_rect))
 
         # 只有按钮被点击后才绘制平台
         if self.platform_visible:
@@ -203,7 +214,6 @@ class NextLevel:
             self.screen.blit(self.platform3_image, self.world_to_screen(self.platform3_rect))
         if self.platform4_visible:
             self.screen.blit(self.platform4_image, self.world_to_screen(self.platform4_rect))
-
 
         # 绘制玩家
         current_image = self.get_player_image()  # 处理玩家面向方向
