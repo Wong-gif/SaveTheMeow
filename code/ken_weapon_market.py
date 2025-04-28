@@ -50,10 +50,10 @@ weapon_effects = {
     "Luna Bow": {"attack_bonus": 20, "description": "远程攻击加20点伤害"},
     "Phoenix Feather": {"revive": True, "description": "死亡时复活一次"},
     "Hydro Strike": {"splash_damage": 0.5, "description": "对其他敌人造成50%伤害"},
-    "Libra of Eternity": {"defense_bonus": 25, "description": "防御力+25"},
+    "Libra of Eternity": {"defense_bonus": 25, "description": "The shield can block 5 attacks."},
     "Aegis Shield": {"block_chance": 0.3, "description": "30%概率格挡攻击"},
-    "Thunder Axe": {"stun_chance": 0.2, "description": "20%几率击晕敌人"},
-    "Essence of Renewal": {"heal": 50, "description": "每回合恢复50点生命"},
+    "Thunder Axe": {"stun_chance": 0.2, "description": "20% probability to stun the enemy"},
+    "Essence of Renewal": {"heal": 50, "description": "Restore 50 health points"},
 }
 
 for key in weapon_images:
