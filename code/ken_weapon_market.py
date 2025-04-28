@@ -12,6 +12,7 @@ GREEN = (0, 200, 0)
 LIGHT_GREEN = (0, 255, 0)
 GREY = (200, 200, 200)
 BLUE = (135, 206, 235)
+LIGHT_BLUE = (135, 206, 250)
 RED = (255, 0, 0)
 BROWN = (139, 69, 19)
 
@@ -27,7 +28,35 @@ gem_icon = pygame.image.load(os.path.join("assets", "images", "gem.png")).conver
 gem_icon = pygame.transform.scale(gem_icon, (25, 25))
 girl_image = pygame.image.load(os.path.join("assets", "images", "girl.png")).convert_alpha()
 girl_image = pygame.transform.scale(girl_image, (450, 700))
+arrow_image = pygame.image.load(os.path.join("assets", "images", "arrow.png")).convert_alpha()
+arrow_image = pygame.transform.scale(arrow_image, (50, 60))
 
+weapon_images = {
+    "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
+    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
+    "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
+    "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
+    "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
+    "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
+    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+    "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
+}
+
+weapon_effects = {
+    "Lion Sword": {"attack_bonus": 30, "description": "增加30点攻击力"},
+    "Hawk's Eye": {"crit_chance": 0.2, "description": "暴击率提升20%"},
+    "Luna Bow": {"attack_bonus": 20, "description": "远程攻击加20点伤害"},
+    "Phoenix Feather": {"revive": True, "description": "死亡时复活一次"},
+    "Hydro Strike": {"splash_damage": 0.5, "description": "对其他敌人造成50%伤害"},
+    "Libra of Eternity": {"defense_bonus": 25, "description": "防御力+25"},
+    "Aegis Shield": {"block_chance": 0.3, "description": "30%概率格挡攻击"},
+    "Thunder Axe": {"stun_chance": 0.2, "description": "20%几率击晕敌人"},
+    "Essence of Renewal": {"heal": 50, "description": "每回合恢复50点生命"},
+}
+
+for key in weapon_images:
+    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (120, 120))
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
@@ -53,12 +82,12 @@ market_item = [
     {"name": "Essence of Renewal", "price": 100, "currency": "coins", "bought": False},
 ]
 
+
 def draw_stat_box(surface, x, y, width, height, color, alpha):
     s = pygame.Surface((width, height), pygame.SRCALPHA)  # Transparent surface
     pygame.draw.rect(s, (*color, alpha), s.get_rect(), border_radius=12)  # Rounded rectangle
     surface.blit(s, (x, y))  # Draw it on your screen
 
-<<<<<<< HEAD
 arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
 
 def draw_arrow(surface, arrow_image, arrow_rect):
@@ -70,62 +99,55 @@ def draw_arrow(surface, arrow_image, arrow_rect):
     else:
         screen.blit(arrow_image, arrow_rect) # make the image follow the rect
 
-
-def run_market(player):
-    weapons = {
-        "Sword": (100, 5),
-        "Axe": (150, 7),
-        "Bow": (120, 6),
-        "Spear": (180, 8),
-        "Dagger": (80, 4),
-        "Hammer": (200, 9),
-        "Magic Staff": (250, 10),
-        "Crossbow": (170, 7),
-        "Katana": (300, 12)
-    }
-
-    print("Welcome to the Weapon Market!\n")
-    for name, (cost, attack) in weapons.items():
-        print(f"{name}: {cost} coins (+{attack} attack)")
-
-    while True:
-        choice = input("\nEnter weapon name to buy (or 'exit'): ")
-        if choice.lower() == "exit":
-            break
-        if choice in weapons:
-            cost, attack = weapons[choice]
-            player.buy_weapon(choice, cost, attack)
+def add_weapon(self, weapon_name):
+    self.inventory.append(weapon_name)
+    effects = weapon_effects.get(weapon_name, {})
+    for key, value in effects.items():
+        if key == "description":
+            continue
+        if hasattr(self, key):
+            current_value = getattr(self, key)
+            setattr(self, key, current_value + value)
         else:
-            print("Weapon not available.")
+            setattr(self, key, value)
 
 
-=======
->>>>>>> main
 running = True
 while running:
     clock.tick(FPS)
-    screen.fill(BROWN)
+    screen.fill(LIGHT_BLUE)
     buy_buttons = []
+    
+    draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
-    draw_stat_box(screen, 50, 15, 225, 35, GREY, 150)  # Background
+    title_text = font.render("Weapon Market", True, WHITE)
+    screen.blit(title_text, (70, 20))
+
+    draw_stat_box(screen, 230, 15, 225, 35, GREY, 150)  # Background
     
-    screen.blit(coin_icon, (70, 20))
+    screen.blit(coin_icon, (250, 20))
     coins_text = font.render(f"{player_coins}", True, WHITE)
-    screen.blit(coins_text, (100, 20))
+    screen.blit(coins_text, (280, 20))
     
-    screen.blit(gem_icon, (120 + coins_text.get_width() + 30, 20))
+    screen.blit(gem_icon, (300 + coins_text.get_width() + 30, 20))
     gems_text = font.render(f"{player_gems}", True, WHITE)
-    screen.blit(gems_text, (120 + coins_text.get_width() + 60, 20))
+    screen.blit(gems_text, (300 + coins_text.get_width() + 60, 20))
 
     for i, item in enumerate(market_item):
         col = 3
         x = 230 + (i % col) * 230
         y = 80 + (i // col) * 250
-        box = pygame.Rect(x, y, 200, 130)
+        box = pygame.Rect(x, y, 200, 160)
         pygame.draw.rect(screen, GREY, box)
+
+        if item["name"] in weapon_images:  #武器照片
+           img = weapon_images[item["name"]]
+           img_x = x + box.width // 2 - img.get_width() // 2
+           img_y = y + 5  
+           screen.blit(img, (img_x, img_y))
         
         name_text = font.render(item["name"], True, (BLACK))  #Name text
-        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 135))
+        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 165))
         
         price_text = font.render(str(item['price']) , True, WHITE)  #Price text
 
@@ -139,13 +161,13 @@ while running:
         total_width = icon_width + 5 + text_width  #icon + space + text
 
         center_iconprice_x = x + box.width // 2 - total_width // 2   #Center the whole thing
-        iconprice_y = y + 160
+        iconprice_y = y + 190
 
         screen.blit(icon, (center_iconprice_x, iconprice_y))
         screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
 
         if not item["bought"]:
-            buy_button = pygame.Rect(x + 35, y + 100, 130, 25) #Buy button box
+            buy_button = pygame.Rect(x + 35, y + 130, 130, 25) #Buy button box
             hover_color = LIGHT_GREEN
             normal_color = GREEN
             if buy_button.collidepoint(pygame.mouse.get_pos()):
@@ -172,6 +194,18 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             mx, my = pygame.mouse.get_pos()
+            if arrow_rect.collidepoint(mx, my):
+                click_sound.play()
+                for alpha in range(0, 300, 15):    # Fade out function
+                    fade = pygame.Surface((WIDTH, HEIGHT))
+                    fade.fill((0, 0, 0))
+                    fade.set_alpha(alpha)
+                    screen.blit(fade, (0, 0))
+                    pygame.display.update()
+                    pygame.time.delay(30)
+                running = False 
+
+
             for i, button in enumerate(buy_buttons):
                 if button and button.collidepoint(mx, my):  # All logic stays inside this block
                     click_sound.play()
