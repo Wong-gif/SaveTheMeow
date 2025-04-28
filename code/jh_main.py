@@ -1,7 +1,7 @@
 import pygame
 import sys
 from jh_level import Level
-from jh_next_level import NextLevelScreen
+from jh_next_level import NextLevel
 
 pygame.init()
 pygame.mixer.init()
@@ -27,14 +27,9 @@ try:
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 except:
     print("cannot load the image")    
-try:
-    pygame.mixer.music.load("assets/sounds/background_music.mp3")
-    pygame.mixer.music.set_volume(0.5)
-except:
-    print("cannot play the sound")
 
 level = Level(screen)
-next_level_screen = NextLevelScreen(screen)
+next_level_screen = NextLevel(screen)
 
 class Button:
     def __init__(self, x, y, width, height, text):
@@ -72,6 +67,7 @@ start_button = Button(
 )
 
 running = True
+current_state = NEXT_LEVEL 
 while running:
     clock.tick(FPS)
     
@@ -83,6 +79,8 @@ while running:
             if start_button.is_clicked(event):
                 current_state = GAME
                 try:
+                    pygame.mixer.music.load("assets/sounds/background_music.mp3")
+                    pygame.mixer.music.set_volume(0.5)
                     pygame.mixer.music.play(-1)  # music start
                 except:
                     pass 
