@@ -22,6 +22,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Weapon Market")
 clock = pygame.time.Clock()
 
+
 coin_icon = pygame.image.load(os.path.join("assets", "images", "dollar.png")).convert_alpha()
 coin_icon = pygame.transform.scale(coin_icon, (25, 25))
 gem_icon = pygame.image.load(os.path.join("assets", "images", "gem.png")).convert_alpha()
@@ -59,6 +60,7 @@ for key in weapon_images:
     weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (130, 130))
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
+buying_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "buy_sound.wav"))
 
 font = pygame.font.SysFont("arial", 20)
 
@@ -119,7 +121,7 @@ def add_weapon(self, weapon_name):
 running = True
 while running:
     clock.tick(FPS)
-    
+    screen.fill(LIGHT_BLUE)
     
     draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
@@ -198,7 +200,6 @@ while running:
                     click_sound.play()
                     show_item_details = False
                 elif buy_button.collidepoint(mx, my):  # All logic stays inside this block
-                    click_sound.play()
                     item = selected_item
                     currency = item["currency"]
                     price = item["price"]
@@ -207,7 +208,7 @@ while running:
                         player_coins -= price
                         item["bought"] = True
                         inventory.append(item["name"])
-                        click_sound.play()
+                        buying_sound.play()
                         message = f"Bought {item['name']} for {price} coins!"
                         show_item_details = False
                         message_timer = pygame.time.get_ticks() + 2000
@@ -215,7 +216,7 @@ while running:
                         player_gems -= price
                         item["bought"] = True
                         inventory.append(item["name"])
-                        click_sound.play()
+                        buying_sound.play()
                         message = f"Bought {item['name']} for {price} gems!"
                         show_item_details = False
                         message_timer = pygame.time.get_ticks() + 2000
@@ -231,6 +232,7 @@ while running:
                     y = 80 + (i // col) * 250
                     box = pygame.Rect(x, y, 200, 160)
                     if box.collidepoint(mx, my) and not item["bought"]:  # Only if the mouse clicked the box and the item is NOT bought yet
+                        click_sound.play()
                         selected_item = item
                         show_item_details = True
                         break
@@ -269,7 +271,7 @@ while running:
         overlay.fill((0, 0, 0))
         screen.blit(overlay, (0, 0))
 
-        popup_width, popup_height = 1000, 300
+        popup_width, popup_height = 500, 300
         popup_x = WIDTH // 2 - popup_width // 2
         popup_y = HEIGHT // 2 - popup_height // 2
         popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
@@ -290,7 +292,9 @@ while running:
         desc_font = pygame.font.SysFont("arial", 20)
         description = weapon_effects[selected_item["name"]]["description"]
         desc_text = desc_font.render(description, True, BLACK)
-        screen.blit(desc_text, (popup_x + 20, popup_y + 160))
+        desc_x = popup_x + popup_width // 2 - desc_text.get_width() // 2
+        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 30  
+        screen.blit(desc_text, (desc_x, desc_y))
 
         # 按钮
         cancel_button = pygame.Rect(popup_x + 50, popup_y + popup_height - 60, 100, 40)
@@ -304,7 +308,7 @@ while running:
         screen.blit(cancel_text, (cancel_button.x + cancel_button.width//2 - cancel_text.get_width()//2, cancel_button.y + 8))
         screen.blit(buy_text, (buy_button.x + buy_button.width//2 - buy_text.get_width()//2, buy_button.y + 8))
 
-    screen.fill(LIGHT_BLUE)
+    
     pygame.display.update()
     
 pygame.quit()
