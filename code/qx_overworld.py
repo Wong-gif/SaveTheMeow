@@ -140,7 +140,7 @@ class Overworld:
           self.move("right")
         if keys[pygame.K_UP] and self.current_node.can_move("up"):
           self.move("up")
-
+          
     def move(self,direction):
       path_key = int(self.current_node.paths[direction][0])
       path_reverse = True if self.current_node.paths[direction][-1] == "r" else False
