@@ -56,7 +56,7 @@ weapon_effects = {
 }
 
 for key in weapon_images:
-    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (120, 120))
+    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (130, 130))
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
@@ -66,6 +66,8 @@ player_coins = 1500
 player_gems = 500
 
 buy_buttons = []
+selected_item = None  # 选中的物品
+show_item_details = False  # 是否显示详情窗口
 inventory = []
 message = ""
 message_timer = 0
@@ -106,17 +108,18 @@ def add_weapon(self, weapon_name):
         if key == "description":
             continue
         if hasattr(self, key):
-            current_value = getattr(self, key)
+            current_value = getattr(self, key)  
             setattr(self, key, current_value + value)
         else:
             setattr(self, key, value)
 
 
+
+
 running = True
 while running:
     clock.tick(FPS)
-    screen.fill(LIGHT_BLUE)
-    buy_buttons = []
+    
     
     draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
@@ -136,8 +139,8 @@ while running:
     for i, item in enumerate(market_item):
         col = 3
         x = 230 + (i % col) * 230
-        y = 80 + (i // col) * 250
-        box = pygame.Rect(x, y, 200, 160)
+        y = 80 + (i // col) * 230
+        box = pygame.Rect(x, y, 200, 150)
         pygame.draw.rect(screen, GREY, box)
 
         if item["name"] in weapon_images:  #武器照片
@@ -147,7 +150,7 @@ while running:
            screen.blit(img, (img_x, img_y))
         
         name_text = font.render(item["name"], True, (BLACK))  #Name text
-        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 165))
+        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 153))
         
         price_text = font.render(str(item['price']) , True, WHITE)  #Price text
 
@@ -161,33 +164,16 @@ while running:
         total_width = icon_width + 5 + text_width  #icon + space + text
 
         center_iconprice_x = x + box.width // 2 - total_width // 2   #Center the whole thing
-        iconprice_y = y + 190
+        iconprice_y = y + 180
 
         screen.blit(icon, (center_iconprice_x, iconprice_y))
         screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
 
-        if not item["bought"]:
-            buy_button = pygame.Rect(x + 35, y + 130, 130, 25) #Buy button box
-            hover_color = LIGHT_GREEN
-            normal_color = GREEN
-            if buy_button.collidepoint(pygame.mouse.get_pos()):
-                pygame.draw.rect(screen, hover_color, buy_button, border_radius=12)
-            else :
-                pygame.draw.rect(screen, normal_color, buy_button ,border_radius=12)
-
-            buy_text = font.render("Buy", True, WHITE) #Buy text
-            text_x = buy_button.x + buy_button.width // 2 - buy_text.get_width() // 2
-            text_y = buy_button.y + buy_button.height // 2 - buy_text.get_height() // 2
-            screen.blit(buy_text, (text_x, text_y))
-            buy_buttons.append(buy_button)
-        else :
-            sold_out_text = font.render("Sold out", True, WHITE) #Sold out text
+        if item["bought"]:
+            sold_out_text = font.render("Sold out", True, WHITE)
             text_x = box.x + box.width // 2 - sold_out_text.get_width() // 2
             text_y = box.y + box.height // 2 - sold_out_text.get_height() // 2
             screen.blit(sold_out_text, (text_x, text_y))
-            buy_buttons.append(None)
-
-
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -205,11 +191,15 @@ while running:
                     pygame.time.delay(30)
                 running = False 
 
+            
 
-            for i, button in enumerate(buy_buttons):
-                if button and button.collidepoint(mx, my):  # All logic stays inside this block
+            elif show_item_details and selected_item:
+                if cancel_button.collidepoint(mx, my):
                     click_sound.play()
-                    item = market_item[i]
+                    show_item_details = False
+                elif buy_button.collidepoint(mx, my):  # All logic stays inside this block
+                    click_sound.play()
+                    item = selected_item
                     currency = item["currency"]
                     price = item["price"]
 
@@ -219,6 +209,7 @@ while running:
                         inventory.append(item["name"])
                         click_sound.play()
                         message = f"Bought {item['name']} for {price} coins!"
+                        show_item_details = False
                         message_timer = pygame.time.get_ticks() + 2000
                     elif currency == "gems" and player_gems >= price:
                         player_gems -= price
@@ -226,15 +217,30 @@ while running:
                         inventory.append(item["name"])
                         click_sound.play()
                         message = f"Bought {item['name']} for {price} gems!"
+                        show_item_details = False
                         message_timer = pygame.time.get_ticks() + 2000
                     else:
                         message = "Not enough resources!"
                         message_timer = pygame.time.get_ticks() + 2000
+                        show_item_details = False
+
+            else:
+                for i, item in enumerate(market_item):
+                    col = 3
+                    x = 230 + (i % col) * 230
+                    y = 80 + (i // col) * 250
+                    box = pygame.Rect(x, y, 200, 160)
+                    if box.collidepoint(mx, my) and not item["bought"]:  # Only if the mouse clicked the box and the item is NOT bought yet
+                        selected_item = item
+                        show_item_details = True
+                        break
+
+
 
     if message and pygame.time.get_ticks() < message_timer:
         msg_text = font.render(message, True, RED)
         msg_x = WIDTH // 2 - msg_text.get_width() // 2
-        msg_y = HEIGHT - 30
+        msg_y = HEIGHT - 40
 
        
         msg_bg = pygame.Surface((msg_text.get_width() + 20, msg_text.get_height() + 10)) # Background box
@@ -253,10 +259,52 @@ while running:
         item_text = font.render(item_name, True, BLACK)
         screen.blit(item_text, (30, 135 + i * 25))
 
-
-    
     screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
 
+    # 弹出物品详情窗口
+    if show_item_details and selected_item:
+    # 半透明遮罩
+        overlay = pygame.Surface((WIDTH, HEIGHT))
+        overlay.set_alpha(150)
+        overlay.fill((0, 0, 0))
+        screen.blit(overlay, (0, 0))
+
+        popup_width, popup_height = 1000, 300
+        popup_x = WIDTH // 2 - popup_width // 2
+        popup_y = HEIGHT // 2 - popup_height // 2
+        popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
+        pygame.draw.rect(screen, WHITE, popup_rect, border_radius=15)
+
+        # 标题
+        title_font = pygame.font.SysFont("arial", 28)
+        title_text = title_font.render(selected_item["name"], True, BLACK)
+        screen.blit(title_text, (popup_x + popup_width // 2 - title_text.get_width() // 2, popup_y + 20))
+
+        # 武器图片
+        img = weapon_images.get(selected_item["name"])
+        if img:
+            img = pygame.transform.scale(img, (80, 80))
+            screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 60))
+
+        # 描述
+        desc_font = pygame.font.SysFont("arial", 20)
+        description = weapon_effects[selected_item["name"]]["description"]
+        desc_text = desc_font.render(description, True, BLACK)
+        screen.blit(desc_text, (popup_x + 20, popup_y + 160))
+
+        # 按钮
+        cancel_button = pygame.Rect(popup_x + 50, popup_y + popup_height - 60, 100, 40)
+        buy_button = pygame.Rect(popup_x + popup_width - 150, popup_y + popup_height - 60, 100, 40)
+
+        pygame.draw.rect(screen, GREY, cancel_button, border_radius=8)
+        pygame.draw.rect(screen, LIGHT_GREEN, buy_button, border_radius=8)
+
+        cancel_text = font.render("Cancel", True, BLACK)
+        buy_text = font.render("Buy", True, BLACK)
+        screen.blit(cancel_text, (cancel_button.x + cancel_button.width//2 - cancel_text.get_width()//2, cancel_button.y + 8))
+        screen.blit(buy_text, (buy_button.x + buy_button.width//2 - buy_text.get_width()//2, buy_button.y + 8))
+
+    screen.fill(LIGHT_BLUE)
     pygame.display.update()
     
 pygame.quit()
