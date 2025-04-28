@@ -87,6 +87,35 @@ def draw_arrow(surface, arrow_image, arrow_rect):
     else:
         screen.blit(arrow_image, arrow_rect) # make the image follow the rect
 
+
+def run_market(player):
+    weapons = {
+        "Sword": (100, 5),
+        "Axe": (150, 7),
+        "Bow": (120, 6),
+        "Spear": (180, 8),
+        "Dagger": (80, 4),
+        "Hammer": (200, 9),
+        "Magic Staff": (250, 10),
+        "Crossbow": (170, 7),
+        "Katana": (300, 12)
+    }
+
+    print("Welcome to the Weapon Market!\n")
+    for name, (cost, attack) in weapons.items():
+        print(f"{name}: {cost} coins (+{attack} attack)")
+
+    while True:
+        choice = input("\nEnter weapon name to buy (or 'exit'): ")
+        if choice.lower() == "exit":
+            break
+        if choice in weapons:
+            cost, attack = weapons[choice]
+            player.buy_weapon(choice, cost, attack)
+        else:
+            print("Weapon not available.")
+
+
 running = True
 while running:
     clock.tick(FPS)
