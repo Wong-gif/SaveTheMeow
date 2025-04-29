@@ -12,7 +12,7 @@ class Level:
         self.camera_x = 0
         self.state = "playing"
         self.score = 0
-        self.time_left = 60
+        self.time_left = 30
         self.last_time_update = pygame.time.get_ticks()
         self.jump_sound = pygame.mixer.Sound('assets/sounds/player_jump.wav')
         self.jump_sound.set_volume(0.2)
@@ -21,6 +21,9 @@ class Level:
         self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 27)
         self.coin_icon = pygame.image.load("assets/images/ui/coin_icon.png").convert_alpha()
         self.time_icon = pygame.image.load("assets/images/ui/time_icon.png").convert_alpha()
+        self.dian_image = pygame.image.load("assets/images/dian.png").convert_alpha()
+        self.dian_sound = pygame.mixer.Sound("assets/sounds/dian.wav") 
+        self.dian_sound.set_volume(2.0)
 
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
@@ -54,19 +57,28 @@ class Level:
                 "animation_speed": 0.2
             })
 
+
         self.portal_frames = []
         for i in range(16):
             frame = pygame.image.load(f"assets/images/portal/portal_{i}.png").convert_alpha()
             self.portal_frames.append(frame)
 
+
+        self.dians = [
+            {"rect": pygame.Rect(450, 500, 40, 40), "collected": False},   
+            {"rect": pygame.Rect(600, 500, 40, 40), "collected": False},  
+            {"rect": pygame.Rect(750, 500, 40, 40), "collected": False},  
+        ]
+
         self.bricks = [
-            {"rect": pygame.Rect(400, 585, 40, 30), "type": "spike", "active": True, "visible": False},
+            {"rect": pygame.Rect(350, 585, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1600, 585, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1850, 585, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(1890, 585, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(2800, 585, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(3100, 521, 40, 40), "type": "portal", "active": True}
         ]
+
 
     def _load_game_assets(self):
 
@@ -137,6 +149,7 @@ class Level:
             if self.time_left <= 0:
                 print("Times up！Game Restart")
                 self.__init__(self.screen)
+            return
 
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
@@ -171,22 +184,34 @@ class Level:
                 self.velocity_y = 0
                 break
 
+        for index, dian in enumerate(self.dians):
+            if not dian["collected"] and self.player_rect.colliderect(dian["rect"]):
+                if index == 1:
+                    print("Touched the second dian! Restarting game...")
+                    self.__init__(self.screen)
+                    return
+                else:
+                    dian["collected"] = True
+                    self.dian_sound.play()
+               
         if self.player_rect.bottom > self.screen_height:
             print("Fall Down, Game Start Again")
             self.__init__(self.screen)
-
+        
         for brick in self.bricks:
             if brick["type"] == "spike" and brick["active"]:
                 if not brick.get("visible", False):
                     if abs(self.player_rect.centerx - brick["rect"].centerx) < 80:
                         brick["visible"] = True
                         brick["rect"].y -= 30
-                if brick.get("visible", False):
-                    spike_top = pygame.Rect(brick["rect"].x, brick["rect"].y, brick["rect"].width, 10)
-                    if self.player_rect.colliderect(spike_top):
-                        print("Beware of traps！")
-                        self.__init__(self.screen)
 
+        for brick in self.bricks:
+            if brick["type"] == "spike" and brick["active"] and brick.get("visible", False):
+                if self.player_rect.colliderect(brick["rect"]):
+                    print("Player hit a spike! Game restarting...")
+                    self.__init__(self.screen)
+                    return
+               
         for brick in self.bricks:
             if brick["type"] == "portal" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
@@ -253,15 +278,16 @@ class Level:
                 frame_index = int(self.portal_frame_index) % len(self.portal_frames)
                 frame = self.portal_frames[frame_index]
                 self.screen.blit(frame, self.world_to_screen(brick["rect"]))
-            if self.player_rect.colliderect(brick["rect"]):
-                self.state = "next_level"
-                print("Entered portal, switching screen...")
 
+        for dian in self.dians:
+            if not dian["collected"]:
+                self.screen.blit(self.dian_image, self.world_to_screen(dian["rect"]))
                 
         current_image = self.get_player_image()# talking about the player face, when the player turn right face follow right.
         if not self.facing_right:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
+
 
         ui_bar = pygame.Surface((380, 50), pygame.SRCALPHA)
         self.screen.blit(ui_bar, (20, 20))
@@ -271,6 +297,7 @@ class Level:
         self.screen.blit(self.time_icon, (310, 30))
         time_text = self.font.render(f"Time:{self.time_left}s", True, (0, 0, 0))
         self.screen.blit(time_text, (350, 35))
+
 
     def run(self):
         self.handle_input()
