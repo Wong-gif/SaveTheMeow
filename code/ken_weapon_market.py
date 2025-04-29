@@ -9,8 +9,9 @@ WHITE = (255, 255, 255)
 GOLD =  (255, 215, 0)
 PURPLE = (150, 0, 150)
 GREEN = (0, 200, 0)
-LIGHT_GREEN = (0, 255, 0)
+LIGHT_GREEN = (0, 255, 100)
 GREY = (200, 200, 200)
+LIGHT_GREY = (220, 220, 220)
 BLUE = (135, 206, 235)
 LIGHT_BLUE = (135, 206, 250)
 RED = (255, 0, 0)
@@ -302,9 +303,16 @@ while running:
         # 按钮
         cancel_button = pygame.Rect(popup_x + 50, popup_y + popup_height - 60, 100, 40)
         buy_button = pygame.Rect(popup_x + popup_width - 150, popup_y + popup_height - 60, 100, 40)
-
-        pygame.draw.rect(screen, GREY, cancel_button, border_radius=8)
-        pygame.draw.rect(screen, LIGHT_GREEN, buy_button, border_radius=8)
+        
+        mx, my = pygame.mouse.get_pos()
+        cancel_hovered = cancel_button.collidepoint(mx, my)
+        buy_hovered = buy_button.collidepoint(mx, my)
+        
+        cancel_color = LIGHT_GREY if cancel_hovered else GREY
+        pygame.draw.rect(screen, cancel_color, cancel_button, border_radius=8)
+       
+        buy_color = LIGHT_GREEN if buy_hovered else GREEN
+        pygame.draw.rect(screen, buy_color, buy_button, border_radius=8)
 
         cancel_text = font.render("Cancel", True, BLACK)
         buy_text = font.render("Buy", True, BLACK)
