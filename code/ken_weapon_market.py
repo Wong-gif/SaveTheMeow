@@ -53,6 +53,9 @@ weapon_images = {
     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
 }
 
+for key in weapon_images:
+    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (130, 130))
+
 weapon_effects = {
     "Lion Sword": {"attack_bonus": 30, "description": "增加30点攻击力"},
     "Hawk's Eye": {"crit_chance": 0.2, "description": "暴击率提升20%"},
@@ -64,9 +67,6 @@ weapon_effects = {
     "Thunder Axe": {"stun_chance": 0.2, "description": "20% probability to stun the enemy"},
     "Essence of Renewal": {"heal": 50, "description": "Restore 50 health points"},
 }
-
-for key in weapon_images:
-    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (130, 130))
     
 player_coins = 1500
 player_gems = 500
@@ -126,20 +126,22 @@ while running:
     
     draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
-    title_text = font.render("Weapon Market", True, WHITE)
+    title_text = font.render("Weapon Market", True, WHITE) # Draw weapon market text
     screen.blit(title_text, (70, 20))
 
     draw_stat_box(screen, 230, 15, 225, 35, GREY, 150)  # Background
     
-    screen.blit(coin_icon, (250, 20))
+    screen.blit(coin_icon, (250, 20))  # Draw coin icon
     coins_text = font.render(f"{player_coins}", True, WHITE)
     screen.blit(coins_text, (280, 20))
     
-    screen.blit(gem_icon, (300 + coins_text.get_width() + 30, 20))
+    screen.blit(gem_icon, (300 + coins_text.get_width() + 30, 20))   # Draw gem icon
     gems_text = font.render(f"{player_gems}", True, WHITE)
     screen.blit(gems_text, (300 + coins_text.get_width() + 60, 20))
 
-    for i, item in enumerate(market_item):
+    screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
+
+    for i, item in enumerate(market_item):    # 9 Boxes 
         col = 3
         x = 230 + (i % col) * 230
         y = 80 + (i // col) * 230
@@ -178,7 +180,7 @@ while running:
             text_y = box.y + box.height // 2 - sold_out_text.get_height() // 2
             screen.blit(sold_out_text, (text_x, text_y))
 
-    for event in pygame.event.get():
+    for event in pygame.event.get():      # Mouse click
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -196,11 +198,11 @@ while running:
 
             
 
-            elif show_item_details and selected_item:
+            elif show_item_details and selected_item:    
                 if cancel_button.collidepoint(mx, my):
                     click_sound.play()
                     show_item_details = False
-                elif buy_button.collidepoint(mx, my):  # All logic stays inside this block
+                elif buy_button.collidepoint(mx, my): 
                     item = selected_item
                     currency = item["currency"]
                     price = item["price"]
@@ -240,7 +242,7 @@ while running:
 
 
 
-    if message and pygame.time.get_ticks() < message_timer:
+    if message and pygame.time.get_ticks() < message_timer:    # Message that show below   
         msg_text = font.render(message, True, RED)
         msg_x = WIDTH // 2 - msg_text.get_width() // 2
         msg_y = HEIGHT - 40
@@ -252,7 +254,7 @@ while running:
         screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
         screen.blit(msg_text, (msg_x, msg_y))         # Draw message
 
-    inventory_box = pygame.Rect(10, 100, 200, 35)  # Inventory background box
+    inventory_box = pygame.Rect(10, 100, 200, 35)    # Inventory background box
     pygame.draw.rect(screen, BLACK, inventory_box ,border_radius=12)
 
     inventory_title_text = font.render("Inventory:", True, WHITE)
@@ -262,7 +264,7 @@ while running:
         item_text = font.render(item_name, True, BLACK)
         screen.blit(item_text, (30, 135 + i * 25))
 
-    screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
+   
 
     # 弹出物品详情窗口
     if show_item_details and selected_item:
