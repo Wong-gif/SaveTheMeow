@@ -22,15 +22,24 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Weapon Market")
 clock = pygame.time.Clock()
 
-
+# coin icon
 coin_icon = pygame.image.load(os.path.join("assets", "images", "dollar.png")).convert_alpha()
 coin_icon = pygame.transform.scale(coin_icon, (25, 25))
+# gem icon
 gem_icon = pygame.image.load(os.path.join("assets", "images", "gem.png")).convert_alpha()
 gem_icon = pygame.transform.scale(gem_icon, (25, 25))
+#girl image
 girl_image = pygame.image.load(os.path.join("assets", "images", "girl.png")).convert_alpha()
 girl_image = pygame.transform.scale(girl_image, (450, 700))
+# Go out arrow
 arrow_image = pygame.image.load(os.path.join("assets", "images", "arrow.png")).convert_alpha()
 arrow_image = pygame.transform.scale(arrow_image, (50, 60))
+
+# Sound
+click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
+buying_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "buy_sound.wav"))
+
+font = pygame.font.SysFont("arial", 20)
 
 weapon_images = {
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
@@ -58,21 +67,9 @@ weapon_effects = {
 
 for key in weapon_images:
     weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (130, 130))
-
-click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
-buying_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "buy_sound.wav"))
-
-font = pygame.font.SysFont("arial", 20)
-
+    
 player_coins = 1500
 player_gems = 500
-
-buy_buttons = []
-selected_item = None  # 选中的物品
-show_item_details = False  # 是否显示详情窗口
-inventory = []
-message = ""
-message_timer = 0
 
 market_item = [
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
@@ -86,14 +83,13 @@ market_item = [
     {"name": "Essence of Renewal", "price": 100, "currency": "coins", "bought": False},
 ]
 
-
+# Gems and coins that on top
 def draw_stat_box(surface, x, y, width, height, color, alpha):
     s = pygame.Surface((width, height), pygame.SRCALPHA)  # Transparent surface
     pygame.draw.rect(s, (*color, alpha), s.get_rect(), border_radius=12)  # Rounded rectangle
     surface.blit(s, (x, y))  # Draw it on your screen
 
-arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
-
+# Arrow (hover or actual)
 def draw_arrow(surface, arrow_image, arrow_rect):
     mx, my = pygame.mouse.get_pos()
     if arrow_rect.collidepoint(mx, my):
@@ -103,20 +99,25 @@ def draw_arrow(surface, arrow_image, arrow_rect):
     else:
         screen.blit(arrow_image, arrow_rect) # make the image follow the rect
 
-def add_weapon(self, weapon_name):
-    self.inventory.append(weapon_name)
-    effects = weapon_effects.get(weapon_name, {})
-    for key, value in effects.items():
-        if key == "description":
-            continue
-        if hasattr(self, key):
-            current_value = getattr(self, key)  
-            setattr(self, key, current_value + value)
-        else:
-            setattr(self, key, value)
+def add_weapon(inventory, stats, weapon_name):
+        inventory.append(weapon_name)
+        effects = weapon_effects.get(weapon_name, {})
+        for key, value in effects.items():
+            if key == "description":
+                continue
+            if key in stats:
+                stats[key] += value
+            else:
+                stats[key] = value
 
 
-
+arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
+selected_item = None  # 选中的物品
+show_item_details = False  # 是否显示详情窗口
+inventory = []
+stats = {}
+message = ""
+message_timer = 0
 
 running = True
 while running:
@@ -312,4 +313,4 @@ while running:
     pygame.display.update()
     
 pygame.quit()
-sys.exit
+sys.exit()
