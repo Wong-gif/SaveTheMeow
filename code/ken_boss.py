@@ -40,6 +40,7 @@ def draw_health_bar(surf, hp, max_hp, x, y):
     pygame.draw.rect(surf, GREEN, fill_rect) #生命线
     pygame.draw.rect(surf, WHITE, outline_rect, 2) #框
 
+ 
 
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
@@ -102,20 +103,17 @@ class Boss(pygame.sprite.Sprite):
             if self.speed == 0:
                 self.speed = random.choice([-2, 2])
 
-
         if random.randint(1, 100) <= self.shoot_chance:
             self.shoot()
 
         if self.health < 9000:
-            self.shoot_chance = 100
+            self.shoot_chance = 10000
+
 
     def shoot(self):
         fireball = Fireball(self.rect.x, self.rect.y)
         all_sprites.add(fireball)
         fireballs.add(fireball)
-
-
-
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -173,9 +171,8 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                mario.shoot(  )
-
-                
+                mario.shoot()
+    
 
     all_sprites.update()
     for bullet in bullets:
@@ -194,7 +191,7 @@ while running:
             all_sprites.remove(boss)
             running = False
            
-
+    
     mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
     for hit in mario_hits:
         mario.health -= 10
@@ -202,13 +199,13 @@ while running:
             mario.lives -= 1
             
             running = False
-    
 
+    
     all_sprites.draw(screen)
     draw_health_bar(screen, mario.health, 100, 5, 15)  # Mario HP
     draw_health_bar(screen, boss.health, 10000, boss.rect.x - 20, boss.rect.top - 20)  # Boss HP
 
     pygame.display.update()
-   
+
 pygame.quit()
 sys.exit()
