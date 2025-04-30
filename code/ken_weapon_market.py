@@ -55,14 +55,14 @@ weapon_images = {
 }
 
 for key in weapon_images:
-    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (130, 130))
+    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (140, 140))
 
 weapon_effects = {
     "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 100 points of attack. Only 5 chances."},
     "Hawk's Eye": {"attack_bonus": 130, "description": "Each arrow has 130 damage. Only for 10 seconds."},
     "Luna Bow": {"attack_bonus": 150, "description": "Each arrow has 150 damage. Only for 10 seconds."},
     "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 150 damage. Only for 10 seconds."},
-    "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10n seconds"},
+    "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10 seconds"},
     "Libra of Eternity": {"defense_bonus": 100, "description": "The shield can block 3 attacks."},
     "Aegis Shield": {"block_chance": 0.3, "description": "30% probability to block attack."},
     "Thunder Axe": {"stun_chance": 0.3, "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
@@ -149,7 +149,7 @@ while running:
         box = pygame.Rect(x, y, 200, 150)
         pygame.draw.rect(screen, GREY, box)
 
-        if item["name"] in weapon_images:  #武器照片
+        if item["name"] in weapon_images:  # Weapon image
            img = weapon_images[item["name"]]
            img_x = x + box.width // 2 - img.get_width() // 2
            img_y = y + 5  
@@ -284,20 +284,20 @@ while running:
         # 标题
         title_font = pygame.font.SysFont("arial", 28)
         title_text = title_font.render(selected_item["name"], True, BLACK)
-        screen.blit(title_text, (popup_x + popup_width // 2 - title_text.get_width() // 2, popup_y + 20))
+        screen.blit(title_text, (popup_x + popup_width // 2 - title_text.get_width() // 2, popup_y + 15))
 
         # 武器图片
         img = weapon_images.get(selected_item["name"])
         if img:
-            img = pygame.transform.scale(img, (80, 80))
-            screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 60))
+            img = pygame.transform.smoothscale(img, (140, 140))
+            screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 50))
 
         # 描述
         desc_font = pygame.font.SysFont("arial", 20)
         description = weapon_effects[selected_item["name"]]["description"]
         desc_text = desc_font.render(description, True, BLACK)
         desc_x = popup_x + popup_width // 2 - desc_text.get_width() // 2
-        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 30  
+        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 55  
         screen.blit(desc_text, (desc_x, desc_y))
 
         # 按钮
