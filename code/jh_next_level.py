@@ -26,12 +26,20 @@ class NextLevel:
         self.world_width = 3200 
         self.camera_x = 0
         self.score = 0
+        self.state = "playing"
         self.time_left = 60
+        self.jump_sound = pygame.mixer.Sound('assets/sounds/player_jump.wav')
+        self.jump_sound.set_volume(0.2)
+        self.score = 0
+        self.time_left = 40
+        self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 27)
+        self.coin_icon = pygame.image.load("assets/images/ui/coin_icon.png").convert_alpha()
+        self.time_icon = pygame.image.load("assets/images/ui/time_icon.png").convert_alpha()
         self.last_time_update = pygame.time.get_ticks()
         self.spike_image = pygame.image.load("assets/images/spike.png").convert_alpha()
         self.spike_visible = False # make the spike cannot see first
         self.spike_rect = self.spike_image.get_rect()
-        self.spike_rect.topleft = (1130, 555) # 1st spike position 
+        self.spike_rect.topleft = (930, 555) # 1st spike position 
         self.spike1_rect = self.spike_image.get_rect()
         self.spike1_rect.topleft = (2000, 555)
         self.spike2_rect = self.spike_image.get_rect()
@@ -46,7 +54,6 @@ class NextLevel:
         self.spike6_rect.topleft = (2280, 555)
 
 
-
         self._load_game_assets()
         self.player_rect = self.player_images['idle'].get_rect()
         self.player_rect.midbottom = (180, 70)  # player position
@@ -58,6 +65,7 @@ class NextLevel:
         self.facing_right = True
         self.animation_frame = 0
         self.animation_speed = 0.15
+        self.coins = pygame.sprite.Group()
 
         self.button_normal = pygame.image.load("assets/images/button_normal.png").convert_alpha()
         self.button_pressed = pygame.image.load("assets/images/button_pressed.png").convert_alpha()
@@ -124,8 +132,34 @@ class NextLevel:
         if keys[pygame.K_SPACE] and self.on_ground:
             self.velocity_y = self.jump_power
             self.on_ground = False
+            self.jump_sound.play()
+
+
 
     def update_physics(self):
+        current_time = pygame.time.get_ticks()
+        if self.state == "playing" and current_time - self.last_time_update > 1000:
+            self.time_left -= 1
+            self.last_time_update = current_time
+            if self.time_left <= 0:
+                print("Times up！Game Restart")
+                self.__init__(self.screen)
+            return
+        
+
+        for coin in self.coins:
+            coin["frame"] += coin["animation_speed"]
+            if coin["frame"] >= len(self.coin_frames):
+                coin["frame"] = 0 
+
+        for coin in self.coins: 
+            if self.player_rect.colliderect(coin["rect"]):
+                self.coins.remove(coin)
+                self.score += 10
+                self.coin_sound.play()
+
+
+
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
 
@@ -134,6 +168,13 @@ class NextLevel:
         for start_x, width in self.generate_ground_segments():
             ground_rect = pygame.Rect(start_x, 605, width, 100)
             if self.player_rect.colliderect(ground_rect):
+                if start_x == 2000:
+                    if not any(self.player_rect.colliderect(spike_rect) for spike_rect in [
+                        self.spike1_rect, self.spike2_rect, self.spike3_rect, 
+                        self.spike4_rect, self.spike5_rect, self.spike6_rect]):
+                        print("Touched deadly ground!")
+                        self.__init__(self.screen)  # game restart
+                        return
                 self.on_ground = True
                 self.player_rect.bottom = ground_rect.top
                 self.velocity_y = 0
@@ -159,7 +200,7 @@ class NextLevel:
             self.platform3_visible = True
             self.platform4_visible = True
 
-        if self.player_rect.colliderect(self.spike_rect):
+        if self.player_rect.colliderect(self.spike_rect) and self.player_rect.centerx < 2000:
             print("Beware of traps")
             self.__init__(self.screen)
 
@@ -205,6 +246,12 @@ class NextLevel:
 
     def draw(self):
         self.screen.blit(self.background, (-self.camera_x, 0))
+
+
+        for coin in self.coins:
+            frame_index = int(coin["frame"]) % len(self.coin_frames)
+            image = self.coin_frames[frame_index]
+            self.screen.blit(image, self.world_to_screen(coin["rect"]))
     
         # 绘制每个地面区段
         for start_x, width in self.generate_ground_segments():
@@ -226,8 +273,6 @@ class NextLevel:
         self.screen.blit(self.spike_image, self.world_to_screen(self.spike5_rect))
         self.screen.blit(self.spike_image, self.world_to_screen(self.spike6_rect))
 
-
-
         # 只有按钮被点击后才绘制平台
         if self.platform_visible:
             self.screen.blit(self.platform_image, self.world_to_screen(self.platform_rect))
@@ -243,6 +288,15 @@ class NextLevel:
         if not self.facing_right:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
+
+        ui_bar = pygame.Surface((380, 50), pygame.SRCALPHA)
+        self.screen.blit(ui_bar, (20, 20))
+        self.screen.blit(self.coin_icon, (22, 24))
+        score_text = self.font.render(f"Coin:{self.score}", True, (0, 0, 0))
+        self.screen.blit(score_text, (70, 35))
+        self.screen.blit(self.time_icon, (310, 30))
+        time_text = self.font.render(f"Time:{self.time_left}s", True, (0, 0, 0))
+        self.screen.blit(time_text, (350, 35))
 
     def run(self):
         self.handle_input()
