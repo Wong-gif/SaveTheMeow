@@ -31,7 +31,7 @@ class Level:
         self._load_game_assets()
 
         self.player_rect = self.player_images['idle'].get_rect()
-        self.player_rect.midbottom = (100, 70)
+        self.player_rect.midbottom = (2500, 70)
         self.player_speed = 5
         self.velocity_y = 0
         self.jump_power = -20
