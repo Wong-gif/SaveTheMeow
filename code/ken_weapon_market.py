@@ -100,9 +100,9 @@ def draw_arrow(surface, arrow_image, arrow_rect):
     else:
         screen.blit(arrow_image, arrow_rect) # make the image follow the rect
 
-def add_weapon(inventory, stats, weapon_name):
-        inventory.append(weapon_name)
-        effects = weapon_effects.get(weapon_name, {})
+def add_weapon(inventory, stats, item_name):
+        inventory.append(item_name)
+        effects = weapon_effects.get(item_name, {})
         for key, value in effects.items():
             if key == "description":
                 continue
@@ -194,11 +194,10 @@ while running:
                     fade.set_alpha(alpha)
                     screen.blit(fade, (0, 0))
                     pygame.display.update()
-                    pygame.time.delay(30)
-                running = False 
+                    pygame.time.delay(20)
+                running = False
 
             
-
             elif show_item_details and selected_item:    
                 if cancel_button.collidepoint(mx, my):
                     click_sound.play()
@@ -262,8 +261,11 @@ while running:
     screen.blit(inventory_title_text, (20, 105))
 
     for i, item_name in enumerate(inventory):
-        item_text = font.render(item_name, True, BLACK)
-        screen.blit(item_text, (30, 135 + i * 25))
+        if item_name in weapon_images:
+            img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
+            screen.blit(img, (20, 150 + i * 40))  # Draw image
+            name_text = font.render(item_name, True, WHITE)
+            screen.blit(name_text, (60, 155 + i * 40))  # Name next to image
 
    
 
