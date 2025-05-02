@@ -2,6 +2,9 @@ import pygame
 import sys
 import os
 import random
+from ken_effect import WeaponEffects
+
+weapon_effects = WeaponEffects.get_all()
 
 WIDTH, HEIGHT = 1200, 800
 BLACK = (0, 0, 0)
@@ -24,6 +27,21 @@ fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif"
 fireball_img = pygame.transform.scale(fireball_img, (30, 30))
 background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.png")).convert_alpha()
 background_img = pygame.transform.scale(background_img, (WIDTH, 300))
+player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
+player_img = pygame.transform.scale(player_img, (WIDTH, 300))
+
+
+inventory = {
+    "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
+    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
+    "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
+    "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
+    "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
+    "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
+    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+    "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
+}
 
 
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
@@ -45,8 +63,8 @@ def draw_health_bar(surf, hp, max_hp, x, y):
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((40, 40))
-        self.image.fill(RED)
+        self.image = pygame.transform.scale(player_img, (40, 40))
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = 50
         self.rect.centery = HEIGHT/2
@@ -147,8 +165,7 @@ class Fireball(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
 
-    
-
+  
 
 all_sprites = pygame.sprite.Group()
 fireballs = pygame.sprite.Group()
@@ -166,14 +183,17 @@ while running:
     screen.fill(WHITE)
     #screen.blit(background_img, (0, 500))
 
+    pygame.draw.rect(screen, BLACK, (200, 0, 800, 100))
+    pygame.display.flip()  # Update the display
+    
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 mario.shoot()
-    
-
+            
     all_sprites.update()
     for bullet in bullets:
         hit_fireballs = pygame.sprite.spritecollide(bullet, fireballs, False)
