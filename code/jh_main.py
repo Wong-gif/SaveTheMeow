@@ -22,11 +22,8 @@ GAME = 1
 current_state = MENU
 NEXT_LEVEL = 2
 
-try:
-    background = pygame.image.load('assets/images/background.png').convert()
-    background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
-except:
-    print("cannot load the image")    
+background = pygame.image.load('assets/images/background.png').convert()
+background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))  
 
 level = Level(screen)
 next_level_screen = NextLevel(screen)

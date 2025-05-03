@@ -1,4 +1,5 @@
 import pygame
+import random
 import os
 
 class Button:
@@ -30,11 +31,19 @@ class NextLevel:
         self.time_left = 60
         self.jump_sound = pygame.mixer.Sound('assets/sounds/player_jump.wav')
         self.jump_sound.set_volume(0.2)
+        self.diamond_sound = pygame.mixer.Sound("assets/sounds/diamond.wav")
+        self.diamond_sound.set_volume(4.0)
+        self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
+        self.coin_sound.set_volume(0.3)
+    
         self.score = 0
         self.time_left = 40
         self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 27)
         self.coin_icon = pygame.image.load("assets/images/ui/coin_icon.png").convert_alpha()
         self.time_icon = pygame.image.load("assets/images/ui/time_icon.png").convert_alpha()
+        self.diamond_icon = pygame.image.load("assets/images/ui/diamond_icon.png").convert_alpha()
+        self.dian_image = pygame.image.load("assets/images/dian.png").convert_alpha()
+
         self.last_time_update = pygame.time.get_ticks()
         self.spike_image = pygame.image.load("assets/images/spike.png").convert_alpha()
         self.spike_visible = False # make the spike cannot see first
@@ -109,6 +118,35 @@ class NextLevel:
             'jump': self._load_single_image("assets/images/player/player_stand.png")
         }
 
+        self.coins = []
+        for _ in range(10):         
+            x = random.randint(100, self.world_width - 100)
+            y = random.randint(300, 495)
+            coin_rect = pygame.Rect(x, y, 30, 30)
+            self.coins.append({
+                "rect": coin_rect,
+                "frame": 0,
+                "animation_speed": 0.2
+            })
+
+        self.diamond = []
+        for _ in range(5):  
+            x = random.randint(100, self.world_width - 100)
+            y = random.randint(300, 495)
+            diamond_rect = pygame.Rect(x, y, 30, 30)
+            self.diamond.append({
+                "rect": diamond_rect
+            })
+
+        self.coin_frames = [
+            self._load_single_image("assets/images/coin/coin_frame_1.png"),
+            self._load_single_image("assets/images/coin/coin_frame_2.png"),
+            self._load_single_image("assets/images/coin/coin_frame_3.png"),
+            self._load_single_image("assets/images/coin/coin_frame_4.png"),
+            self._load_single_image("assets/images/coin/coin_frame_5.png"),
+            self._load_single_image("assets/images/coin/coin_frame_6.png"),
+        ]
+
     def _load_single_image(self, path):
         image = pygame.image.load(path).convert_alpha()  # 使用透明通道加载图片
         image.set_colorkey((0, 255, 255))  # 设置青色为透明（0, 255, 255）
@@ -157,6 +195,12 @@ class NextLevel:
                 self.coins.remove(coin)
                 self.score += 10
                 self.coin_sound.play()
+
+        for diamond in self.diamond[:]: 
+            if self.player_rect.colliderect(diamond["rect"]):
+                self.diamond.remove(diamond)
+                self.score += 10
+                self.diamond_sound.play()
 
 
 
@@ -252,6 +296,9 @@ class NextLevel:
             frame_index = int(coin["frame"]) % len(self.coin_frames)
             image = self.coin_frames[frame_index]
             self.screen.blit(image, self.world_to_screen(coin["rect"]))
+
+        for diamond in self.diamond:
+            self.screen.blit(self.diamond_icon, self.world_to_screen(diamond["rect"]))
     
         # 绘制每个地面区段
         for start_x, width in self.generate_ground_segments():
@@ -291,12 +338,18 @@ class NextLevel:
 
         ui_bar = pygame.Surface((380, 50), pygame.SRCALPHA)
         self.screen.blit(ui_bar, (20, 20))
+
         self.screen.blit(self.coin_icon, (22, 24))
         score_text = self.font.render(f"Coin:{self.score}", True, (0, 0, 0))
         self.screen.blit(score_text, (70, 35))
-        self.screen.blit(self.time_icon, (310, 30))
+
+        self.screen.blit(self.time_icon, (680, 30))
         time_text = self.font.render(f"Time:{self.time_left}s", True, (0, 0, 0))
-        self.screen.blit(time_text, (350, 35))
+        self.screen.blit(time_text, (730, 35))
+
+        self.screen.blit(self.diamond_icon, (310, 24))
+        diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
+        self.screen.blit(diamond_text, (370, 35))
 
     def run(self):
         self.handle_input()
