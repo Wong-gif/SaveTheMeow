@@ -58,30 +58,30 @@ for key in weapon_images:
     weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (130, 130))
 
 weapon_effects = {
-    "Lion Sword": {"attack_bonus": 30, "description": "增加30点攻击力"},
-    "Hawk's Eye": {"crit_chance": 0.2, "description": "暴击率提升20%"},
-    "Luna Bow": {"attack_bonus": 20, "description": "远程攻击加20点伤害"},
-    "Phoenix Feather": {"revive": True, "description": "死亡时复活一次"},
-    "Hydro Strike": {"splash_damage": 0.5, "description": "对其他敌人造成50%伤害"},
-    "Libra of Eternity": {"defense_bonus": 25, "description": "The shield can block 5 attacks."},
-    "Aegis Shield": {"block_chance": 0.3, "description": "30%概率格挡攻击"},
-    "Thunder Axe": {"stun_chance": 0.2, "description": "20% probability to stun the enemy"},
-    "Essence of Renewal": {"heal": 50, "description": "Restore 50 health points"},
+    "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 100 points of attack. Only 5 chances."},
+    "Hawk's Eye": {"attack_bonus": 130, "description": "Each arrow has 130 damage. Only for 10 seconds."},
+    "Luna Bow": {"attack_bonus": 150, "description": "Each arrow has 150 damage. Only for 10 seconds."},
+    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 150 damage. Only for 10 seconds."},
+    "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10n seconds"},
+    "Libra of Eternity": {"defense_bonus": 100, "description": "The shield can block 3 attacks."},
+    "Aegis Shield": {"block_chance": 0.3, "description": "30% probability to block attack."},
+    "Thunder Axe": {"stun_chance": 0.3, "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
+    "Essence of Renewal": {"heal": 30, "description": "Restore 30 health points for twice."},
 }
     
-player_coins = 1500
-player_gems = 500
+player_coins = 500
+player_gems = 200
 
 market_item = [
-    {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Hawk's Eye", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Luna Bow", "price": 100, "currency": "gems", "bought": False},
-    {"name": "Phoenix Feather", "price": 100, "currency": "gems", "bought": False},
-    {"name": "Hydro Strike", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Libra of Eternity", "price": 100, "currency": "gems", "bought": False},
+    {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False}, 
+    {"name": "Hawk's Eye", "price": 75, "currency": "coins", "bought": False},
+    {"name": "Luna Bow", "price": 30, "currency": "gems", "bought": False},
+    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False},
+    {"name": "Hydro Strike", "price": 50, "currency": "gems", "bought": False},
+    {"name": "Libra of Eternity", "price": 20, "currency": "gems", "bought": False},
     {"name": "Aegis Shield", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Thunder Axe", "price": 100, "currency": "gems", "bought": False},
-    {"name": "Essence of Renewal", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Thunder Axe", "price": 35, "currency": "gems", "bought": False},
+    {"name": "Essence of Renewal", "price": 60, "currency": "coins", "bought": False},
 ]
 
 # Gems and coins that on top
@@ -133,11 +133,11 @@ while running:
     draw_stat_box(screen, 230, 15, 225, 35, GREY, 150)  # Background
     
     screen.blit(coin_icon, (250, 20))  # Draw coin icon
-    coins_text = font.render(f"{player_coins}", True, WHITE)
+    coins_text = font.render(f"{player_coins}", True, BLACK)
     screen.blit(coins_text, (280, 20))
     
     screen.blit(gem_icon, (300 + coins_text.get_width() + 30, 20))   # Draw gem icon
-    gems_text = font.render(f"{player_gems}", True, WHITE)
+    gems_text = font.render(f"{player_gems}", True, BLACK)
     screen.blit(gems_text, (300 + coins_text.get_width() + 60, 20))
 
     screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
