@@ -19,6 +19,12 @@ class Overworld:
         self.path_frames = overworld_frames["path"]
         self.create_path_sprites()
 
+        self.dialog_active = False
+        self.dialog_text = ""
+        self.font = pygame.font.Font(None,36)
+
+        self.space_pressed = False
+
     def setup(self,tmx_map,overworld_frames):
         #layers
         for layer in ["main","top"]:
@@ -38,13 +44,16 @@ class Overworld:
             z = Z_layers[f"{"bg details" if obj.name == "grass" else "bg tiles"}"]
             Sprite((obj.x,obj.y), obj.image, self.all_sprites, z)
           
+        self.characters = []
+
         for obj in tmx_map.get_layer_by_name("Entities"):
           if obj.name == "Character":
-            Character(
+            character = Character(
               pos = (obj.x, obj.y),
               frames = overworld_frames["characters"][obj.properties["graphic"]],
               groups = self.all_sprites,
               facing_direction = obj.properties["direction"])
+            self.characters.append(character)
 
         #path
         self.paths = {}
@@ -70,6 +79,21 @@ class Overworld:
                level = int(obj.properties["stage"]),
                data = self.data,
                paths = available_paths)
+          
+    def check_dialogue(self):
+    # Get the player's icon rect (center only, no direction yet)
+      icon_rect = self.icon.rect
+
+    # Define a proximity box around the player's center (adjust size for proximity)
+      check_rect = pygame.Rect(icon_rect.center[0] - 40, icon_rect.center[1] - 40, 80, 80)  # Larger area for testing
+
+    # Loop through characters and check if any NPC is within the proximity box
+      for character in self.characters:
+
+        if check_rect.colliderect(character.rect):  # Use colliderect for proximity checking
+            self.dialog_active = True
+            self.dialog_text = "Hello, adventurer!"  # Example text
+            break
           
     def create_path_sprites(self):
       #get tiles from path
@@ -131,7 +155,20 @@ class Overworld:
           
     def input(self):
       keys = pygame.key.get_pressed()
-      if self.current_node and not self.icon.path:
+
+      if keys[pygame.K_SPACE]:
+            if not self.space_pressed:  # Only trigger if space hasn't been processed yet
+                self.space_pressed = True  # Mark space as pressed
+                if not self.dialog_active:
+                    self.check_dialogue()  # Check for dialogue if not active
+                else:
+                    # Close dialogue if it's active
+                    self.dialog_active = False
+      else:
+            self.space_pressed = False  # Reset the flag when spacebar is released
+
+
+      if self.current_node and not self.icon.path and not self.dialog_active:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
           self.move("down")
         if keys[pygame.K_LEFT] and self.current_node.can_move("left"):
@@ -152,8 +189,19 @@ class Overworld:
       if nodes:
         self.current_node = nodes[0]
 
+    def draw_dialog(self):
+      box_rect = pygame.Rect(50, window_height - 150, window_width - 100, 100)
+      pygame.draw.rect(self.display_surface, (0, 0, 0), box_rect)
+      pygame.draw.rect(self.display_surface, (255, 255, 255), box_rect, 3)
+
+      text_surf = self.font.render(self.dialog_text, True, (255, 255, 255))
+      self.display_surface.blit(text_surf, (box_rect.x + 20, box_rect.y + 30))
+
     def run(self,dt):
         self.input()
         self.get_current_node()
         self.all_sprites.update(dt)
         self.all_sprites.draw(self.icon.rect.center)
+
+        if self.dialog_active:
+          self.draw_dialog()
