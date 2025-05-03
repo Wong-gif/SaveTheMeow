@@ -14,21 +14,24 @@ class Level:
         self.score = 0
         self.time_left = 30
         self.last_time_update = pygame.time.get_ticks()
-        self.jump_sound = pygame.mixer.Sound('assets/sounds/player_jump.wav')
-        self.jump_sound.set_volume(0.2)
         self.portal_frame_index = 0
         self.portal_animation_speed = 0.2
         self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 27)
+
         self.coin_icon = pygame.image.load("assets/images/ui/coin_icon.png").convert_alpha()
         self.time_icon = pygame.image.load("assets/images/ui/time_icon.png").convert_alpha()
+        self.diamond_icon = pygame.image.load("assets/images/ui/diamond_icon.png").convert_alpha()
         self.dian_image = pygame.image.load("assets/images/dian.png").convert_alpha()
+
+        self.jump_sound = pygame.mixer.Sound('assets/sounds/player_jump.wav')
+        self.jump_sound.set_volume(0.2)
         self.dian_sound = pygame.mixer.Sound("assets/sounds/dian.wav") 
         self.dian_sound.set_volume(2.0)
-
+        self.diamond_sound = pygame.mixer.Sound("assets/sounds/diamond.wav")
+        self.diamond_sound.set_volume(4.0)
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
-        self.death_reason = ""
-        self.death_time = 0
+        
 
         self._load_game_assets()
 
@@ -58,6 +61,16 @@ class Level:
                 "frame": 0,
                 "animation_speed": 0.2
             })
+
+        self.diamond = []
+        for _ in range(5):  
+            x = random.randint(100, self.world_width - 100)
+            y = random.randint(300, 495)
+            diamond_rect = pygame.Rect(x, y, 30, 30)
+            self.diamond.append({
+                "rect": diamond_rect
+            })
+
 
         self.portal_frames = []
         for i in range(16):
@@ -115,6 +128,7 @@ class Level:
 
         self.spike_image = self._load_single_image("assets/images/spike.png")
 
+
     def _load_single_image(self, path):
         image = pygame.image.load(path).convert_alpha()  # 使用透明通道加载图片
         image.set_colorkey((0, 255, 255))  # 设置青色为透明（0, 255, 255）
@@ -168,6 +182,12 @@ class Level:
                 self.coins.remove(coin)
                 self.score += 10
                 self.coin_sound.play()
+
+        for diamond in self.diamond[:]: 
+            if self.player_rect.colliderect(diamond["rect"]):
+                self.diamond.remove(diamond)
+                self.score += 10
+                self.diamond_sound.play()
                    
         #ground material        
         for i, pos in enumerate(self.split_positions):
@@ -267,6 +287,9 @@ class Level:
             frame_index = int(coin["frame"]) % len(self.coin_frames)
             image = self.coin_frames[frame_index]
             self.screen.blit(image, self.world_to_screen(coin["rect"]))
+
+        for diamond in self.diamond:
+            self.screen.blit(self.diamond_icon, self.world_to_screen(diamond["rect"]))
            
         for brick in self.bricks:
             if not brick["active"]:
@@ -289,12 +312,21 @@ class Level:
        
         ui_bar = pygame.Surface((380, 50), pygame.SRCALPHA)
         self.screen.blit(ui_bar, (20, 20))
+
         self.screen.blit(self.coin_icon, (22, 24))
         score_text = self.font.render(f"Coin:{self.score}", True, (0, 0, 0))
         self.screen.blit(score_text, (70, 35))
-        self.screen.blit(self.time_icon, (310, 30))
+
+        self.screen.blit(self.time_icon, (680, 30))
         time_text = self.font.render(f"Time:{self.time_left}s", True, (0, 0, 0))
-        self.screen.blit(time_text, (350, 35))
+        self.screen.blit(time_text, (730, 35))
+
+        self.screen.blit(self.diamond_icon, (310, 24))
+        diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
+        self.screen.blit(diamond_text, (370, 35))
+
+
+
 
     def run(self):
         self.handle_input()
