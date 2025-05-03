@@ -101,7 +101,7 @@
    </properties>
    <point/>
   </object>
-  <object id="243" name="Character" x="2017.58" y="826.167">
+  <object id="243" name="Character" x="2017.58" y="861.167">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="02"/>
@@ -111,7 +111,7 @@
    </properties>
    <point/>
   </object>
-  <object id="245" name="Character" x="604.25" y="336.583">
+  <object id="245" name="Character" x="610.25" y="336.583">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o4"/>
