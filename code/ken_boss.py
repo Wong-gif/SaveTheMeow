@@ -31,7 +31,7 @@ player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png"
 player_img = pygame.transform.scale(player_img, (WIDTH, 300))
 
 
-inventory = {
+weapon_images = {
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
     "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
@@ -183,8 +183,15 @@ while running:
     screen.fill(WHITE)
     #screen.blit(background_img, (0, 500))
 
-    pygame.draw.rect(screen, BLACK, (200, 0, 800, 100))
-    pygame.display.flip()  # Update the display
+    pygame.draw.rect(screen, BLACK, (150, 0, 900, 120))
+
+    x_box = 210
+    y_box = 10
+    for weapon_name, img in weapon_images.items():      # loop thought the weapon image
+        scaled_images = pygame.transform.scale(img, (90, 90))
+        screen.blit(scaled_images, (x_box, y_box))
+        x_box += 100      # Spacing between images
+   
     
 
     for event in pygame.event.get():
