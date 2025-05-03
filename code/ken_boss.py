@@ -84,8 +84,8 @@ class Mario(pygame.sprite.Sprite):
         if key_pressed[pygame.K_RIGHT]:
            self.rect.x += self.speedy
 
-        if self.rect.top < 0:
-            self.rect.top = 0
+        if self.rect.top < 125:
+            self.rect.top = 125
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
 
@@ -115,7 +115,7 @@ class Boss(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += self.speed
 
-        if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
+        if self.rect.top <= 125 or self.rect.bottom >= HEIGHT:
             self.speed *= -1
             self.speed += random.choice([-1, 0, 1])
             if self.speed == 0:
@@ -183,12 +183,12 @@ while running:
     screen.fill(WHITE)
     #screen.blit(background_img, (0, 500))
 
-    pygame.draw.rect(screen, BLACK, (150, 0, 900, 120))
+    pygame.draw.rect(screen, WHITE, (150, 0, 900, 120))
 
-    x_box = 210
-    y_box = 10
+    x_box = 160
+    y_box = 15
     for weapon_name, img in weapon_images.items():      # loop thought the weapon image
-        scaled_images = pygame.transform.scale(img, (90, 90))
+        scaled_images = pygame.transform.smoothscale(img, (90, 90))
         screen.blit(scaled_images, (x_box, y_box))
         x_box += 100      # Spacing between images
    
