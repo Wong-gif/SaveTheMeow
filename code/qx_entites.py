@@ -13,7 +13,7 @@ class Entity(pygame.sprite.Sprite):
         self.image = self.frames[self.get_state()][self.frame_index]
         self.rect = self.image.get_frect(center = pos)
 
-    def animate(self,dt):
+    def animate(self,dt):  
         self.frame_index += animation_speed * dt
         self.image = self.frames[self.get_state()][int(self.frame_index % len(self.frames[self.get_state()]))]
 
