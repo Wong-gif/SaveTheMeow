@@ -1,4 +1,5 @@
 from qx_settings import *
+from collections import deque
 
 class Entity(pygame.sprite.Sprite):
     def __init__(self,pos,frames,groups,facing_direction):
@@ -13,7 +14,7 @@ class Entity(pygame.sprite.Sprite):
         self.image = self.frames[self.get_state()][self.frame_index]
         self.rect = self.image.get_frect(center = pos)
 
-    def animate(self,dt):
+    def animate(self,dt):  
         self.frame_index += animation_speed * dt
         self.image = self.frames[self.get_state()][int(self.frame_index % len(self.frames[self.get_state()]))]
 
@@ -33,3 +34,25 @@ class Character(Entity):
     def __init__(self,pos,frames,groups,facing_direction):
         super().__init__(pos,frames,groups,facing_direction)
         self.z = Z_layers["main"]
+        self.dialog_manager = DialogManager()
+
+class DialogManager:
+    def __init__(self):
+        self.dialog_lines = deque()
+        self.current_line = None
+
+    def set_dialogue(self, dialogue_text):
+        self.dialog_lines = deque(dialogue_text)
+        self.current_line = self.dialog_lines.popleft() if self.dialog_lines else None
+
+    def next_line(self):
+        if self.dialog_lines:
+            self.current_line = self.dialog_lines.popleft()
+        else:
+            self.current_line = None
+
+    def get_current_line(self):
+        return self.current_line
+
+    def has_more_line(self):
+        return bool(self.dialog_lines)

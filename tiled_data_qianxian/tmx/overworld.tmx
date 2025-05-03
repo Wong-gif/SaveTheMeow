@@ -75,6 +75,7 @@
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o1"/>
+    <property name="dialog" value="HAHAHAHHA|HOOHOOHOHO"/>
     <property name="direction" value="left"/>
     <property name="graphic" value="blond"/>
     <property name="radius" value="400"/>
@@ -85,6 +86,7 @@
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o5"/>
+    <property name="dialog" value="adahahah|ajajajja"/>
     <property name="direction" value="up"/>
     <property name="graphic" value="water_boss"/>
     <property name="radius" value="400"/>
@@ -95,26 +97,29 @@
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="03"/>
+    <property name="dialog" value="hehe|hoho"/>
     <property name="direction" value="left"/>
     <property name="graphic" value="grass_boss"/>
     <property name="radius" value="400"/>
    </properties>
    <point/>
   </object>
-  <object id="243" name="Character" x="2017.58" y="826.167">
+  <object id="243" name="Character" x="2017.58" y="861.167">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="02"/>
+    <property name="dialog" value="aasas|aaaaaa"/>
     <property name="direction" value="down"/>
     <property name="graphic" value="fire_boss"/>
     <property name="radius" value="400"/>
    </properties>
    <point/>
   </object>
-  <object id="245" name="Character" x="604.25" y="336.583">
+  <object id="245" name="Character" x="610.25" y="336.583">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o4"/>
+    <property name="dialog" value="oops|mememem"/>
     <property name="direction" value="up"/>
     <property name="graphic" value="purple_girl"/>
     <property name="radius" value="400"/>
