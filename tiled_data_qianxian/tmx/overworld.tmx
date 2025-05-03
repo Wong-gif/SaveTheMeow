@@ -75,7 +75,7 @@
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o1"/>
-    <property name="dialog" value="&quot;Hello there|Hehe|Oops&quot;"/>
+    <property name="dialog" value="HAHAHAHHA|HOOHOOHOHO"/>
     <property name="direction" value="left"/>
     <property name="graphic" value="blond"/>
     <property name="radius" value="400"/>
@@ -86,7 +86,7 @@
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o5"/>
-    <property name="dialog" value="&quot;adahahah|ajajajja&quot;"/>
+    <property name="dialog" value="adahahah|ajajajja"/>
     <property name="direction" value="up"/>
     <property name="graphic" value="water_boss"/>
     <property name="radius" value="400"/>
@@ -97,7 +97,7 @@
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="03"/>
-    <property name="dialog" value="&quot;hehe|hoho&quot;"/>
+    <property name="dialog" value="hehe|hoho"/>
     <property name="direction" value="left"/>
     <property name="graphic" value="grass_boss"/>
     <property name="radius" value="400"/>
@@ -108,7 +108,7 @@
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="02"/>
-    <property name="dialog" value="&quot;aasas|aaaaaa&quot;"/>
+    <property name="dialog" value="aasas|aaaaaa"/>
     <property name="direction" value="down"/>
     <property name="graphic" value="fire_boss"/>
     <property name="radius" value="400"/>
@@ -119,7 +119,7 @@
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o4"/>
-    <property name="dialog" value="&quot;oops|mememem&quot;"/>
+    <property name="dialog" value="oops|mememem"/>
     <property name="direction" value="up"/>
     <property name="graphic" value="purple_girl"/>
     <property name="radius" value="400"/>
