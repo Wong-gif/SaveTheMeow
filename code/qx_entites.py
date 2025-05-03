@@ -38,21 +38,21 @@ class Character(Entity):
 
 class DialogManager:
     def __init__(self):
-        self.dialog_lines = deque
+        self.dialog_lines = deque()
         self.current_line = None
 
-    def set_dialogue(self,dialogue_text):
-        self.dialogue_lines = deque(dialogue_text)
-        self.current_line = self.dialogue_lines.popleft() if self.dialogue_lines else None
+    def set_dialogue(self, dialogue_text):
+        self.dialog_lines = deque(dialogue_text)
+        self.current_line = self.dialog_lines.popleft() if self.dialog_lines else None
 
     def next_line(self):
-        if self.dialogue_lines:
-            self.current_line = self.dialogue_lines.popleft()
+        if self.dialog_lines:
+            self.current_line = self.dialog_lines.popleft()
         else:
             self.current_line = None
 
     def get_current_line(self):
         return self.current_line
-    
+
     def has_more_line(self):
         return bool(self.dialog_lines)
