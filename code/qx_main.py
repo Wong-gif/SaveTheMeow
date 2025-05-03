@@ -17,7 +17,7 @@ class Game:
         #generate the world map
         self.tmx_overworld = load_pygame(join("tiled_data_qianxian","tmx","overworld.tmx"))
         self.current_stage = Overworld(self.tmx_overworld,self.data,self.overworld_frames)
-
+ 
     def import_assets(self):
         self.overworld_frames = {
             "palms" : import_folder("graphics_qx","overworld","palm"),

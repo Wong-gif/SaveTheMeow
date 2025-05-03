@@ -1,7 +1,7 @@
 from qx_settings import *
 from qx_sprites import Sprite, AnimatedSprite, Node, Icon, PathSprite
 from qx_groups import WorldSprites
-from qx_entites import Character
+from qx_entites import Character, DialogManager
 from  random import randint
 
 class Overworld:
@@ -20,8 +20,10 @@ class Overworld:
         self.create_path_sprites()
 
         self.dialog_active = False
-        self.dialog_text = ""
+        self.dialog_manager = DialogManager()
         self.font = pygame.font.Font(None,36)
+
+        self.nearby_character = None
 
         self.space_pressed = False
 
@@ -53,6 +55,12 @@ class Overworld:
               frames = overworld_frames["characters"][obj.properties["graphic"]],
               groups = self.all_sprites,
               facing_direction = obj.properties["direction"])
+            
+            if "dialog" in obj.properties:
+              dialog_text = obj.properties["dialog"].split("|")
+              character.dialog_manager.set_dialogue(dialog_text)
+              character.dialog_text = dialog_text
+
             self.characters.append(character)
 
         #path
@@ -81,6 +89,8 @@ class Overworld:
                paths = available_paths)
           
     def check_dialogue(self):
+      self.nearby_character = None
+
     # Get the player's icon rect (center only, no direction yet)
       icon_rect = self.icon.rect
 
@@ -89,10 +99,9 @@ class Overworld:
 
     # Loop through characters and check if any NPC is within the proximity box
       for character in self.characters:
-
         if check_rect.colliderect(character.rect):  # Use colliderect for proximity checking
-            self.dialog_active = True
-            self.dialog_text = "Hello, adventurer!"  # Example text
+            if not self.dialog_active:
+             self.nearby_character = character
             break
           
     def create_path_sprites(self):
@@ -159,11 +168,17 @@ class Overworld:
       if keys[pygame.K_SPACE]:
             if not self.space_pressed:  # Only trigger if space hasn't been processed yet
                 self.space_pressed = True  # Mark space as pressed
-                if not self.dialog_active:
-                    self.check_dialogue()  # Check for dialogue if not active
-                else:
+
+                if self.dialog_active:
+                    if self.dialog_manager.has_more_line():
+                      self.dialog_manager.next_line()
+                    else:
                     # Close dialogue if it's active
-                    self.dialog_active = False
+                      self.dialog_active = False 
+                      self.nearby_character = None 
+                elif self.nearby_character and not self.dialog_active:
+                  self.dialog_manager.set_dialogue(self.nearby_character.dialog_text)
+                  self.dialog_active = True
       else:
             self.space_pressed = False  # Reset the flag when spacebar is released
 
@@ -190,16 +205,19 @@ class Overworld:
         self.current_node = nodes[0]
 
     def draw_dialog(self):
-      box_rect = pygame.Rect(50, window_height - 150, window_width - 100, 100)
-      pygame.draw.rect(self.display_surface, (0, 0, 0), box_rect)
-      pygame.draw.rect(self.display_surface, (255, 255, 255), box_rect, 3)
+      if self.dialog_active and self.dialog_manager.get_current_line():
+        box_rect = pygame.Rect(50, window_height - 150, window_width - 100, 100)
+        pygame.draw.rect(self.display_surface, (0, 0, 0), box_rect)
+        pygame.draw.rect(self.display_surface, (255, 255, 255), box_rect, 3)
 
-      text_surf = self.font.render(self.dialog_text, True, (255, 255, 255))
-      self.display_surface.blit(text_surf, (box_rect.x + 20, box_rect.y + 30))
+        text_surf = self.font.render(self.dialog_manager.get_current_line(), True, (255, 255, 255))
+        self.display_surface.blit(text_surf, (box_rect.x + 20, box_rect.y + 30))
 
     def run(self,dt):
         self.input()
         self.get_current_node()
+        if not self.dialog_active:
+          self.check_dialogue()
         self.all_sprites.update(dt)
         self.all_sprites.draw(self.icon.rect.center)
 
