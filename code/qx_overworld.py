@@ -3,6 +3,7 @@ from qx_sprites import Sprite, AnimatedSprite, Node, Icon, PathSprite
 from qx_groups import WorldSprites
 from qx_entites import Character, DialogManager
 from  random import randint
+from jh_test_main import start_game
 
 class Overworld:
     def __init__(self, tmx_map,data, overworld_frames):
@@ -190,6 +191,7 @@ class Overworld:
         self.dialog_active = False  # Close the dialogue
         self.dialogue_finished = True
         self.nearby_character = None
+        start_game()
 
       if self.current_node and not self.icon.path and not self.dialog_active:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
