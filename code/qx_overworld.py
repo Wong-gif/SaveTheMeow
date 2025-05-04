@@ -3,6 +3,9 @@ from qx_sprites import Sprite, AnimatedSprite, Node, Icon, PathSprite
 from qx_groups import WorldSprites
 from qx_entites import Character, DialogManager
 from  random import randint
+from jh_test_main import platform_map
+from ken_boss_test import boss_battle
+from ken_weapon_market_test import open_store
 
 class Overworld:
     def __init__(self, tmx_map,data, overworld_frames):
@@ -25,7 +28,13 @@ class Overworld:
 
         self.nearby_character = None
 
+        self.dialogue_finished = False
+
         self.space_pressed = False
+
+        self.open_store = open_store
+        self.platform_map = platform_map
+        self.boss_battle = boss_battle
 
     def setup(self,tmx_map,overworld_frames):
         #layers
@@ -54,7 +63,8 @@ class Overworld:
               pos = (obj.x, obj.y),
               frames = overworld_frames["characters"][obj.properties["graphic"]],
               groups = self.all_sprites,
-              facing_direction = obj.properties["direction"])
+              facing_direction = obj.properties["direction"],
+              action = self.define_npc_action(obj.properties.get("character_id","default")))
             
             if "dialog" in obj.properties:
               dialog_text = obj.properties["dialog"].split("|")
@@ -104,6 +114,18 @@ class Overworld:
              self.nearby_character = character
             break
           
+    def define_npc_action(self,character_id):
+      if character_id == "o2":
+        return open_store
+      elif character_id == "o3":
+        return boss_battle
+      elif character_id == "o4":
+        return platform_map
+      elif character_id == "o5":
+        return boss_battle
+      else :
+        return None
+
     def create_path_sprites(self):
       #get tiles from path
       nodes = {node.level: vector(node.grid_pos) for node in self.node_sprites}
@@ -173,15 +195,31 @@ class Overworld:
                     if self.dialog_manager.has_more_line():
                       self.dialog_manager.next_line()
                     else:
-                    # Close dialogue if it's active
-                      self.dialog_active = False 
-                      self.nearby_character = None 
+                     self.dialog_active = False
+                     self.dialogue_finished = True
+                     self.nearby_character = None
                 elif self.nearby_character and not self.dialog_active:
                   self.dialog_manager.set_dialogue(self.nearby_character.dialog_text)
                   self.dialog_active = True
+                  self.dialogue_finished = False
       else:
             self.space_pressed = False  # Reset the flag when spacebar is released
 
+      if keys[pygame.K_RETURN] and self.dialog_active and not self.dialog_manager.has_more_line():
+        if not hasattr(self,"enter_pressed"):
+          self.enter_pressed = False
+
+        if not self.enter_pressed and self.dialog_active and not self.dialog_manager.has_more_line():
+          self.enter_pressed = True
+          print("Dialogue has finished")
+          if self.nearby_character and self.nearby_character.action:
+            self.nearby_character.action()
+
+          self.dialogue_finished = False
+          self.nearby_character = None
+
+      else :
+        self.enter_pressed = False
 
       if self.current_node and not self.icon.path and not self.dialog_active:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
