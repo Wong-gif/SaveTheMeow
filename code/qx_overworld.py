@@ -175,11 +175,9 @@ class Overworld:
                     if self.dialog_manager.has_more_line():
                       self.dialog_manager.next_line()
                     else:
-                    # Close dialogue if it's active
-                      self.dialog_active = False 
-                      self.dialogue_finished = True
-                      self.nearby_character = None 
-                      print("Dialogue finished!")  # Debugging line
+                     self.dialog_active = False
+                     self.dialogue_finished = True
+                     self.nearby_character = None
                 elif self.nearby_character and not self.dialog_active:
                   self.dialog_manager.set_dialogue(self.nearby_character.dialog_text)
                   self.dialog_active = True
@@ -187,15 +185,11 @@ class Overworld:
       else:
             self.space_pressed = False  # Reset the flag when spacebar is released
 
-      if keys[pygame.K_RETURN] and self.dialog_active:
-        if self.dialog_manager.has_more_line():
-          self.dialog_manager.next_line()
-        else:
-          # Close dialogue when ENTER is pressed at the end of dialogue
-            self.dialog_active = False
-            self.dialogue_finished = True
-            self.nearby_character = None
-            print("Dialogue finished!")  # Debugging line
+      if keys[pygame.K_RETURN] and self.dialog_active and not self.dialog_manager.has_more_line():
+        print("Dialogue finished!")  # Debugging line
+        self.dialog_active = False  # Close the dialogue
+        self.dialogue_finished = True
+        self.nearby_character = None
 
       if self.current_node and not self.icon.path and not self.dialog_active:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
