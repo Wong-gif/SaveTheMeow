@@ -1,9 +1,9 @@
-import pygame
-import sys
-from jh_level import Level
-from jh_next_level import NextLevel
+def platform_map():
+    import pygame
+    import sys
+    from jh_level import Level
+    from jh_next_level import NextLevel
 
-def start_game():
     pygame.init()
     pygame.mixer.init()
 

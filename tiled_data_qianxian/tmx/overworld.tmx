@@ -96,7 +96,7 @@
   <object id="242" name="Character" x="1569.59" y="273.029">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
-    <property name="character_id" value="03"/>
+    <property name="character_id" value="o3"/>
     <property name="dialog" value="hehe|hoho"/>
     <property name="direction" value="left"/>
     <property name="graphic" value="grass_boss"/>
@@ -107,7 +107,7 @@
   <object id="243" name="Character" x="2017.58" y="861.167">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
-    <property name="character_id" value="02"/>
+    <property name="character_id" value="o2"/>
     <property name="dialog" value="aasas|aaaaaa"/>
     <property name="direction" value="down"/>
     <property name="graphic" value="fire_boss"/>
