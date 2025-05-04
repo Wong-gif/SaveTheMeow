@@ -31,10 +31,11 @@ class Entity(pygame.sprite.Sprite):
         self.animate(dt)
 
 class Character(Entity):
-    def __init__(self,pos,frames,groups,facing_direction):
+    def __init__(self,pos,frames,groups,facing_direction,action = None):
         super().__init__(pos,frames,groups,facing_direction)
         self.z = Z_layers["main"]
         self.dialog_manager = DialogManager()
+        self.action = action
 
 class DialogManager:
     def __init__(self):
