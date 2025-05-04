@@ -112,8 +112,6 @@ class Overworld:
         if check_rect.colliderect(character.rect):  # Use colliderect for proximity checking
             if not self.dialog_active:
              self.nearby_character = character
-             if self.nearby_character.action:
-               self.nearby_character.action()
             break
           
     def define_npc_action(self,character_id):
@@ -208,12 +206,20 @@ class Overworld:
             self.space_pressed = False  # Reset the flag when spacebar is released
 
       if keys[pygame.K_RETURN] and self.dialog_active and not self.dialog_manager.has_more_line():
-        print("Dialogue finished!")  # Debugging line
-        self.dialog_active = False  # Close the dialogue
-        self.dialogue_finished = True
-        self.nearby_character = None
-        if self.nearby_character and self.nearby_character.action:
-          self.nearby_character.action()  # Execute the action tied to the NPC
+        if not hasattr(self,"enter_pressed"):
+          self.enter_pressed = False
+
+        if not self.enter_pressed and self.dialog_active and not self.dialog_manager.has_more_line():
+          self.enter_pressed = True
+          print("Dialogue has finished")
+          if self.nearby_character and self.nearby_character.action:
+            self.nearby_character.action()
+
+          self.dialogue_finished = False
+          self.nearby_character = None
+
+      else :
+        self.enter_pressed = False
 
       if self.current_node and not self.icon.path and not self.dialog_active:
         if keys[pygame.K_DOWN] and self.current_node.can_move("down"):
