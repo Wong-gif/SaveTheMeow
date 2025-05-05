@@ -71,7 +71,6 @@ class Level:
                 "rect": diamond_rect
             })
 
-
         self.portal_frames = []
         for i in range(16):
             frame = pygame.image.load(f"assets/images/portal/portal_{i}.png").convert_alpha()
@@ -324,8 +323,6 @@ class Level:
         self.screen.blit(self.diamond_icon, (310, 24))
         diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
-
-
 
 
     def run(self):
