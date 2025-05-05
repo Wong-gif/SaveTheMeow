@@ -65,7 +65,7 @@ def platform_map():
     )
 
     running = True
-    #current_state = NEXT_LEVEL
+    current_state = NEXT_LEVEL
     while running:
         clock.tick(FPS)
         
