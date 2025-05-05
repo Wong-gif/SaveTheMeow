@@ -1,120 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="42" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="9" nextobjectid="246">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="43" height="35" tilewidth="64" tileheight="64" infinite="0" nextlayerid="9" nextobjectid="246">
  <tileset firstgid="1" source="../tsx/overworld.tsx"/>
  <tileset firstgid="127" source="../tsx/map objects.tsx"/>
- <layer id="1" name="main" width="42" height="30">
+ <layer id="1" name="main" width="43" height="35">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,1,2,3,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,15,32,18,18,20,0,0,0,0,0,0,1,3,3,3,3,3,3,3,3,4,5,6,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,15,32,32,32,20,0,0,0,0,0,0,15,31,31,31,31,31,31,31,31,31,19,20,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,15,32,32,32,20,0,0,0,0,0,0,15,16,17,18,19,31,32,31,31,31,32,20,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,15,17,17,18,20,0,0,0,0,0,0,15,16,31,32,32,18,18,33,45,45,46,34,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,15,17,31,32,20,0,0,0,0,0,0,15,31,45,46,46,46,46,47,59,59,60,48,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,15,17,31,32,20,0,0,0,0,0,0,29,45,59,60,60,60,60,61,73,74,74,62,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,15,31,31,32,20,0,0,0,0,0,0,43,59,73,74,74,74,74,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,8,19,16,17,18,20,0,0,0,0,0,0,57,73,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,1,3,3,17,18,17,17,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,15,17,17,17,17,31,31,32,20,0,0,0,1,2,3,4,5,3,5,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,15,31,17,31,31,31,32,32,20,0,0,0,15,16,17,18,19,17,18,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,15,31,31,31,32,32,32,32,20,0,0,0,15,17,18,18,31,17,18,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,29,45,46,45,46,45,46,46,34,0,0,0,15,31,32,32,18,18,18,19,20,0,0,0,1,2,3,4,5,5,6,0,0,0,0,0,0,0,
-0,0,0,0,43,59,59,60,59,59,59,60,61,0,0,0,15,31,31,32,32,32,32,33,34,0,0,0,15,16,17,18,19,18,20,0,0,0,0,0,0,0,
-0,0,0,0,57,73,73,74,73,73,73,74,75,0,0,0,29,30,31,32,32,32,33,47,48,0,0,0,15,17,17,18,17,18,20,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,44,45,45,46,46,47,61,62,0,0,0,15,17,17,17,18,18,20,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,57,58,59,59,60,60,61,0,0,0,0,0,15,17,17,17,18,18,20,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72,73,73,74,74,75,0,0,0,0,0,15,17,17,17,18,18,20,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,17,17,18,18,20,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,17,17,17,18,20,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,16,16,16,18,20,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,3,4,3,4,4,5,6,0,0,0,0,15,16,16,16,16,33,34,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,18,17,18,17,18,17,18,20,0,0,0,0,29,30,16,32,33,47,48,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,31,32,17,17,17,17,31,32,20,0,0,0,0,43,44,45,46,47,61,62,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,31,32,31,31,31,31,31,32,20,0,0,0,0,57,58,59,60,61,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,29,45,46,45,45,45,45,45,46,34,0,0,0,0,0,72,73,74,75,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,59,60,60,59,60,59,59,60,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,57,73,74,74,73,74,73,73,74,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1,2,3,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,15,32,18,18,20,0,0,0,0,0,0,1,3,3,3,3,3,3,3,3,4,5,6,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,15,32,32,32,20,0,0,0,0,0,0,15,31,31,31,31,31,31,31,31,31,19,20,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,15,32,32,32,20,0,0,0,0,0,0,15,16,17,18,19,31,32,31,31,31,32,20,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,15,17,17,18,20,0,0,0,0,0,0,15,16,31,32,32,18,18,33,45,45,46,34,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,15,17,31,32,20,0,0,0,0,0,0,15,31,45,46,46,46,46,47,59,59,60,48,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,15,17,31,32,20,0,0,0,0,0,0,29,45,59,60,60,60,60,61,73,74,74,62,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,15,31,31,32,20,0,0,0,0,0,0,43,59,73,74,74,74,74,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,8,19,16,17,18,20,0,0,0,0,0,0,57,73,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,1,3,3,17,18,17,17,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,15,17,17,17,17,31,31,32,20,0,0,0,1,2,3,4,5,3,5,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,15,31,17,31,31,31,32,32,20,0,0,0,15,16,17,18,19,17,18,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,15,31,31,31,32,32,32,32,20,0,0,0,15,17,18,18,31,17,18,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,29,45,46,45,46,45,46,46,34,0,0,0,15,31,32,32,18,18,18,19,20,0,0,0,1,2,3,4,5,5,6,0,0,0,0,0,0,0,0,
+0,0,0,0,43,59,59,60,59,59,59,60,61,0,0,0,15,31,31,32,32,32,32,33,34,0,0,0,15,16,17,18,19,18,20,0,0,0,0,0,0,0,0,
+0,0,0,0,57,73,73,74,73,73,73,74,75,0,0,0,29,30,31,32,32,32,33,47,48,0,0,0,15,17,17,18,17,18,20,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,44,45,45,46,46,47,61,62,0,0,0,15,17,17,17,18,18,20,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,57,58,59,59,60,60,61,0,0,0,0,0,15,17,17,17,18,18,20,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,72,73,73,74,74,75,0,0,0,0,0,15,17,17,17,18,18,20,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,17,17,18,18,20,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,17,17,17,18,20,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,16,16,16,18,20,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,3,4,3,4,4,5,6,0,0,0,0,15,16,16,16,16,33,34,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,17,18,17,18,17,18,17,18,20,0,0,0,0,29,30,16,32,33,47,48,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,31,32,17,17,17,17,31,32,20,0,0,0,0,43,44,45,46,47,61,62,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,31,32,31,31,31,31,31,32,20,0,0,0,0,57,58,59,60,61,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,29,45,46,45,45,45,45,45,46,34,0,0,0,0,0,72,73,74,75,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,59,60,60,59,60,59,59,60,48,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,57,73,74,74,73,74,73,73,74,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="top" width="42" height="30">
+ <layer id="2" name="top" width="43" height="35">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,88,88,88,88,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,102,102,102,102,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,116,116,116,116,116,116,0,117,118,119,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,0,0,0,0,0,0,8,9,9,9,10,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,18,18,18,24,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,88,88,88,88,22,17,17,17,24,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,102,102,102,102,22,17,17,17,24,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,116,116,116,116,36,37,37,37,38,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,51,51,51,52,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,51,51,51,52,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,65,65,65,66,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,9,9,9,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,17,17,17,24,88,88,88,88,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,17,17,17,24,102,102,102,102,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,36,37,37,37,38,116,116,116,116,116,116,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,51,51,51,52,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,65,65,65,66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,88,88,88,88,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,102,102,102,102,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,116,116,116,116,116,116,0,117,118,119,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,103,104,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,0,0,0,0,0,0,8,9,9,9,10,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,18,18,18,24,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,88,88,88,88,22,17,17,17,24,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,102,102,102,102,22,17,17,17,24,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,116,116,116,116,36,37,37,37,38,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,51,51,51,52,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,51,51,51,52,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,65,65,65,66,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,9,9,9,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,17,17,17,24,88,88,88,88,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,17,17,17,24,102,102,102,102,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,36,37,37,37,38,116,116,116,116,116,116,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,51,51,51,52,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,65,65,65,66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="8" name="Entities">
-  <object id="239" name="Character" x="1188.73" y="779.455">
+  <object id="239" name="Character" x="1188.73" y="971.455">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o1"/>
+    <property name="dialog" value="HAHAHAHHA|HOOHOOHOHO"/>
     <property name="direction" value="left"/>
     <property name="graphic" value="blond"/>
     <property name="radius" value="400"/>
    </properties>
    <point/>
   </object>
-  <object id="241" name="Character" x="1170.33" y="1417.83">
+  <object id="241" name="Character" x="1170.33" y="1609.83">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o5"/>
+    <property name="dialog" value="adahahah|ajajajja"/>
     <property name="direction" value="up"/>
     <property name="graphic" value="water_boss"/>
     <property name="radius" value="400"/>
    </properties>
    <point/>
   </object>
-  <object id="242" name="Character" x="1569.59" y="273.029">
+  <object id="242" name="Character" x="1569.59" y="465.029">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
-    <property name="character_id" value="03"/>
+    <property name="character_id" value="o3"/>
+    <property name="dialog" value="hehe|hoho"/>
     <property name="direction" value="left"/>
     <property name="graphic" value="grass_boss"/>
     <property name="radius" value="400"/>
    </properties>
    <point/>
   </object>
-  <object id="243" name="Character" x="2017.58" y="826.167">
+  <object id="243" name="Character" x="2017.58" y="1053.17">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
-    <property name="character_id" value="02"/>
+    <property name="character_id" value="o2"/>
+    <property name="dialog" value="aasas|aaaaaa"/>
     <property name="direction" value="down"/>
     <property name="graphic" value="fire_boss"/>
     <property name="radius" value="400"/>
    </properties>
    <point/>
   </object>
-  <object id="245" name="Character" x="604.25" y="336.583">
+  <object id="245" name="Character" x="610.25" y="528.583">
    <properties>
     <property name="change_direction" type="bool" value="true"/>
     <property name="character_id" value="o4"/>
+    <property name="dialog" value="oops|mememem"/>
     <property name="direction" value="up"/>
     <property name="graphic" value="purple_girl"/>
     <property name="radius" value="400"/>
@@ -123,7 +138,7 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="Nodes">
-  <object id="2" name="Node" x="1344" y="832" width="64" height="64">
+  <object id="2" name="Node" x="1344" y="1024" width="64" height="64">
    <properties>
     <property name="left" value="1"/>
     <property name="right" value="3"/>
@@ -131,40 +146,40 @@
     <property name="up" value="2"/>
    </properties>
   </object>
-  <object id="4" name="Node" x="1984" y="896" width="64" height="64">
+  <object id="4" name="Node" x="1984" y="1088" width="64" height="64">
    <properties>
     <property name="down" value="4"/>
     <property name="left" value="3r"/>
     <property name="stage" value="3"/>
    </properties>
   </object>
-  <object id="5" name="Node" x="2048" y="1344" width="64" height="64">
+  <object id="5" name="Node" x="2048" y="1536" width="64" height="64">
    <properties>
     <property name="left" value="5"/>
     <property name="stage" value="4"/>
     <property name="up" value="4r"/>
    </properties>
   </object>
-  <object id="6" name="Node" x="1472" y="256" width="64" height="64">
+  <object id="6" name="Node" x="1472" y="448" width="64" height="64">
    <properties>
     <property name="down" value="2r"/>
     <property name="left" value="6"/>
     <property name="stage" value="2"/>
    </properties>
   </object>
-  <object id="16" name="Node" x="1088" y="768" width="64" height="64">
+  <object id="16" name="Node" x="1088" y="960" width="64" height="64">
    <properties>
     <property name="down" value="1r"/>
     <property name="stage" value="1"/>
    </properties>
   </object>
-  <object id="232" name="Node" x="1216" y="1408" width="64" height="64">
+  <object id="232" name="Node" x="1216" y="1600" width="64" height="64">
    <properties>
     <property name="right" value="5r"/>
     <property name="stage" value="5"/>
    </properties>
   </object>
-  <object id="235" name="Node" x="640" y="320" width="64" height="64">
+  <object id="235" name="Node" x="640" y="512" width="64" height="64">
    <properties>
     <property name="right" value="6r"/>
     <property name="stage" value="6"/>
@@ -172,7 +187,7 @@
   </object>
  </objectgroup>
  <objectgroup id="5" name="Paths">
-  <object id="21" x="1408" y="832">
+  <object id="21" x="1408" y="1024">
    <properties>
     <property name="end" value="1"/>
     <property name="path_id" value="1"/>
@@ -180,7 +195,7 @@
    </properties>
    <polygon points="-64,0 -320,0 -320,-64"/>
   </object>
-  <object id="204" x="1344" y="896">
+  <object id="204" x="1344" y="1088">
    <properties>
     <property name="end" value="2"/>
     <property name="path_id" value="2"/>
@@ -188,7 +203,7 @@
    </properties>
    <polygon points="0,-64 0,-640 128,-640"/>
   </object>
-  <object id="227" x="1344" y="832">
+  <object id="227" x="1344" y="1024">
    <properties>
     <property name="end" value="3"/>
     <property name="path_id" value="3"/>
@@ -196,7 +211,7 @@
    </properties>
    <polygon points="0,0 0,64 640,64"/>
   </object>
-  <object id="229" x="1984" y="896">
+  <object id="229" x="1984" y="1088">
    <properties>
     <property name="end" value="4"/>
     <property name="path_id" value="4"/>
@@ -204,7 +219,7 @@
    </properties>
    <polygon points="0,0 0,448 64,448"/>
   </object>
-  <object id="231" x="2048" y="1344">
+  <object id="231" x="2048" y="1536">
    <properties>
     <property name="end" value="5"/>
     <property name="path_id" value="5"/>
@@ -212,7 +227,7 @@
    </properties>
    <polygon points="0,0 0,64 -832,64"/>
   </object>
-  <object id="234" x="1472" y="256">
+  <object id="234" x="1472" y="448">
    <properties>
     <property name="end" value="6"/>
     <property name="path_id" value="6"/>
@@ -222,134 +237,134 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="Objects">
-  <object id="29" name="grass" gid="129" x="490" y="754" width="36" height="20"/>
-  <object id="30" name="grass" gid="129" x="636" y="714" width="36" height="20"/>
-  <object id="31" name="grass" gid="129" x="326" y="840" width="36" height="20"/>
-  <object id="32" name="grass" gid="129" x="312" y="754" width="36" height="20"/>
-  <object id="33" name="grass" gid="129" x="672" y="580" width="36" height="20"/>
-  <object id="34" name="grass" gid="129" x="588" y="816" width="36" height="20"/>
-  <object id="35" name="grass" gid="129" x="718" y="832" width="36" height="20"/>
-  <object id="36" name="grass" gid="128" x="694" y="446" width="32" height="20"/>
-  <object id="37" name="grass" gid="128" x="612" y="372" width="32" height="20"/>
-  <object id="38" name="grass" gid="128" x="568" y="266" width="32" height="20"/>
-  <object id="39" name="grass" gid="128" x="646" y="198" width="32" height="20"/>
-  <object id="40" name="grass" gid="128" x="1310" y="264" width="32" height="20"/>
-  <object id="41" name="grass" gid="128" x="1440" y="302" width="32" height="20"/>
-  <object id="42" name="grass" gid="128" x="1420" y="350" width="32" height="20"/>
-  <object id="43" name="grass" gid="128" x="1430" y="192" width="32" height="20"/>
-  <object id="44" name="grass" gid="128" x="1160" y="764" width="32" height="20"/>
-  <object id="45" name="grass" gid="128" x="1106" y="876" width="32" height="20"/>
-  <object id="48" name="grass" gid="128" x="1406" y="852" width="32" height="20"/>
-  <object id="49" name="grass" gid="128" x="1356" y="972" width="32" height="20"/>
-  <object id="50" name="grass" gid="128" x="1250" y="1020" width="32" height="20"/>
-  <object id="51" name="grass" gid="128" x="1308" y="1043" width="32" height="20"/>
-  <object id="52" name="grass" gid="128" x="1242" y="1708" width="32" height="20"/>
-  <object id="53" name="grass" gid="128" x="952" y="1648" width="32" height="20"/>
-  <object id="54" name="grass" gid="128" x="966" y="1528" width="32" height="20"/>
-  <object id="55" name="grass" gid="128" x="1018" y="1630" width="32" height="20"/>
-  <object id="57" name="grass" gid="128" x="1462" y="1654" width="32" height="20"/>
-  <object id="58" name="grass" gid="128" x="1258" y="1378" width="32" height="20"/>
-  <object id="59" name="grass" gid="128" x="1166" y="1398" width="32" height="20"/>
-  <object id="61" name="grass" gid="128" x="2034" y="1456" width="32" height="20"/>
-  <object id="62" name="grass" gid="128" x="1966" y="1374" width="32" height="20"/>
-  <object id="63" name="grass" gid="128" x="1898" y="1304" width="32" height="20"/>
-  <object id="64" name="grass" gid="128" x="2164" y="1296" width="32" height="20"/>
-  <object id="65" name="grass" gid="128" x="1954" y="920" width="32" height="20"/>
-  <object id="66" name="grass" gid="128" x="1924" y="854" width="32" height="20"/>
-  <object id="67" name="grass" gid="128" x="1974" y="822" width="32" height="20"/>
-  <object id="68" name="grass" gid="128" x="2056" y="840" width="32" height="20"/>
-  <object id="69" name="grass" gid="129" x="1964" y="1558" width="36" height="20"/>
-  <object id="70" name="grass" gid="129" x="1902" y="1444" width="36" height="20"/>
-  <object id="71" name="grass" gid="129" x="1224" y="1398" width="36" height="20"/>
-  <object id="72" name="grass" gid="129" x="1336" y="1396" width="36" height="20"/>
-  <object id="73" name="grass" gid="129" x="1084" y="1688" width="36" height="20"/>
-  <object id="74" name="grass" gid="129" x="536" y="804" width="36" height="20"/>
-  <object id="75" name="grass" gid="129" x="628" y="430" width="36" height="20"/>
-  <object id="76" name="grass" gid="129" x="730" y="396" width="36" height="20"/>
-  <object id="77" name="grass" gid="129" x="1608" y="252" width="36" height="20"/>
-  <object id="78" name="grass" gid="129" x="1810" y="240" width="36" height="20"/>
-  <object id="79" name="grass" gid="132" x="1419" y="982" width="39" height="24"/>
-  <object id="80" name="grass" gid="132" x="1503" y="894" width="39" height="24"/>
-  <object id="81" name="grass" gid="132" x="1536" y="832" width="39" height="24"/>
-  <object id="82" name="grass" gid="132" x="1691" y="262" width="39" height="24"/>
-  <object id="83" name="grass" gid="132" x="539" y="592" width="39" height="24"/>
-  <object id="84" name="grass" gid="132" x="2045" y="964" width="39" height="24"/>
-  <object id="85" name="grass" gid="132" x="1989" y="1474" width="39" height="24"/>
-  <object id="86" name="grass" gid="132" x="1353" y="1714" width="39" height="24"/>
-  <object id="87" name="grass" gid="132" x="1233" y="1358" width="39" height="24"/>
-  <object id="88" name="grass" gid="132" x="433" y="906" width="39" height="24"/>
-  <object id="89" name="grass" gid="133" x="670" y="620" width="28" height="16"/>
-  <object id="90" name="grass" gid="133" x="755.333" y="693.333" width="28" height="16"/>
-  <object id="91" name="grass" gid="133" x="746" y="192" width="28" height="16"/>
-  <object id="92" name="grass" gid="133" x="1487.33" y="196" width="28" height="16"/>
-  <object id="93" name="grass" gid="133" x="1238" y="873.333" width="28" height="16"/>
-  <object id="94" name="grass" gid="133" x="1434" y="1582.67" width="28" height="16"/>
-  <object id="95" name="grass" gid="133" x="2114" y="1336" width="28" height="16"/>
-  <object id="96" name="grass" gid="133" x="2098" y="889.333" width="28" height="16"/>
-  <object id="99" name="stone" gid="131" x="414" y="540" width="56" height="52"/>
-  <object id="100" name="stone" gid="131" x="786" y="1066" width="56" height="52"/>
-  <object id="101" name="stone" gid="131" x="940" y="928" width="56" height="52"/>
-  <object id="102" name="stone" gid="131" x="906" y="596" width="56" height="52"/>
-  <object id="103" name="stone" gid="131" x="406" y="1096" width="56" height="52"/>
-  <object id="104" name="stone" gid="131" x="332" y="1106" width="56" height="52"/>
-  <object id="105" name="stone" gid="131" x="140" y="984" width="56" height="52"/>
-  <object id="106" name="stone" gid="131" x="174" y="866" width="56" height="52"/>
-  <object id="107" name="stone" gid="131" x="110" y="774" width="56" height="52"/>
-  <object id="108" name="stone" gid="131" x="260" y="1084" width="56" height="52"/>
-  <object id="112" name="stone" gid="131" x="958" y="794" width="56" height="52"/>
-  <object id="113" name="stone" gid="131" x="1138" y="1282" width="56" height="52"/>
-  <object id="114" name="stone" gid="131" x="1022" y="1464" width="56" height="52"/>
-  <object id="115" name="stone" gid="131" x="976" y="1308" width="56" height="52"/>
-  <object id="116" name="stone" gid="131" x="826" y="1628" width="56" height="52"/>
-  <object id="117" name="stone" gid="131" x="832" y="1742" width="56" height="52"/>
-  <object id="118" name="stone" gid="131" x="1200" y="1908" width="56" height="52"/>
-  <object id="119" name="stone" gid="131" x="1638" y="1836" width="56" height="52"/>
-  <object id="120" name="stone" gid="131" x="1482" y="1884" width="56" height="52"/>
-  <object id="123" name="stone" gid="131" x="1536" y="1568" width="56" height="52"/>
-  <object id="125" name="stone" gid="131" x="1636" y="1242" width="56" height="52"/>
-  <object id="126" name="stone" gid="131" x="1548" y="1186" width="56" height="52"/>
-  <object id="128" name="stone" gid="131" x="1470" y="620" width="56" height="52"/>
-  <object id="129" name="stone" gid="131" x="1998" y="330" width="56" height="52"/>
-  <object id="130" name="stone" gid="131" x="1408" y="114" width="56" height="52"/>
-  <object id="131" name="stone" gid="131" x="1062" y="190" width="56" height="52"/>
-  <object id="132" name="stone" gid="131" x="1934" y="118" width="56" height="52"/>
-  <object id="133" name="stone" gid="131" x="2010" y="704" width="56" height="52"/>
-  <object id="134" name="stone" gid="131" x="2318" y="1108" width="56" height="52"/>
-  <object id="135" name="stone" gid="131" x="2328" y="1188" width="56" height="52"/>
-  <object id="136" name="stone" gid="131" x="2272" y="1220" width="56" height="52"/>
-  <object id="137" name="stone" gid="131" x="2166" y="1726" width="56" height="52"/>
-  <object id="138" name="stone" gid="131" x="2096" y="1750" width="56" height="52"/>
-  <object id="139" name="stone" gid="131" x="2254" y="896" width="56" height="52"/>
-  <object id="140" name="stone" gid="131" x="1784" y="706" width="56" height="52"/>
-  <object id="166" name="palm" gid="130" x="534" y="824" width="100" height="128"/>
-  <object id="167" name="palm" gid="130" x="312" y="876" width="100" height="128"/>
-  <object id="168" name="palm" gid="130" x="376" y="750" width="100" height="128"/>
-  <object id="169" name="palm" gid="130" x="580" y="512" width="100" height="128"/>
-  <object id="170" name="palm" gid="130" x="670" y="602" width="100" height="128"/>
-  <object id="171" name="palm" gid="130" x="622" y="158" width="100" height="128"/>
-  <object id="172" name="palm" gid="130" x="516" y="310" width="100" height="128"/>
-  <object id="173" name="palm" gid="130" x="736" y="328" width="100" height="128"/>
-  <object id="174" name="palm" gid="130" x="1256" y="236" width="100" height="128"/>
-  <object id="175" name="palm" gid="130" x="1366" y="388" width="100" height="128"/>
-  <object id="176" name="palm" gid="130" x="1524" y="250" width="100" height="128"/>
-  <object id="177" name="palm" gid="130" x="1626" y="318" width="100" height="128"/>
-  <object id="178" name="palm" gid="130" x="1798" y="212" width="100" height="128"/>
-  <object id="181" name="palm" gid="130" x="1292" y="1042" width="100" height="128"/>
-  <object id="182" name="palm" gid="130" x="1440" y="818" width="100" height="128"/>
-  <object id="183" name="palm" gid="130" x="1850" y="774" width="100" height="128"/>
-  <object id="184" name="palm" gid="130" x="2030" y="983.333" width="100" height="128"/>
-  <object id="185" name="palm" gid="130" x="1784" y="1156" width="100" height="128"/>
-  <object id="186" name="palm" gid="130" x="2140" y="1294" width="100" height="128"/>
-  <object id="189" name="palm" gid="130" x="2016" y="1542" width="100" height="128"/>
-  <object id="190" name="palm" gid="130" x="1780" y="1522" width="100" height="128"/>
-  <object id="192" name="palm" gid="130" x="1110" y="1348" width="100" height="128"/>
-  <object id="193" name="palm" gid="130" x="928" y="1698" width="100" height="128"/>
-  <object id="194" name="palm" gid="130" x="1008" y="1724" width="100" height="128"/>
-  <object id="195" name="palm" gid="130" x="1406" y="1648" width="100" height="128"/>
-  <object id="196" name="palm" gid="130" x="1280" y="1728" width="100" height="128"/>
-  <object id="197" name="palm" gid="130" x="986" y="1558" width="100" height="128"/>
-  <object id="198" name="palm" gid="130" x="1862" y="1310" width="100" height="128"/>
-  <object id="236" name="stone" gid="131" x="1036" y="508" width="56" height="52"/>
-  <object id="237" name="stone" gid="131" x="1125.33" y="586" width="56" height="52"/>
+  <object id="29" name="grass" gid="129" x="490" y="946" width="36" height="20"/>
+  <object id="30" name="grass" gid="129" x="636" y="906" width="36" height="20"/>
+  <object id="31" name="grass" gid="129" x="326" y="1032" width="36" height="20"/>
+  <object id="32" name="grass" gid="129" x="312" y="946" width="36" height="20"/>
+  <object id="33" name="grass" gid="129" x="672" y="772" width="36" height="20"/>
+  <object id="34" name="grass" gid="129" x="588" y="1008" width="36" height="20"/>
+  <object id="35" name="grass" gid="129" x="718" y="1024" width="36" height="20"/>
+  <object id="36" name="grass" gid="128" x="694" y="638" width="32" height="20"/>
+  <object id="37" name="grass" gid="128" x="612" y="564" width="32" height="20"/>
+  <object id="38" name="grass" gid="128" x="568" y="458" width="32" height="20"/>
+  <object id="39" name="grass" gid="128" x="646" y="390" width="32" height="20"/>
+  <object id="40" name="grass" gid="128" x="1310" y="456" width="32" height="20"/>
+  <object id="41" name="grass" gid="128" x="1440" y="494" width="32" height="20"/>
+  <object id="42" name="grass" gid="128" x="1420" y="542" width="32" height="20"/>
+  <object id="43" name="grass" gid="128" x="1430" y="384" width="32" height="20"/>
+  <object id="44" name="grass" gid="128" x="1160" y="956" width="32" height="20"/>
+  <object id="45" name="grass" gid="128" x="1106" y="1068" width="32" height="20"/>
+  <object id="48" name="grass" gid="128" x="1406" y="1044" width="32" height="20"/>
+  <object id="49" name="grass" gid="128" x="1356" y="1164" width="32" height="20"/>
+  <object id="50" name="grass" gid="128" x="1250" y="1212" width="32" height="20"/>
+  <object id="51" name="grass" gid="128" x="1308" y="1235" width="32" height="20"/>
+  <object id="52" name="grass" gid="128" x="1242" y="1900" width="32" height="20"/>
+  <object id="53" name="grass" gid="128" x="952" y="1840" width="32" height="20"/>
+  <object id="54" name="grass" gid="128" x="966" y="1720" width="32" height="20"/>
+  <object id="55" name="grass" gid="128" x="1018" y="1822" width="32" height="20"/>
+  <object id="57" name="grass" gid="128" x="1462" y="1846" width="32" height="20"/>
+  <object id="58" name="grass" gid="128" x="1258" y="1570" width="32" height="20"/>
+  <object id="59" name="grass" gid="128" x="1166" y="1590" width="32" height="20"/>
+  <object id="61" name="grass" gid="128" x="2034" y="1648" width="32" height="20"/>
+  <object id="62" name="grass" gid="128" x="1966" y="1566" width="32" height="20"/>
+  <object id="63" name="grass" gid="128" x="1898" y="1496" width="32" height="20"/>
+  <object id="64" name="grass" gid="128" x="2164" y="1488" width="32" height="20"/>
+  <object id="65" name="grass" gid="128" x="1954" y="1112" width="32" height="20"/>
+  <object id="66" name="grass" gid="128" x="1924" y="1046" width="32" height="20"/>
+  <object id="67" name="grass" gid="128" x="1974" y="1014" width="32" height="20"/>
+  <object id="68" name="grass" gid="128" x="2056" y="1032" width="32" height="20"/>
+  <object id="69" name="grass" gid="129" x="1964" y="1750" width="36" height="20"/>
+  <object id="70" name="grass" gid="129" x="1902" y="1636" width="36" height="20"/>
+  <object id="71" name="grass" gid="129" x="1224" y="1590" width="36" height="20"/>
+  <object id="72" name="grass" gid="129" x="1336" y="1588" width="36" height="20"/>
+  <object id="73" name="grass" gid="129" x="1084" y="1880" width="36" height="20"/>
+  <object id="74" name="grass" gid="129" x="536" y="996" width="36" height="20"/>
+  <object id="75" name="grass" gid="129" x="628" y="622" width="36" height="20"/>
+  <object id="76" name="grass" gid="129" x="730" y="588" width="36" height="20"/>
+  <object id="77" name="grass" gid="129" x="1608" y="444" width="36" height="20"/>
+  <object id="78" name="grass" gid="129" x="1810" y="432" width="36" height="20"/>
+  <object id="79" name="grass" gid="132" x="1419" y="1174" width="39" height="24"/>
+  <object id="80" name="grass" gid="132" x="1503" y="1086" width="39" height="24"/>
+  <object id="81" name="grass" gid="132" x="1536" y="1024" width="39" height="24"/>
+  <object id="82" name="grass" gid="132" x="1691" y="454" width="39" height="24"/>
+  <object id="83" name="grass" gid="132" x="539" y="784" width="39" height="24"/>
+  <object id="84" name="grass" gid="132" x="2045" y="1156" width="39" height="24"/>
+  <object id="85" name="grass" gid="132" x="1989" y="1666" width="39" height="24"/>
+  <object id="86" name="grass" gid="132" x="1353" y="1906" width="39" height="24"/>
+  <object id="87" name="grass" gid="132" x="1233" y="1550" width="39" height="24"/>
+  <object id="88" name="grass" gid="132" x="433" y="1098" width="39" height="24"/>
+  <object id="89" name="grass" gid="133" x="670" y="812" width="28" height="16"/>
+  <object id="90" name="grass" gid="133" x="755.333" y="885.333" width="28" height="16"/>
+  <object id="91" name="grass" gid="133" x="746" y="384" width="28" height="16"/>
+  <object id="92" name="grass" gid="133" x="1487.33" y="388" width="28" height="16"/>
+  <object id="93" name="grass" gid="133" x="1238" y="1065.33" width="28" height="16"/>
+  <object id="94" name="grass" gid="133" x="1434" y="1774.67" width="28" height="16"/>
+  <object id="95" name="grass" gid="133" x="2114" y="1528" width="28" height="16"/>
+  <object id="96" name="grass" gid="133" x="2098" y="1081.33" width="28" height="16"/>
+  <object id="99" name="stone" gid="131" x="414" y="732" width="56" height="52"/>
+  <object id="100" name="stone" gid="131" x="786" y="1258" width="56" height="52"/>
+  <object id="101" name="stone" gid="131" x="940" y="1120" width="56" height="52"/>
+  <object id="102" name="stone" gid="131" x="906" y="788" width="56" height="52"/>
+  <object id="103" name="stone" gid="131" x="406" y="1288" width="56" height="52"/>
+  <object id="104" name="stone" gid="131" x="332" y="1298" width="56" height="52"/>
+  <object id="105" name="stone" gid="131" x="140" y="1176" width="56" height="52"/>
+  <object id="106" name="stone" gid="131" x="174" y="1058" width="56" height="52"/>
+  <object id="107" name="stone" gid="131" x="110" y="966" width="56" height="52"/>
+  <object id="108" name="stone" gid="131" x="260" y="1276" width="56" height="52"/>
+  <object id="112" name="stone" gid="131" x="958" y="986" width="56" height="52"/>
+  <object id="113" name="stone" gid="131" x="1138" y="1474" width="56" height="52"/>
+  <object id="114" name="stone" gid="131" x="1022" y="1656" width="56" height="52"/>
+  <object id="115" name="stone" gid="131" x="976" y="1500" width="56" height="52"/>
+  <object id="116" name="stone" gid="131" x="826" y="1820" width="56" height="52"/>
+  <object id="117" name="stone" gid="131" x="832" y="1934" width="56" height="52"/>
+  <object id="118" name="stone" gid="131" x="1200" y="2100" width="56" height="52"/>
+  <object id="119" name="stone" gid="131" x="1638" y="2028" width="56" height="52"/>
+  <object id="120" name="stone" gid="131" x="1482" y="2076" width="56" height="52"/>
+  <object id="123" name="stone" gid="131" x="1536" y="1760" width="56" height="52"/>
+  <object id="125" name="stone" gid="131" x="1636" y="1434" width="56" height="52"/>
+  <object id="126" name="stone" gid="131" x="1548" y="1378" width="56" height="52"/>
+  <object id="128" name="stone" gid="131" x="1470" y="812" width="56" height="52"/>
+  <object id="129" name="stone" gid="131" x="1998" y="522" width="56" height="52"/>
+  <object id="130" name="stone" gid="131" x="1408" y="306" width="56" height="52"/>
+  <object id="131" name="stone" gid="131" x="1062" y="382" width="56" height="52"/>
+  <object id="132" name="stone" gid="131" x="1934" y="310" width="56" height="52"/>
+  <object id="133" name="stone" gid="131" x="2010" y="896" width="56" height="52"/>
+  <object id="134" name="stone" gid="131" x="2318" y="1300" width="56" height="52"/>
+  <object id="135" name="stone" gid="131" x="2328" y="1380" width="56" height="52"/>
+  <object id="136" name="stone" gid="131" x="2272" y="1412" width="56" height="52"/>
+  <object id="137" name="stone" gid="131" x="2166" y="1918" width="56" height="52"/>
+  <object id="138" name="stone" gid="131" x="2096" y="1942" width="56" height="52"/>
+  <object id="139" name="stone" gid="131" x="2254" y="1088" width="56" height="52"/>
+  <object id="140" name="stone" gid="131" x="1784" y="898" width="56" height="52"/>
+  <object id="166" name="palm" gid="130" x="534" y="1016" width="100" height="128"/>
+  <object id="167" name="palm" gid="130" x="312" y="1068" width="100" height="128"/>
+  <object id="168" name="palm" gid="130" x="376" y="942" width="100" height="128"/>
+  <object id="169" name="palm" gid="130" x="580" y="704" width="100" height="128"/>
+  <object id="170" name="palm" gid="130" x="670" y="794" width="100" height="128"/>
+  <object id="171" name="palm" gid="130" x="622" y="350" width="100" height="128"/>
+  <object id="172" name="palm" gid="130" x="516" y="502" width="100" height="128"/>
+  <object id="173" name="palm" gid="130" x="736" y="520" width="100" height="128"/>
+  <object id="174" name="palm" gid="130" x="1256" y="428" width="100" height="128"/>
+  <object id="175" name="palm" gid="130" x="1366" y="580" width="100" height="128"/>
+  <object id="176" name="palm" gid="130" x="1524" y="442" width="100" height="128"/>
+  <object id="177" name="palm" gid="130" x="1626" y="510" width="100" height="128"/>
+  <object id="178" name="palm" gid="130" x="1798" y="404" width="100" height="128"/>
+  <object id="181" name="palm" gid="130" x="1292" y="1234" width="100" height="128"/>
+  <object id="182" name="palm" gid="130" x="1440" y="1010" width="100" height="128"/>
+  <object id="183" name="palm" gid="130" x="1850" y="966" width="100" height="128"/>
+  <object id="184" name="palm" gid="130" x="2030" y="1175.33" width="100" height="128"/>
+  <object id="185" name="palm" gid="130" x="1784" y="1348" width="100" height="128"/>
+  <object id="186" name="palm" gid="130" x="2140" y="1486" width="100" height="128"/>
+  <object id="189" name="palm" gid="130" x="2016" y="1734" width="100" height="128"/>
+  <object id="190" name="palm" gid="130" x="1780" y="1714" width="100" height="128"/>
+  <object id="192" name="palm" gid="130" x="1110" y="1540" width="100" height="128"/>
+  <object id="193" name="palm" gid="130" x="928" y="1890" width="100" height="128"/>
+  <object id="194" name="palm" gid="130" x="1008" y="1916" width="100" height="128"/>
+  <object id="195" name="palm" gid="130" x="1406" y="1840" width="100" height="128"/>
+  <object id="196" name="palm" gid="130" x="1280" y="1920" width="100" height="128"/>
+  <object id="197" name="palm" gid="130" x="986" y="1750" width="100" height="128"/>
+  <object id="198" name="palm" gid="130" x="1862" y="1502" width="100" height="128"/>
+  <object id="236" name="stone" gid="131" x="1036" y="700" width="56" height="52"/>
+  <object id="237" name="stone" gid="131" x="1125.33" y="778" width="56" height="52"/>
  </objectgroup>
 </map>
