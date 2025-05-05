@@ -64,7 +64,7 @@ start_button = Button(
 )
 
 running = True
-#current_state = NEXT_LEVEL
+current_state = NEXT_LEVEL
 while running:
     clock.tick(FPS)
     
