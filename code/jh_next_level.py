@@ -35,6 +35,7 @@ class NextLevel:
         self.diamond_sound.set_volume(4.0)
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
+
     
         self.score = 0
         self.time_left = 40
@@ -49,12 +50,14 @@ class NextLevel:
         self.spike_visible = False # make the spike cannot see first
         self.spike_rect = self.spike_image.get_rect()
         self.spike_rect.topleft = (930, 555) # 1st spike position 
+
         self.spike1_rect = self.spike_image.get_rect()
         self.spike1_rect.topleft = (2000, 555)
         self.spike2_rect = self.spike_image.get_rect()
         self.spike2_rect.topleft = (2030, 555)
         self.spike3_rect = self.spike_image.get_rect()
         self.spike3_rect.topleft = (2060, 555)
+
         self.spike4_rect = self.spike_image.get_rect()
         self.spike4_rect.topleft = (2220, 555)
         self.spike5_rect = self.spike_image.get_rect()
@@ -62,10 +65,16 @@ class NextLevel:
         self.spike6_rect = self.spike_image.get_rect()
         self.spike6_rect.topleft = (2280, 555)
 
+        self.spike7_rect = self.spike_image.get_rect()
+        self.spike7_rect.topleft = (2440, 555)
+        self.spike8_rect = self.spike_image.get_rect()
+        self.spike8_rect.topleft = (2470, 555)
+        self.spike9_rect = self.spike_image.get_rect()
+        self.spike9_rect.topleft = (2500, 555)
 
         self._load_game_assets()
         self.player_rect = self.player_images['idle'].get_rect()
-        self.player_rect.midbottom = (180, 70)  # player position
+        self.player_rect.midbottom = (160, 70)  # player position
         self.player_speed = 5
         self.velocity_y = 0
         self.jump_power = -20
@@ -74,7 +83,6 @@ class NextLevel:
         self.facing_right = True
         self.animation_frame = 0
         self.animation_speed = 0.15
-        self.coins = pygame.sprite.Group()
 
         self.button_normal = pygame.image.load("assets/images/button_normal.png").convert_alpha()
         self.button_pressed = pygame.image.load("assets/images/button_pressed.png").convert_alpha()
@@ -109,33 +117,21 @@ class NextLevel:
         self.ground_image_full = pygame.image.load("assets/images/platform.png").convert_alpha()
         self.ground_image_full = pygame.transform.smoothscale(self.ground_image_full, (self.world_width, 100))
 
-        self.player_images = {
-            'idle': self._load_single_image("assets/images/player/player_stand.png"),
-            'walk': [
-                self._load_single_image("assets/images/player/player_walk1.png"),
-                self._load_single_image("assets/images/player/player_walk2.png")
-            ],
-            'jump': self._load_single_image("assets/images/player/player_stand.png")
-        }
-
-        self.coins = []
-        for _ in range(10):         
-            x = random.randint(100, self.world_width - 100)
-            y = random.randint(300, 495)
-            coin_rect = pygame.Rect(x, y, 30, 30)
-            self.coins.append({
-                "rect": coin_rect,
-                "frame": 0,
-                "animation_speed": 0.2
-            })
+        diamond_positions = [
+        (700, 700),
+        (600, 550),
+        (900, 480),
+        (1100, 400),
+        (2300, 480),
+        (2200, 500),
+    ]
 
         self.diamond = []
-        for _ in range(5):  
-            x = random.randint(100, self.world_width - 100)
-            y = random.randint(300, 495)
+        for pos in diamond_positions:
+            x, y = pos
             diamond_rect = pygame.Rect(x, y, 30, 30)
             self.diamond.append({
-                "rect": diamond_rect
+                "rect": diamond_rect,
             })
 
         self.coin_frames = [
@@ -146,6 +142,36 @@ class NextLevel:
             self._load_single_image("assets/images/coin/coin_frame_5.png"),
             self._load_single_image("assets/images/coin/coin_frame_6.png"),
         ]
+
+        coin_positions = [
+        (500, 500),
+        (700, 450),
+        (1000, 480),
+        (1500, 400),
+        (2000, 480),
+        (2500, 500),
+    ]
+        
+        self.coins = []
+        for pos in coin_positions:
+            x, y = pos
+            coin_rect = pygame.Rect(x, y, 30, 30)
+            self.coins.append({
+                "rect": coin_rect,
+                "frame": 0,
+                "animation_speed": 0.2
+            })
+
+
+        self.player_images = {
+            'idle': self._load_single_image("assets/images/player/player_stand.png"),
+            'walk': [
+                self._load_single_image("assets/images/player/player_walk1.png"),
+                self._load_single_image("assets/images/player/player_walk2.png")
+            ],
+            'jump': self._load_single_image("assets/images/player/player_stand.png")
+        }
+
 
     def _load_single_image(self, path):
         image = pygame.image.load(path).convert_alpha()  # 使用透明通道加载图片
@@ -184,13 +210,12 @@ class NextLevel:
                 self.__init__(self.screen)
             return
         
-
         for coin in self.coins:
             coin["frame"] += coin["animation_speed"]
             if coin["frame"] >= len(self.coin_frames):
                 coin["frame"] = 0 
 
-        for coin in self.coins: 
+        for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
                 self.score += 10
@@ -201,8 +226,6 @@ class NextLevel:
                 self.diamond.remove(diamond)
                 self.score += 10
                 self.diamond_sound.play()
-
-
 
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
@@ -215,7 +238,9 @@ class NextLevel:
                 if start_x == 2000:
                     if not any(self.player_rect.colliderect(spike_rect) for spike_rect in [
                         self.spike1_rect, self.spike2_rect, self.spike3_rect, 
-                        self.spike4_rect, self.spike5_rect, self.spike6_rect]):
+                        self.spike4_rect, self.spike5_rect, self.spike6_rect,
+                        self.spike7_rect, self.spike8_rect, self.spike9_rect,
+                        ]):
                         print("Touched deadly ground!")
                         self.__init__(self.screen)  # game restart
                         return
@@ -257,16 +282,6 @@ class NextLevel:
            distance_to_spike = abs(self.player_rect.centerx - self.spike_rect.centerx)
            if distance_to_spike < 150:
                self.spike_visible = True
-            
-        if self.spike_visible:
-            self.screen.blit(self.spike_image, self.world_to_screen(self.spike_rect))
-
-        self.screen.blit(self.spike_image, self.world_to_screen(self.spike1_rect))
-        self.screen.blit(self.spike_image, self.world_to_screen(self.spike2_rect))
-        self.screen.blit(self.spike_image, self.world_to_screen(self.spike3_rect))
-        self.screen.blit(self.spike_image, self.world_to_screen(self.spike4_rect))
-        self.screen.blit(self.spike_image, self.world_to_screen(self.spike5_rect))
-        self.screen.blit(self.spike_image, self.world_to_screen(self.spike6_rect))
                
         self.update_camera()
         self.animation_frame += self.animation_speed
@@ -276,7 +291,7 @@ class NextLevel:
         return [
             (0, 300),    # 1st ground
             (700, 500),  # 2nd ground
-            (2000,900), # 3rd ground
+            (2000,530), # 3rd ground
         ]
 
     def get_player_image(self):
@@ -291,12 +306,12 @@ class NextLevel:
     def draw(self):
         self.screen.blit(self.background, (-self.camera_x, 0))
 
-
         for coin in self.coins:
             frame_index = int(coin["frame"]) % len(self.coin_frames)
             image = self.coin_frames[frame_index]
-            self.screen.blit(image, self.world_to_screen(coin["rect"]))
-
+            pos = self.world_to_screen(coin["rect"])
+            self.screen.blit(image, pos)
+            
         for diamond in self.diamond:
             self.screen.blit(self.diamond_icon, self.world_to_screen(diamond["rect"]))
     
@@ -319,6 +334,10 @@ class NextLevel:
         self.screen.blit(self.spike_image, self.world_to_screen(self.spike4_rect))
         self.screen.blit(self.spike_image, self.world_to_screen(self.spike5_rect))
         self.screen.blit(self.spike_image, self.world_to_screen(self.spike6_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike7_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike8_rect))
+        self.screen.blit(self.spike_image, self.world_to_screen(self.spike9_rect))
+
 
         # 只有按钮被点击后才绘制平台
         if self.platform_visible:
