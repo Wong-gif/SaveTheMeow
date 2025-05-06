@@ -1,97 +1,62 @@
-import pygame
-
 class WeaponEffects:
     @staticmethod
-    def lion_sword():
-        return {
-            "name": "Lion Sword",
-            "type": "attack",
-            "attack_bonus": 150,
-            "description": "Each swing of the sword has 100 points of attack. Only 5 chances."
+    def apply(name, mario, boss):
+        effects = {
+            "Lion Sword": WeaponEffects.lion_sword,
+            "Hawk's Eye": WeaponEffects.hawks_eye,
+            "Luna Bow": WeaponEffects.luna_bow,
+            "Phoenix Feather": WeaponEffects.phoenix_feather,
+            "Hydro Strike": WeaponEffects.hydro_strike,
+            "Libra of Eternity": WeaponEffects.libra_eternity,
+            "Aegis Shield": WeaponEffects.aegis_shield,
+            "Thunder Axe": WeaponEffects.thunder_axe,
+            "Essence of Renewal": WeaponEffects.essence_renewal
         }
+        if name in effects:
+            effects[name](mario, boss)
+        else:
+            print(f"No effect function for: {name}")
 
     @staticmethod
-    def hawks_eye():
-        return {
-            "name": "Hawk's Eye",
-            "type": "attack",
-            "attack_bonus": 130,
-            "description": "Each arrow has 130 damage. Only for 10 seconds."
-        }
+    def lion_sword(mario, boss):
+        boss.health -= 500
+        print("Lion Sword used! Boss -500 HP")
 
     @staticmethod
-    def luna_bow():
-        return {
-            "name": "Luna Bow",
-            "type": "attack",
-            "attack_bonus": 150,
-            "description": "Each arrow has 150 damage. Only for 10 seconds."
-        }
+    def hawks_eye(mario, boss):
+        # Example: improve Mario's bullet damage
+        print("Hawk's Eye used!")
 
     @staticmethod
-    def phoenix_feather():
-        return {
-            "name": "Phoenix Feather",
-            "type": "attack",
-            "attack_bonus": 120,
-            "description": "Each arrow has 150 damage. Only for 10 seconds."
-        }
+    def luna_bow(mario, boss):
+        print("Luna Bow used!")
 
     @staticmethod
-    def hydro_strike():
-        return {
-            "name": "Hydro Strike",
-            "type": "attack",
-            "splash_damage": 200,
-            "description": "Each bullet has 200 points of attack. Only for 10 seconds."
-        }
+    def phoenix_feather(mario, boss):
+        mario.health = min(mario.health + 30, 100)
+        print("Phoenix Feather used! Mario +30 HP")
 
     @staticmethod
-    def libra_of_eternity():
-        return {
-            "name": "Libra of Eternity",
-            "type": "defense",
-            "defense_bonus": 100,
-            "description": "The shield can block 3 attacks."
-        }
+    def hydro_strike(mario, boss):
+        boss.health -= 300
+        print("Hydro Strike used! Boss -300 HP")
 
     @staticmethod
-    def aegis_shield():
-        return {
-            "name": "Aegis Shield",
-            "type": "defense",
-            "block_chance": 0.3,
-            "description": "30% probability to block attack."
-        }
+    def libra_eternity(mario, boss):
+        mario.health = 100
+        boss.health = 10000
+        print("Libra of Eternity used! Reset battle!")
 
     @staticmethod
-    def thunder_axe():
-        return {
-            "name": "Thunder Axe",
-            "type": "stun",
-            "stun_chance": 0.3,
-            "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."
-        }
+    def aegis_shield(mario, boss):
+        print("Aegis Shield used!")
 
     @staticmethod
-    def essence_of_renewal():
-        return {
-            "name": "Essence of Renewal",
-            "type": "heal",
-            "heal": 30,
-            "description": "Restore 30 health points for twice."
-        }
+    def thunder_axe(mario, boss):
+        boss.health -= 800
+        print("Thunder Axe used! Boss -800 HP")
 
     @staticmethod
-    def get_all():
-        return {
-            "Lion Sword": WeaponEffects.lion_sword(),
-            "Hawk's Eye": WeaponEffects.hawks_eye(),
-            "Luna Bow": WeaponEffects.luna_bow(),
-            "Phoenix Feather": WeaponEffects.phoenix_feather(),
-            "Hydro Strike": WeaponEffects.hydro_strike(),
-            "Libra of Eternity": WeaponEffects.libra_of_eternity(),
-            "Aegis Shield": WeaponEffects.aegis_shield(),
-            "Thunder Axe": WeaponEffects.thunder_axe(),
-            "Essence of Renewal": WeaponEffects.essence_of_renewal(),
-        }
+    def essence_renewal(mario, boss):
+        mario.health += 50
+        print("Essence of Renewal used! Mario +50 HP")
