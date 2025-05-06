@@ -30,7 +30,7 @@ class WeaponEffects:
 
         effect = WeaponEffects.active_effects[effect_name]
         if effect["uses_left"] > 0:
-            boss.health -= 150
+            boss.health -= 2000
             effect["uses_left"] -= 1
             print(f"Lion Sword used! Boss -150 HP. Uses left: {effect['uses_left']}")
         else:
@@ -58,17 +58,17 @@ class WeaponEffects:
 
     @staticmethod
     def libra_eternity(mario, boss):
-        effect = WeaponEffects.active_effects.get("libra_eternity")
+        effect_name = "lion_sword"
+        if effect_name not in WeaponEffects.active_effects:
+            WeaponEffects.active_effects[effect_name] = {"uses_left": 3}
 
-        if effect and effect["uses_left"] > 0:
-            effect["uses_left"] -= 1
-            print(f"Libra Eternity blocked the boss's attack! ({effect['uses_left']} blocks left)")
-            if effect["uses_left"] == 0:
-                print("Libra Eternity effect has expired.")
-                del WeaponEffects.active_effects["libra_eternity"]
-        else:
+        effect = WeaponEffects.active_effects[effect_name]
+        if effect["uses_left"] > 0:
             mario.health -= 0
-            print(f"Mario takes {boss.attack_power} damage.")
+            effect["uses_left"] -= 1
+            print(f"Lion Sword used! Boss -150 HP. Uses left: {effect['uses_left']}")
+        else:
+            print("Lion Sword expired. No more uses left.")
 
     @staticmethod
     def aegis_shield(mario, boss):
@@ -88,7 +88,7 @@ class WeaponEffects:
 
         effect = WeaponEffects.active_effects[effect_name]
         if effect["uses_left"] > 0:
-            mario.health = min(mario.health + 30, 100)
+            mario.health += 40
             effect["uses_left"] -= 1
             print(f"Essence of Renewal used! Mario +30 HP. Uses left: {effect['uses_left']}")
         else:

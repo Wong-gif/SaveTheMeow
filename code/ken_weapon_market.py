@@ -6,8 +6,6 @@ WIDTH, HEIGHT = 1200, 800
 FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-GOLD =  (255, 215, 0)
-PURPLE = (150, 0, 150)
 GREEN = (0, 200, 0)
 LIGHT_GREEN = (0, 255, 100)
 GREY = (200, 200, 200)
@@ -15,7 +13,7 @@ LIGHT_GREY = (220, 220, 220)
 BLUE = (135, 206, 235)
 LIGHT_BLUE = (135, 206, 250)
 RED = (255, 0, 0)
-BROWN = (139, 69, 19)
+
 
 pygame.init()
 pygame.mixer.init()
