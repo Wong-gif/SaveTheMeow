@@ -6,8 +6,6 @@ WIDTH, HEIGHT = 1200, 800
 FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-GOLD =  (255, 215, 0)
-PURPLE = (150, 0, 150)
 GREEN = (0, 200, 0)
 LIGHT_GREEN = (0, 255, 100)
 GREY = (200, 200, 200)
@@ -15,7 +13,7 @@ LIGHT_GREY = (220, 220, 220)
 BLUE = (135, 206, 235)
 LIGHT_BLUE = (135, 206, 250)
 RED = (255, 0, 0)
-BROWN = (139, 69, 19)
+
 
 pygame.init()
 pygame.mixer.init()
@@ -55,22 +53,22 @@ weapon_images = {
 }
 
 for key in weapon_images:
-    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (130, 130))
+    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (140, 140))
 
 weapon_effects = {
-    "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 100 points of attack. Only 5 chances."},
+    "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
     "Hawk's Eye": {"attack_bonus": 130, "description": "Each arrow has 130 damage. Only for 10 seconds."},
     "Luna Bow": {"attack_bonus": 150, "description": "Each arrow has 150 damage. Only for 10 seconds."},
-    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 150 damage. Only for 10 seconds."},
-    "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10n seconds"},
-    "Libra of Eternity": {"defense_bonus": 100, "description": "The shield can block 3 attacks."},
+    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 120 damage. Only for 10 seconds."},
+    "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10 seconds"},
+    "Libra of Eternity": {"defense_bonus": 1.0, "description": "The shield can block 3 attacks."},
     "Aegis Shield": {"block_chance": 0.3, "description": "30% probability to block attack."},
     "Thunder Axe": {"stun_chance": 0.3, "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
     "Essence of Renewal": {"heal": 30, "description": "Restore 30 health points for twice."},
 }
     
-player_coins = 500
-player_gems = 200
+player_coins = 300
+player_gems = 150
 
 market_item = [
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False}, 
@@ -100,9 +98,9 @@ def draw_arrow(surface, arrow_image, arrow_rect):
     else:
         screen.blit(arrow_image, arrow_rect) # make the image follow the rect
 
-def add_weapon(inventory, stats, weapon_name):
-        inventory.append(weapon_name)
-        effects = weapon_effects.get(weapon_name, {})
+def add_weapon(inventory, stats, item_name):
+        inventory.append(item_name)
+        effects = weapon_effects.get(item_name, {})
         for key, value in effects.items():
             if key == "description":
                 continue
@@ -149,7 +147,7 @@ while running:
         box = pygame.Rect(x, y, 200, 150)
         pygame.draw.rect(screen, GREY, box)
 
-        if item["name"] in weapon_images:  #武器照片
+        if item["name"] in weapon_images:  # Weapon image
            img = weapon_images[item["name"]]
            img_x = x + box.width // 2 - img.get_width() // 2
            img_y = y + 5  
@@ -194,11 +192,10 @@ while running:
                     fade.set_alpha(alpha)
                     screen.blit(fade, (0, 0))
                     pygame.display.update()
-                    pygame.time.delay(30)
-                running = False 
+                    pygame.time.delay(20)
+                running = False
 
             
-
             elif show_item_details and selected_item:    
                 if cancel_button.collidepoint(mx, my):
                     click_sound.play()
@@ -262,8 +259,11 @@ while running:
     screen.blit(inventory_title_text, (20, 105))
 
     for i, item_name in enumerate(inventory):
-        item_text = font.render(item_name, True, BLACK)
-        screen.blit(item_text, (30, 135 + i * 25))
+        if item_name in weapon_images:
+            img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
+            screen.blit(img, (20, 150 + i * 40))  # Draw image
+            name_text = font.render(item_name, True, WHITE)
+            screen.blit(name_text, (60, 155 + i * 40))  # Name next to image
 
    
 
@@ -284,20 +284,20 @@ while running:
         # 标题
         title_font = pygame.font.SysFont("arial", 28)
         title_text = title_font.render(selected_item["name"], True, BLACK)
-        screen.blit(title_text, (popup_x + popup_width // 2 - title_text.get_width() // 2, popup_y + 20))
+        screen.blit(title_text, (popup_x + popup_width // 2 - title_text.get_width() // 2, popup_y + 15))
 
         # 武器图片
         img = weapon_images.get(selected_item["name"])
         if img:
-            img = pygame.transform.scale(img, (80, 80))
-            screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 60))
+            img = pygame.transform.smoothscale(img, (140, 140))
+            screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 50))
 
         # 描述
         desc_font = pygame.font.SysFont("arial", 20)
         description = weapon_effects[selected_item["name"]]["description"]
         desc_text = desc_font.render(description, True, BLACK)
         desc_x = popup_x + popup_width // 2 - desc_text.get_width() // 2
-        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 30  
+        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 55  
         screen.blit(desc_text, (desc_x, desc_y))
 
         # 按钮
