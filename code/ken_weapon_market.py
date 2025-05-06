@@ -58,19 +58,19 @@ for key in weapon_images:
     weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (140, 140))
 
 weapon_effects = {
-    "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 100 points of attack. Only 5 chances."},
+    "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
     "Hawk's Eye": {"attack_bonus": 130, "description": "Each arrow has 130 damage. Only for 10 seconds."},
     "Luna Bow": {"attack_bonus": 150, "description": "Each arrow has 150 damage. Only for 10 seconds."},
-    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 150 damage. Only for 10 seconds."},
+    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 120 damage. Only for 10 seconds."},
     "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10 seconds"},
-    "Libra of Eternity": {"defense_bonus": 100, "description": "The shield can block 3 attacks."},
+    "Libra of Eternity": {"defense_bonus": 1.0, "description": "The shield can block 3 attacks."},
     "Aegis Shield": {"block_chance": 0.3, "description": "30% probability to block attack."},
     "Thunder Axe": {"stun_chance": 0.3, "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
     "Essence of Renewal": {"heal": 30, "description": "Restore 30 health points for twice."},
 }
     
-player_coins = 500
-player_gems = 200
+player_coins = 300
+player_gems = 150
 
 market_item = [
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False}, 
