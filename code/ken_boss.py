@@ -124,7 +124,7 @@ class Boss(pygame.sprite.Sprite):
             self.shoot()
 
         if self.health < 9000:
-            self.shoot_chance = 10000
+            self.shoot_chance = 100
 
 
     def shoot(self):
