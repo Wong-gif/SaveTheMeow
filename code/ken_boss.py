@@ -4,8 +4,6 @@ import os
 import random
 from ken_effect import WeaponEffects
 
-weapon_effects = WeaponEffects.get_all()
-
 WIDTH, HEIGHT = 1200, 800
 BLACK = (0, 0, 0)
 LAVA = (255, 69, 0)  #bottom
@@ -45,6 +43,7 @@ weapon_images = {
 
 
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
+click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
 
 def draw_health_bar(surf, hp, max_hp, x, y):
@@ -165,7 +164,7 @@ class Fireball(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
 
-  
+weapon_buttons = [] 
 
 all_sprites = pygame.sprite.Group()
 fireballs = pygame.sprite.Group()
@@ -183,13 +182,17 @@ while running:
     screen.fill(WHITE)
     #screen.blit(background_img, (0, 500))
 
-    pygame.draw.rect(screen, WHITE, (150, 0, 900, 120))
+    pygame.draw.rect(screen, BLACK, (150, 0, 900, 120))
+
 
     x_box = 160
     y_box = 15
+    weapon_buttons.clear()
     for weapon_name, img in weapon_images.items():      # loop thought the weapon image
         scaled_images = pygame.transform.smoothscale(img, (90, 90))
+        img_rect = pygame.Rect(x_box, y_box, 90, 90)
         screen.blit(scaled_images, (x_box, y_box))
+        weapon_buttons.append((weapon_name, img_rect)) 
         x_box += 100      # Spacing between images
    
     
@@ -200,6 +203,15 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 mario.shoot()
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            for weapon_name, rect in weapon_buttons:
+                if rect.collidepoint(mouse_pos):
+                    click_sound.play()
+                    print(f"Clicked weapon: {weapon_name}")
+                    # Apply the effect to Mario or Boss here
+                    WeaponEffects.apply(weapon_name, mario, boss)
             
     all_sprites.update()
     for bullet in bullets:
@@ -214,8 +226,7 @@ while running:
     for hit in boss_hits:
         boss.health -= 100
         if boss.health <= 0:
-            print("Boss defeated!")
-            all_sprites.remove(boss)
+            boss.kill()
             running = False
            
     
