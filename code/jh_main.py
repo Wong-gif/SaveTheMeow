@@ -2,12 +2,13 @@ import pygame
 import sys
 from jh_level import Level
 from jh_next_level import NextLevel
+from jh_level_summary import LevelSummary
 
 pygame.init()
 pygame.mixer.init()
 
 SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 800
+SCREEN_HEIGHT = 800 
 FPS = 60
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)

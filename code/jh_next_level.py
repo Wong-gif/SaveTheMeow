@@ -58,7 +58,7 @@ class NextLevel:
         self._load_game_assets()
 
         self.player_rect = self.player_images['idle'].get_rect()
-        self.player_rect.midbottom = (160, 70)  # player position
+        self.player_rect.midbottom = (2600, 70)  # player position
         self.player_speed = 5
         self.velocity_y = 0
         self.jump_power = -20
@@ -67,13 +67,23 @@ class NextLevel:
         self.facing_right = True
         self.animation_frame = 0
         self.animation_speed = 0.15
+        
+        self.portal_rect = pygame.Rect(3100, 221, 80, 100)  # 位置自己调  
+        self.portal_frames = []
+        for i in range(16):
+            frame = pygame.image.load(f"assets/images/portal/portal_{i}.png").convert_alpha()
+            self.portal_frames.append(frame)   
+
+        self.portal_frame_index = 0
+        self.portal_frame_timer = 0
+        self.level_start_time = pygame.time.get_ticks()     
 
         self.fireballs = []  # 火球列表
         self.fireball_image = pygame.image.load("assets/images/fireball.png").convert_alpha()
 
         for i in range(5):
-            x = random.randint(1000, 3000)
-            y = random.randint(200, 400)
+            x = 3200
+            y = random.randint(250, 600)
             speed = random.randint(3, 6)
             self.fireballs.append({"rect": pygame.Rect(x, y, 40, 40), "speed": speed})
 
@@ -217,20 +227,24 @@ class NextLevel:
         return image
     
     def update_camera(self):
-        target_x = self.player_rect.centerx - self.screen_width // 2
-        self.camera_x = max(0, min(target_x, self.world_width - self.screen_width))
+        player_center_x = self.player_rect.centerx
+        screen_width = self.screen.get_width()
+        self.camera_x = max(0, min(self.world_width - screen_width, player_center_x - screen_width // 2))
 
     def world_to_screen(self, rect):
         return rect.move(-self.camera_x, 0)
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
+        
         if keys[pygame.K_LEFT]:
             self.player_rect.x = max(0, self.player_rect.x - self.player_speed)  # 限制最小x为0，防止超出屏幕左侧
             self.facing_right = False
+
         if keys[pygame.K_RIGHT]:
             self.player_rect.x += self.player_speed
             self.facing_right = True
+
         if keys[pygame.K_SPACE] and self.on_ground:
             self.velocity_y = self.jump_power
             self.on_ground = False
@@ -263,17 +277,22 @@ class NextLevel:
                 self.score += 10
                 self.diamond_sound.play()
 
+        self.on_ground = False  # 先假设不在地上
+        self.velocity_y += self.gravity
+        self.player_rect.y += self.velocity_y
 
         for platform, visible in [
-            (self.platform_rect, self.platform_visible),
-            (self.platform2_rect, self.platform2_visible),
-            (self.platform3_rect, self.platform3_visible),
-            (self.platform4_rect, self.platform4_visible),
+                (self.platform_rect, self.platform_visible),
+                (self.platform2_rect, self.platform2_visible),
+                (self.platform3_rect, self.platform3_visible),
+                (self.platform4_rect, self.platform4_visible),
             ]:
-            if visible and self.player_rect.colliderect(platform):
-                self.on_ground = True
-                self.player_rect.bottom = platform.top
-                self.velocity_y = 0
+                if visible and self.player_rect.colliderect(platform):
+                    if self.velocity_y >= 0:
+                        self.player_rect.bottom = platform.top                
+                        self.velocity_y = 0
+                        self.on_ground = True
+
 
         if self.player_rect.colliderect(self.spring.rect):
             if self.player_rect.bottom <= self.spring.rect.top + 20:
@@ -282,19 +301,11 @@ class NextLevel:
                     self.spring.image = self.spring_pressed
                     self.velocity_y = -20
                     self.jump_sound.play()
-
-            else:
-                self.spring.pressed = False
-                self.spring.image = self.spring_normal
-        
         else:
             self.spring.pressed = False
             self.spring.image = self.spring_normal
-            
-        self.velocity_y += self.gravity
-        self.player_rect.y += self.velocity_y
 
-        self.on_ground = False
+        
         for start_x, width, y in self.generate_ground_segments():
             ground_rect = pygame.Rect(start_x, y, width, 100)
             if self.player_rect.colliderect(ground_rect):
@@ -303,7 +314,7 @@ class NextLevel:
                         self.spike1_rect, self.spike2_rect, self.spike3_rect, 
                         self.spike4_rect, self.spike5_rect, self.spike6_rect,
                         self.spike7_rect, self.spike8_rect, self.spike9_rect,
-                        ]):
+                    ]):
                         print("Touched deadly ground!")
                         self.__init__(self.screen)  # game restart
                         return
@@ -311,7 +322,6 @@ class NextLevel:
                 self.player_rect.bottom = ground_rect.top
                 self.velocity_y = 0
                 break
-
 
         # 检查按钮点击
         if self.button.check_player_collision(self.player_rect):
@@ -335,11 +345,12 @@ class NextLevel:
            distance_to_spike = abs(self.player_rect.centerx - self.spike_rect.centerx)
            if distance_to_spike < 150:
                self.spike_visible = True
-               
+
+
         for fireball in self.fireballs:
             fireball["rect"].x -= fireball["speed"]  # 火球往左飞
    
-    # 如果火球飞出画面左侧，就重新生成它（无限循环）
+            # 如果火球飞出画面左侧，就重新生成它（无限循环）
             if fireball["rect"].right < 0:
                 fireball["rect"].x = random.randint(1000, 3000)
                 fireball["rect"].y = random.randint(200, 400)
@@ -350,9 +361,37 @@ class NextLevel:
                 print("You got hit by a fireball!")
                 self.__init__(self.screen)
                 return
-        
+
+
         self.update_camera()
         self.animation_frame += self.animation_speed
+
+
+    def update(self, dt):
+        # Update portal animation
+        self.portal_frame_timer += dt
+        if self.portal_frame_timer > 100:
+            self.portal_frame_index = (self.portal_frame_index + 1) % len(self.portal_frames)
+            self.portal_frame_timer = 0
+
+        # Level completed logic
+        if self.player_rect.colliderect(self.portal_rect):
+            print("Level Completed!")
+            time_used = pygame.time.get_ticks() - self.level_start_time  # Level time
+            from jh_level_summary import LevelSummary
+            summary = LevelSummary(self.screen, level=2, coins=self.score, time_ms=time_used)
+            result = summary.run()
+            if result == "next":
+                self.__init__(self.screen)
+            return
+
+
+
+    def update_camera(self):
+        player_center_x = self.player_rect.centerx
+        screen_width = self.screen.get_width()
+
+        self.camera_x = max(0, min(self.world_width - screen_width, player_center_x - screen_width // 2))
 
     def generate_ground_segments(self):
         # 地面区段，返回多个地面段的位置和宽度
@@ -388,7 +427,10 @@ class NextLevel:
         for start_x, width, y in self.generate_ground_segments():
             if width > 0:
                 ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100))
-                self.screen.blit(ground_surface, (start_x - self.camera_x, y))
+                ground_rect = pygame.Rect(start_x, y, width, 100)
+                screen_pos = self.world_to_screen(ground_rect)
+                self.screen.blit(ground_surface, screen_pos)
+                '''self.screen.blit(ground_surface, (start_x - self.camera_x, y))'''
 
         for fireball in self.fireballs:
             self.screen.blit(self.fireball_image, self.world_to_screen(fireball["rect"]))
@@ -419,6 +461,10 @@ class NextLevel:
         if self.platform4_visible:
             self.screen.blit(self.platform4_image, self.world_to_screen(self.platform4_rect))
 
+        portal_frame = self.portal_frames[self.portal_frame_index]
+        self.screen.blit(portal_frame, self.world_to_screen(self.portal_rect))
+
+
         # 绘制玩家
         current_image = self.get_player_image()  # 处理玩家面向方向
         if not self.facing_right:
@@ -445,4 +491,6 @@ class NextLevel:
     def run(self):
         self.handle_input()
         self.update_physics()
+        self.update_camera()
+        self.update(pygame.time.get_ticks() - self.level_start_time)
         self.draw()
