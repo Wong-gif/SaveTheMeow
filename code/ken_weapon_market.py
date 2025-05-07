@@ -21,6 +21,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Weapon Market")
 clock = pygame.time.Clock()
 
+#background
+background = pygame.image.load(os.path.join("assets", "images", "weapon_background.png")).convert_alpha()
 # coin icon
 coin_icon = pygame.image.load(os.path.join("assets", "images", "dollar.png")).convert_alpha()
 coin_icon = pygame.transform.scale(coin_icon, (25, 25))
@@ -53,7 +55,7 @@ weapon_images = {
 }
 
 for key in weapon_images:
-    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (140, 140))
+    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (150, 150))
 
 weapon_effects = {
     "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
@@ -67,11 +69,11 @@ weapon_effects = {
     "Essence of Renewal": {"heal": 30, "description": "Restore 30 health points for twice."},
 }
     
-player_coins = 300
-player_gems = 150
+player_coins = 500
+player_gems = 300
 
 market_item = [
-    {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False}, 
+    {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Hawk's Eye", "price": 75, "currency": "coins", "bought": False},
     {"name": "Luna Bow", "price": 30, "currency": "gems", "bought": False},
     {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False},
@@ -121,7 +123,7 @@ message_timer = 0
 running = True
 while running:
     clock.tick(FPS)
-    screen.fill(LIGHT_BLUE)
+    screen.blit(background, (0, 0))
     
     draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
@@ -144,17 +146,20 @@ while running:
         col = 3
         x = 230 + (i % col) * 230
         y = 80 + (i // col) * 230
-        box = pygame.Rect(x, y, 200, 150)
-        pygame.draw.rect(screen, GREY, box)
+        box = pygame.Surface((190, 160), pygame.SRCALPHA)
+        box.fill((0, 0, 0, 0))  # Fully transparent base
+        pygame.draw.rect(box, (*GREY, 100), box.get_rect(), border_radius=12)
+        screen.blit(box, (x, y))
+
 
         if item["name"] in weapon_images:  # Weapon image
            img = weapon_images[item["name"]]
-           img_x = x + box.width // 2 - img.get_width() // 2
+           img_x = x + box.get_width() // 2 - img.get_width() // 2
            img_y = y + 5  
            screen.blit(img, (img_x, img_y))
         
-        name_text = font.render(item["name"], True, (BLACK))  #Name text
-        screen.blit(name_text, (x + box.width // 2 - name_text.get_width() // 2, y + 153))
+        name_text = font.render(item["name"], True, (WHITE))  #Name text
+        screen.blit(name_text, (x + box.get_width() // 2 - name_text.get_width() // 2, y + 160))
         
         price_text = font.render(str(item['price']) , True, WHITE)  #Price text
 
@@ -167,16 +172,16 @@ while running:
         text_width = price_text.get_width()
         total_width = icon_width + 5 + text_width  #icon + space + text
 
-        center_iconprice_x = x + box.width // 2 - total_width // 2   #Center the whole thing
-        iconprice_y = y + 180
+        center_iconprice_x = x + box.get_width() // 2 - total_width // 2   #Center the whole thing
+        iconprice_y = y + 188
 
         screen.blit(icon, (center_iconprice_x, iconprice_y))
         screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
 
         if item["bought"]:
             sold_out_text = font.render("Sold out", True, WHITE)
-            text_x = box.x + box.width // 2 - sold_out_text.get_width() // 2
-            text_y = box.y + box.height // 2 - sold_out_text.get_height() // 2
+            text_x = x + box.get_width() // 2 - sold_out_text.get_width() // 2
+            text_y = y + box.get_height() // 2 - sold_out_text.get_height() // 2
             screen.blit(sold_out_text, (text_x, text_y))
 
     for event in pygame.event.get():      # Mouse click
@@ -192,7 +197,7 @@ while running:
                     fade.set_alpha(alpha)
                     screen.blit(fade, (0, 0))
                     pygame.display.update()
-                    pygame.time.delay(20)
+                    pygame.time.delay(5)
                 running = False
 
             
@@ -241,7 +246,7 @@ while running:
 
 
     if message and pygame.time.get_ticks() < message_timer:    # Message that show below   
-        msg_text = font.render(message, True, RED)
+        msg_text = font.render(message, True, WHITE)
         msg_x = WIDTH // 2 - msg_text.get_width() // 2
         msg_y = HEIGHT - 40
 
@@ -272,32 +277,32 @@ while running:
     # 半透明遮罩
         overlay = pygame.Surface((WIDTH, HEIGHT))
         overlay.set_alpha(150)
-        overlay.fill((0, 0, 0))
+        overlay.fill(BLACK)
         screen.blit(overlay, (0, 0))
 
-        popup_width, popup_height = 500, 300
+        popup_width, popup_height = 600, 400
         popup_x = WIDTH // 2 - popup_width // 2
         popup_y = HEIGHT // 2 - popup_height // 2
         popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
         pygame.draw.rect(screen, WHITE, popup_rect, border_radius=15)
 
         # 标题
-        title_font = pygame.font.SysFont("arial", 28)
+        title_font = pygame.font.SysFont("arial", 30)
         title_text = title_font.render(selected_item["name"], True, BLACK)
         screen.blit(title_text, (popup_x + popup_width // 2 - title_text.get_width() // 2, popup_y + 15))
 
         # 武器图片
         img = weapon_images.get(selected_item["name"])
         if img:
-            img = pygame.transform.smoothscale(img, (140, 140))
-            screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 50))
+            img = pygame.transform.smoothscale(img, (190, 190))
+            screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 70))
 
         # 描述
-        desc_font = pygame.font.SysFont("arial", 20)
+        desc_font = pygame.font.SysFont("arial", 22)
         description = weapon_effects[selected_item["name"]]["description"]
         desc_text = desc_font.render(description, True, BLACK)
         desc_x = popup_x + popup_width // 2 - desc_text.get_width() // 2
-        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 55  
+        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 90  
         screen.blit(desc_text, (desc_x, desc_y))
 
         # 按钮
