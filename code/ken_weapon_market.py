@@ -141,7 +141,7 @@ while running:
     screen.blit(gems_text, (325 + coins_text.get_width() + 60, 20))
     
     # Inventory background box
-    inventory_box_width = 200
+    inventory_box_width = 210
     inventory_box_height = max(150, 40 + len(inventory) * 40 + 20)
     inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
     pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
@@ -177,7 +177,7 @@ while running:
            screen.blit(img, (img_x, img_y))
         
         name_text = font.render(item["name"], True, (WHITE))  #Name text
-        screen.blit(name_text, (x + box.get_width() // 2 - name_text.get_width() // 2, y + 160))
+        screen.blit(name_text, (x + box.get_width() // 2 - name_text.get_width() // 2, y + 163))
         
         price_text = font.render(str(item['price']) , True, WHITE)  #Price text
 
@@ -191,7 +191,7 @@ while running:
         total_width = icon_width + 5 + text_width  #icon + space + text
 
         center_iconprice_x = x + box.get_width() // 2 - total_width // 2   #Center the whole thing
-        iconprice_y = y + 188
+        iconprice_y = y + 190
 
         screen.blit(icon, (center_iconprice_x, iconprice_y))
         screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
@@ -264,9 +264,9 @@ while running:
 
 
     if message and pygame.time.get_ticks() < message_timer:    # Message that show below   
-        msg_text = font.render(message, True, WHITE)
+        msg_text = font.render(message, True, RED)
         msg_x = WIDTH // 2 - msg_text.get_width() // 2
-        msg_y = HEIGHT - 40
+        msg_y = HEIGHT - 30
 
        
         msg_bg = pygame.Surface((msg_text.get_width() + 20, msg_text.get_height() + 10)) # Background box
