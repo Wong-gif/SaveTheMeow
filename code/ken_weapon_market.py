@@ -22,7 +22,7 @@ pygame.display.set_caption("Weapon Market")
 clock = pygame.time.Clock()
 
 #background
-background = pygame.image.load(os.path.join("assets", "images", "weapon_background.png")).convert_alpha()
+background = pygame.image.load(os.path.join("assets", "images", "weapon_background.jpg")).convert_alpha()
 # coin icon
 coin_icon = pygame.image.load(os.path.join("assets", "images", "dollar.png")).convert_alpha()
 coin_icon = pygame.transform.scale(coin_icon, (25, 25))
@@ -127,18 +127,36 @@ while running:
     
     draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
-    title_text = font.render("Weapon Market", True, WHITE) # Draw weapon market text
+    title_text = font.render("Weapon Market", True, BLACK) # Draw weapon market text
     screen.blit(title_text, (70, 20))
 
-    draw_stat_box(screen, 230, 15, 225, 35, GREY, 150)  # Background
+    draw_stat_box(screen, 250, 15, 225, 35, GREY, 100)  # Background
     
-    screen.blit(coin_icon, (250, 20))  # Draw coin icon
-    coins_text = font.render(f"{player_coins}", True, BLACK)
-    screen.blit(coins_text, (280, 20))
+    screen.blit(coin_icon, (270, 20))  # Draw coin icon
+    coins_text = font.render(f"{player_coins}", True, WHITE)
+    screen.blit(coins_text, (305, 20))
     
-    screen.blit(gem_icon, (300 + coins_text.get_width() + 30, 20))   # Draw gem icon
-    gems_text = font.render(f"{player_gems}", True, BLACK)
-    screen.blit(gems_text, (300 + coins_text.get_width() + 60, 20))
+    screen.blit(gem_icon, (320 + coins_text.get_width() + 30, 20))   # Draw gem icon
+    gems_text = font.render(f"{player_gems}", True, WHITE)
+    screen.blit(gems_text, (325 + coins_text.get_width() + 60, 20))
+    
+    # Inventory background box
+    inventory_box_width = 200
+    inventory_box_height = max(150, 40 + len(inventory) * 40 + 20)
+    inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
+    pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
+    screen.blit(inventory_box, (10, 90))
+
+    #Inventory title
+    inventory_title_text = font.render("Inventory:", True, WHITE)
+    screen.blit(inventory_title_text, (20, 105))
+
+    for i, item_name in enumerate(inventory):
+        if item_name in weapon_images:
+            img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
+            screen.blit(img, (20, 150 + i * 40))  # Draw image
+            name_text = font.render(item_name, True, WHITE)
+            screen.blit(name_text, (60, 155 + i * 40))  # Name next to image
 
     screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
 
@@ -197,7 +215,7 @@ while running:
                     fade.set_alpha(alpha)
                     screen.blit(fade, (0, 0))
                     pygame.display.update()
-                    pygame.time.delay(5)
+                    pygame.time.delay(30)
                 running = False
 
             
@@ -257,18 +275,7 @@ while running:
         screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
         screen.blit(msg_text, (msg_x, msg_y))         # Draw message
 
-    inventory_box = pygame.Rect(10, 100, 200, 35)    # Inventory background box
-    pygame.draw.rect(screen, BLACK, inventory_box ,border_radius=12)
 
-    inventory_title_text = font.render("Inventory:", True, WHITE)
-    screen.blit(inventory_title_text, (20, 105))
-
-    for i, item_name in enumerate(inventory):
-        if item_name in weapon_images:
-            img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
-            screen.blit(img, (20, 150 + i * 40))  # Draw image
-            name_text = font.render(item_name, True, WHITE)
-            screen.blit(name_text, (60, 155 + i * 40))  # Name next to image
 
    
 
