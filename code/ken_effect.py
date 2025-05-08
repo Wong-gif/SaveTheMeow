@@ -11,7 +11,9 @@ class WeaponEffects:
 
         max_usage = {
             "Thunder Axe": 1,
-            "Essence of Renewal": 3
+            "Essence of Renewal": 3,
+            "Luna Bow": 1,
+            "Hydro Strike": 1, 
         
         }
 
@@ -25,6 +27,8 @@ class WeaponEffects:
         effects = {
             "Thunder Axe": WeaponEffects.thunder_axe,
             "Essence of Renewal": WeaponEffects.essence_of_renewal,
+            "Luna Bow": WeaponEffects.luna_bow,
+            "Hydro Strike": WeaponEffects.hydro_strike,
         }
 
         
@@ -37,7 +41,7 @@ class WeaponEffects:
     def thunder_axe(mario, boss):
         if mario.attack_power == 100:  # only apply if attack power is normal
             mario.attack_power = 2000 # Boost Mario's attack power
-            mario.power_timer = pygame.time.get_ticks() + 5000  # 15 seconds
+            mario.power_timer = pygame.time.get_ticks() + 5000  # 5 seconds
             print("Thunder Axe activated! Mario's attack power boosted to 180 for 15 seconds.")
 
     @staticmethod
@@ -47,3 +51,18 @@ class WeaponEffects:
         if mario.health > 100:
             mario.health = 100  # 不超过最大生命
         print(f"Essence of Renewal activated! Mario restored {restore_health} HP.")
+
+    @staticmethod
+    def luna_bow(mario, boss):
+        if mario.attack_power == 100:
+            mario.attack_power = 2000
+            mario.power_timer = pygame.time.get_ticks() + 5000
+            print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+
+    @staticmethod
+    def hydro_strike(mario, boss):
+        if mario.attack_power == 100:
+            mario.attack_power = 2000
+            mario.power_timer = pygame.time.get_ticks() + 5000
+            print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+
