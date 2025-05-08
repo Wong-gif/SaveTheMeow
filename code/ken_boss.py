@@ -246,7 +246,7 @@ while running:
     
     mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
     for hit in mario_hits: 
-        mario.health -= 1
+        mario.health -= 50
         if mario.health <= 0:
             mario.lives -= 1
             running = False
