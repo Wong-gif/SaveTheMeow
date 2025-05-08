@@ -10,8 +10,6 @@ GREEN = (0, 200, 0)
 LIGHT_GREEN = (0, 255, 100)
 GREY = (200, 200, 200)
 LIGHT_GREY = (220, 220, 220)
-BLUE = (135, 206, 235)
-LIGHT_BLUE = (135, 206, 250)
 
 
 pygame.init()
@@ -39,7 +37,7 @@ arrow_image = pygame.transform.scale(arrow_image, (50, 60))
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 buying_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "buy_sound.wav"))
 pygame.mixer.music.load(os.path.join("assets", "sounds", "weaponback_music.wav"))
-pygame.mixer_music.set_volume(0.5)  # Adjust volume
+pygame.mixer.music.set_volume(0.5)  # Adjust volume
 
 
 font = pygame.font.SysFont("arial", 20)
@@ -53,7 +51,7 @@ original_weapon_images = {
     "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
-    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha()
 }
 
 weapon_images = {
@@ -62,7 +60,7 @@ weapon_images = {
 }
 
 weapon_effects = {
-    "Thunder Axe": {"stun_chance": 0.3, "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
+    "Thunder Axe": {"attack_bonus": 180, "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
     "Essence of Renewal": {"heal": 30, "description": "Restore 30 health points for twice."},
     "Luna Bow": {"attack_bonus": 150, "description": "Each arrow has 150 damage. Only for 10 seconds."},
     "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10 seconds"},
@@ -70,7 +68,7 @@ weapon_effects = {
     "Hawk's Eye": {"attack_bonus": 130, "description": "Each arrow has 130 damage. Only for 10 seconds."},
     "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
     "Aegis Shield": {"block_chance": 0.3, "description": "30% probability to block attack."},
-    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 120 damage. Only for 10 seconds."},
+    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 120 damage. Only for 10 seconds."}
 }
     
 player_coins = 500
@@ -85,7 +83,7 @@ market_item = [
     {"name": "Hawk's Eye", "price": 75, "currency": "coins", "bought": False},
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Aegis Shield", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False},
+    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False}
 ]
 
 # Gems and coins that on top
@@ -258,7 +256,7 @@ while running:
                 for i, item in enumerate(market_item):
                     col = 3
                     x = 230 + (i % col) * 230
-                    y = 80 + (i // col) * 250
+                    y = 80 + (i // col) * 230
                     box = pygame.Rect(x, y, 200, 160)
                     if box.collidepoint(mx, my) and not item["bought"]:  # Only if the mouse clicked the box and the item is NOT bought yet
                         click_sound.play()
