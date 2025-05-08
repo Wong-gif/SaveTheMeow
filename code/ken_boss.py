@@ -71,6 +71,8 @@ class Mario(pygame.sprite.Sprite):
         self.lives = 3
         self.attack_power = 100  # Normal 
         self.power_timer = 0     # timer for power-ups
+        self.shield = False
+        self.shield_timer = 0
 
 
 
@@ -100,6 +102,10 @@ class Mario(pygame.sprite.Sprite):
             self.attack_power = 100  # reset to normal damage
             self.power_timer = 0
             print("Thunder Axe effect expired. Attack power back to normal.")
+
+        if self.shield_timer and pygame.time.get_ticks() > self.shield_timer:
+            self.shield = False
+            print("Aegis Shield effect expired.")
 
 
     def shoot(self):
@@ -245,8 +251,11 @@ while running:
            
     
     mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
-    for hit in mario_hits: 
-        mario.health -= 1
+    for hit in mario_hits:
+        if mario.shield:
+            print("Blocked by Aegis Shield!")
+            continue  # 没伤害
+        mario.health -= 20
         if mario.health <= 0:
             mario.lives -= 1
             running = False

@@ -14,6 +14,8 @@ class WeaponEffects:
             "Essence of Renewal": 3,
             "Luna Bow": 1,
             "Hydro Strike": 1, 
+            "Aegis Shield": 3,
+            "Hawk's Eye": 1
         
         }
 
@@ -29,6 +31,9 @@ class WeaponEffects:
             "Essence of Renewal": WeaponEffects.essence_of_renewal,
             "Luna Bow": WeaponEffects.luna_bow,
             "Hydro Strike": WeaponEffects.hydro_strike,
+            "Aegis Shield": WeaponEffects.aegis_shield,
+            "Hawk's Eye": WeaponEffects.hawk_eye,
+
         }
 
         
@@ -65,4 +70,20 @@ class WeaponEffects:
             mario.attack_power = 2000
             mario.power_timer = pygame.time.get_ticks() + 5000
             print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+
+    
+    @staticmethod
+    def aegis_shield(mario, boss):
+        mario.shield = True
+        mario.shield_timer = pygame.time.get_ticks() + 8000
+        print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+
+    
+    @staticmethod
+    def hawk_eye(mario, boss):
+        if mario.attack_power == 100:
+            mario.attack_power = 2000
+            mario.power_timer = pygame.time.get_ticks() + 5000
+            print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+
 
