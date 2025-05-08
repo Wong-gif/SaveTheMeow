@@ -12,7 +12,6 @@ GREY = (200, 200, 200)
 LIGHT_GREY = (220, 220, 220)
 BLUE = (135, 206, 235)
 LIGHT_BLUE = (135, 206, 250)
-RED = (255, 0, 0)
 
 
 pygame.init()
@@ -36,52 +35,57 @@ girl_image = pygame.transform.scale(girl_image, (450, 700))
 arrow_image = pygame.image.load(os.path.join("assets", "images", "arrow.png")).convert_alpha()
 arrow_image = pygame.transform.scale(arrow_image, (50, 60))
 
-# Sound
+# Sound & Music
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 buying_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "buy_sound.wav"))
+pygame.mixer.music.load(os.path.join("assets", "sounds", "weaponback_music.wav"))
+pygame.mixer_music.set_volume(0.5)  # Adjust volume
+
 
 font = pygame.font.SysFont("arial", 20)
 
-weapon_images = {
-    "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
+original_weapon_images = {
+    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
-    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
     "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
+    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
+    "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
-    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
-    "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
 }
 
-for key in weapon_images:
-    weapon_images[key] = pygame.transform.smoothscale(weapon_images[key], (150, 150))
+weapon_images = {
+    name: pygame.transform.smoothscale(img, (150, 150))
+    for name, img in original_weapon_images.items()
+}
 
 weapon_effects = {
-    "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
-    "Hawk's Eye": {"attack_bonus": 130, "description": "Each arrow has 130 damage. Only for 10 seconds."},
-    "Luna Bow": {"attack_bonus": 150, "description": "Each arrow has 150 damage. Only for 10 seconds."},
-    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 120 damage. Only for 10 seconds."},
-    "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10 seconds"},
-    "Libra of Eternity": {"defense_bonus": 1.0, "description": "The shield can block 3 attacks."},
-    "Aegis Shield": {"block_chance": 0.3, "description": "30% probability to block attack."},
     "Thunder Axe": {"stun_chance": 0.3, "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
     "Essence of Renewal": {"heal": 30, "description": "Restore 30 health points for twice."},
+    "Luna Bow": {"attack_bonus": 150, "description": "Each arrow has 150 damage. Only for 10 seconds."},
+    "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10 seconds"},
+    "Libra of Eternity": {"defense_bonus": 1.0, "description": "The shield can block 3 attacks."},
+    "Hawk's Eye": {"attack_bonus": 130, "description": "Each arrow has 130 damage. Only for 10 seconds."},
+    "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
+    "Aegis Shield": {"block_chance": 0.3, "description": "30% probability to block attack."},
+    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 120 damage. Only for 10 seconds."},
 }
     
 player_coins = 500
 player_gems = 300
 
 market_item = [
-    {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Hawk's Eye", "price": 75, "currency": "coins", "bought": False},
-    {"name": "Luna Bow", "price": 30, "currency": "gems", "bought": False},
-    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False},
-    {"name": "Hydro Strike", "price": 50, "currency": "gems", "bought": False},
-    {"name": "Libra of Eternity", "price": 20, "currency": "gems", "bought": False},
-    {"name": "Aegis Shield", "price": 100, "currency": "coins", "bought": False},
     {"name": "Thunder Axe", "price": 35, "currency": "gems", "bought": False},
     {"name": "Essence of Renewal", "price": 60, "currency": "coins", "bought": False},
+    {"name": "Luna Bow", "price": 30, "currency": "gems", "bought": False},
+    {"name": "Hydro Strike", "price": 50, "currency": "gems", "bought": False},
+    {"name": "Libra of Eternity", "price": 20, "currency": "gems", "bought": False},
+    {"name": "Hawk's Eye", "price": 75, "currency": "coins", "bought": False},
+    {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Aegis Shield", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False},
 ]
 
 # Gems and coins that on top
@@ -119,6 +123,7 @@ inventory = []
 stats = {}
 message = ""
 message_timer = 0
+pygame.mixer.music.play(-1)
 
 running = True
 while running:
@@ -148,7 +153,7 @@ while running:
     screen.blit(inventory_box, (10, 90))
 
     #Inventory title
-    inventory_title_text = font.render("Inventory:", True, WHITE)
+    inventory_title_text = font.render("Inventory :", True, WHITE)
     screen.blit(inventory_title_text, (20, 105))
 
     for i, item_name in enumerate(inventory):
@@ -264,7 +269,7 @@ while running:
 
 
     if message and pygame.time.get_ticks() < message_timer:    # Message that show below   
-        msg_text = font.render(message, True, RED)
+        msg_text = font.render(message, True, WHITE)
         msg_x = WIDTH // 2 - msg_text.get_width() // 2
         msg_y = HEIGHT - 30
 
@@ -299,7 +304,7 @@ while running:
         screen.blit(title_text, (popup_x + popup_width // 2 - title_text.get_width() // 2, popup_y + 15))
 
         # 武器图片
-        img = weapon_images.get(selected_item["name"])
+        img = original_weapon_images.get(selected_item["name"])
         if img:
             img = pygame.transform.smoothscale(img, (190, 190))
             screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 70))
@@ -309,7 +314,7 @@ while running:
         description = weapon_effects[selected_item["name"]]["description"]
         desc_text = desc_font.render(description, True, BLACK)
         desc_x = popup_x + popup_width // 2 - desc_text.get_width() // 2
-        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 90  
+        desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 90 
         screen.blit(desc_text, (desc_x, desc_y))
 
         # 按钮
