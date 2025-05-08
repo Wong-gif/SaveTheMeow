@@ -29,21 +29,20 @@ player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png"
 player_img = pygame.transform.scale(player_img, (WIDTH, 300))
 
 
-weapon_images = {
-    "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
+original_weapon_images = {
+    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
-    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
     "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
+    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
+    "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
-    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
-    "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
 }
 
-
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
-click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
+click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
 
 
 def draw_health_bar(surf, hp, max_hp, x, y):
@@ -70,6 +69,9 @@ class Mario(pygame.sprite.Sprite):
         self.speedy = 10
         self.health = 100
         self.lives = 3
+        self.attack_power = 100  # Normal 
+        self.power_timer = 0     # timer for power-ups
+
 
 
     def update(self):
@@ -92,6 +94,13 @@ class Mario(pygame.sprite.Sprite):
            self.rect.left = 0
         if self.rect.right > WIDTH:
            self.rect.right = WIDTH
+
+        # Power-up duration check
+        if self.power_timer and pygame.time.get_ticks() > self.power_timer:
+            self.attack_power = 100  # reset to normal damage
+            self.power_timer = 0
+            print("Thunder Axe effect expired. Attack power back to normal.")
+
 
     def shoot(self):
         bullet = Bullet(self.rect.centerx, self.rect.centery)
@@ -124,7 +133,7 @@ class Boss(pygame.sprite.Sprite):
             self.shoot()
 
         if self.health < 9000:
-            self.shoot_chance = 100
+            self.shoot_chance = 10
 
 
     def shoot(self):
@@ -182,13 +191,17 @@ while running:
     screen.fill(WHITE)
     #screen.blit(background_img, (0, 500))
 
-    pygame.draw.rect(screen, BLACK, (150, 0, 900, 120))
-
+    x = 150
+    y = 0
+    box = pygame.Surface((900, 120), pygame.SRCALPHA)
+    box.fill((0, 0, 0, 0))  # Fully transparent base
+    pygame.draw.rect(box, (*BLACK, 100), box.get_rect(), border_radius=12)
+    screen.blit(box, (x, y))
 
     x_box = 160
     y_box = 15
     weapon_buttons.clear()
-    for weapon_name, img in weapon_images.items():      # loop thought the weapon image
+    for weapon_name, img in original_weapon_images.items():      # loop thought the weapon image
         scaled_images = pygame.transform.smoothscale(img, (90, 90))
         img_rect = pygame.Rect(x_box, y_box, 90, 90)
         screen.blit(scaled_images, (x_box, y_box))
@@ -224,18 +237,18 @@ while running:
 
     boss_hits = pygame.sprite.spritecollide(boss, bullets, True)
     for hit in boss_hits:
-        boss.health -= 100
+        boss.health -= mario.attack_power
         if boss.health <= 0:
             boss.kill()
             running = False
+
            
     
     mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
-    for hit in mario_hits:
-        mario.health -= 10
+    for hit in mario_hits: 
+        mario.health -= 1
         if mario.health <= 0:
             mario.lives -= 1
-            
             running = False
 
     
