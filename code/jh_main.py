@@ -1,8 +1,8 @@
 import pygame
 import sys
-from jh_level import Level
-from jh_next_level import NextLevel
-from jh_level_summary import LevelSummary
+from jh_game1 import Game1
+from jh_game2 import Game2
+from jh_game_summary import GameSummary
 
 pygame.init()
 pygame.mixer.init()
@@ -14,20 +14,33 @@ BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 DARK_GREEN = (0, 200, 0)
 
+MENU = "menu"
+GAME1 = "game1"
+GAME2 = "game2"
+SUMMARY = "summary"
+
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Save The Meow")
 clock = pygame.time.Clock()
 
-MENU = 0
-GAME = 1
-current_state = MENU
-NEXT_LEVEL = 2
-
 background = pygame.image.load('assets/images/background.png').convert()
 background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))  
 
-level = Level(screen)
-next_level_screen = NextLevel(screen)
+game1 = Game1(screen)
+game2 = Game2(screen)
+
+final_score = game2.score  # 游戏的最终分数
+diamond_score = game2.diamonds_collected  # 玩家收集的钻石数量
+
+
+levels_data = {
+    "level1": {"score": game1.score, "time_ms": game1.time_left, "coins": game1.coins_collected, "diamonds": game1.diamonds_collected},
+    "level2": {"score": game2.score, "time_ms": game2.time_left, "coins": game2.coins_collected, "diamonds": game2.diamonds_collected}
+}
+
+summary = GameSummary(screen, levels_data, game1.coins_collected, game2.coins_collected, game1.diamonds_collected, game2.diamonds_collected)
+
+current_state = MENU
 
 class Button:
     def __init__(self, x, y, width, height, text):
@@ -53,9 +66,8 @@ class Button:
         surface.blit(text_surf, text_rect)
     
     def is_clicked(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            return self.rect.collidepoint(event.pos)
-        return False
+        return event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.rect.collidepoint(event.pos)
+    
 
 start_button = Button(
     SCREEN_WIDTH//2 - 250, 
@@ -65,7 +77,7 @@ start_button = Button(
 )
 
 running = True
-current_state = NEXT_LEVEL
+current_state = GAME2
 while running:
     clock.tick(FPS)
     
@@ -75,25 +87,43 @@ while running:
         
         if current_state == MENU:
             if start_button.is_clicked(event):
-                current_state = GAME
+                current_state = GAME1
                 try:
                     pygame.mixer.music.load("assets/sounds/background_music.mp3")
                     pygame.mixer.music.set_volume(0.5)
                     pygame.mixer.music.play(-1)  # music start
                 except:
-                    pass 
+                    print("Failed to load music") 
     
     if current_state == MENU:
         screen.blit(background, (0, 0))
         start_button.draw(screen)
 
-    elif current_state == GAME:
-        level.run()
-        if level.state == "next_level":
-            current_state = NEXT_LEVEL
+    elif current_state == GAME1:
+        game1.run()
+        if game1.state == "next_level":
+            levels_data["level1"] = {
+                "time_ms": game1.time_used,
+                "coins": game1.coins_collected,
+                "diamonds": game1.diamonds_collected,
+            }
+            current_state = GAME2
 
-    elif current_state == NEXT_LEVEL:
-        next_level_screen.run()
+    elif current_state == GAME2:
+        game2.run()
+        if game2.state == "next_level":
+            levels_data["level2"] = {
+                "time_ms": game2.time_used,
+                "coins": game2.coins_collected,
+                "diamonds": game2.diamonds_collected,
+            }
+
+            summary = GameSummary(screen, levels_data, game1.coins_collected, game2.coins_collected, game1.diamonds_collected, game2.diamonds_collected)
+
+            current_state = SUMMARY
+        
+    elif current_state == SUMMARY:
+        summary.run()
 
     pygame.display.update()
 
