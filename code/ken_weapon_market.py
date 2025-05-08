@@ -44,7 +44,7 @@ font = pygame.font.SysFont("arial", 20)
 
 original_weapon_images = {
     "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
-     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
+    "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
     "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
