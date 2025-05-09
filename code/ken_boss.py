@@ -19,7 +19,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Mario vs Boss")
 pygame.mixer.init()
 clock = pygame.time.Clock()
-font = pygame.font.SysFont(None, 30)
+
+font = pygame.font.SysFont("arial", 20)
 
 fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (30, 30))
@@ -43,6 +44,7 @@ original_weapon_images = {
 
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
+
 
 
 def draw_health_bar(surf, hp, max_hp, x, y):
@@ -69,10 +71,15 @@ class Mario(pygame.sprite.Sprite):
         self.speedy = 10
         self.health = 100
         self.lives = 3
-        self.attack_power = 100  # Normal 
-        self.power_timer = 0     # timer for power-ups
-        self.shield = False
-        self.shield_timer = 0
+        self.attack_power = 100  # Normal power
+        self.power_timer = 0     # Timer for power-ups
+        self.shield = False      # No shield
+        self.shield_timer = 0    # Timer for shield
+        self.active_weapon = None
+        self.activate_message = ""
+        self.activate_message_timer = 0
+        self.expired_message = ""
+        self.expired_message_timer = 0
 
 
 
@@ -99,13 +106,18 @@ class Mario(pygame.sprite.Sprite):
 
         # Power-up duration check
         if self.power_timer and pygame.time.get_ticks() > self.power_timer:
+            self.expired_message = f"{self.active_weapon} effect expired. Attack power back to normal."
+            self.expired_message_timer = pygame.time.get_ticks() + 2000
+            self.active_weapon = None
             self.attack_power = 100  # reset to normal damage
             self.power_timer = 0
-            print("Thunder Axe effect expired. Attack power back to normal.")
+            
 
         if self.shield_timer and pygame.time.get_ticks() > self.shield_timer:
+            self.expired_message = "Aegis Shield effect expired."
+            self.expired_message_timer = pygame.time.get_ticks() + 2000
             self.shield = False
-            print("Aegis Shield effect expired.")
+            self.shield_timer = 0
 
 
     def shoot(self):
@@ -228,7 +240,6 @@ while running:
             for weapon_name, rect in weapon_buttons:
                 if rect.collidepoint(mouse_pos):
                     click_sound.play()
-                    print(f"Clicked weapon: {weapon_name}")
                     # Apply the effect to Mario or Boss here
                     WeaponEffects.apply(weapon_name, mario, boss)
             
@@ -264,6 +275,16 @@ while running:
     all_sprites.draw(screen)
     draw_health_bar(screen, mario.health, 100, 5, 15)  # Mario HP
     draw_health_bar(screen, boss.health, 10000, boss.rect.x - 20, boss.rect.top - 20)  # Boss HP
+
+
+    if mario.activate_message and pygame.time.get_ticks() < mario.activate_message_timer:
+        msg = font.render(mario.activate_message, True, RED)
+        screen.blit(msg, (WIDTH // 2 - msg.get_width() // 2, HEIGHT - 60))
+
+    # Show expired weapon message
+    if mario.expired_message and pygame.time.get_ticks() < mario.expired_message_timer:
+        msg = font.render(mario.expired_message, True, RED)
+        screen.blit(msg, (WIDTH // 2 - msg.get_width() // 2, HEIGHT - 30))
 
     pygame.display.update()
 
