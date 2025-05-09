@@ -328,5 +328,4 @@ def open_store():
         
         pygame.display.update()
         
-    pygame.quit()
-    sys.exit()
+    return
