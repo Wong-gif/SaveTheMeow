@@ -3,6 +3,7 @@ def boss_battle():
     import sys
     import os
     import random
+    from ken_effect import WeaponEffects
 
     WIDTH, HEIGHT = 1200, 800
     BLACK = (0, 0, 0)
@@ -25,9 +26,25 @@ def boss_battle():
     fireball_img = pygame.transform.scale(fireball_img, (30, 30))
     background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.png")).convert_alpha()
     background_img = pygame.transform.scale(background_img, (WIDTH, 300))
+    player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
+    player_img = pygame.transform.scale(player_img, (WIDTH, 300))
+
+
+    weapon_images = {
+        "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
+        "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
+        "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
+        "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
+        "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
+        "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
+        "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
+        "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+        "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
+    }
 
 
     shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
+    click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
 
     def draw_health_bar(surf, hp, max_hp, x, y):
@@ -46,8 +63,8 @@ def boss_battle():
     class Mario(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.Surface((40, 40))
-            self.image.fill(RED)
+            self.image = pygame.transform.scale(player_img, (40, 40))
+            self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             self.rect.x = 50
             self.rect.centery = HEIGHT/2
@@ -67,8 +84,8 @@ def boss_battle():
             if key_pressed[pygame.K_RIGHT]:
                 self.rect.x += self.speedy
 
-            if self.rect.top < 0:
-                self.rect.top = 0
+            if self.rect.top < 125:
+                self.rect.top = 125
             if self.rect.bottom > HEIGHT:
                 self.rect.bottom = HEIGHT
 
@@ -98,7 +115,7 @@ def boss_battle():
         def update(self):
             self.rect.y += self.speed
 
-            if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
+            if self.rect.top <= 125 or self.rect.bottom >= HEIGHT:
                 self.speed *= -1
                 self.speed += random.choice([-1, 0, 1])
                 if self.speed == 0:
@@ -108,7 +125,7 @@ def boss_battle():
                 self.shoot()
 
             if self.health < 9000:
-                self.shoot_chance = 10000
+                self.shoot_chance = 100
 
 
         def shoot(self):
@@ -148,8 +165,7 @@ def boss_battle():
             if self.rect.right < 0:
                 self.kill()
 
-        
-
+    weapon_buttons = [] 
 
     all_sprites = pygame.sprite.Group()
     fireballs = pygame.sprite.Group()
@@ -167,14 +183,37 @@ def boss_battle():
         screen.fill(WHITE)
         #screen.blit(background_img, (0, 500))
 
+        pygame.draw.rect(screen, BLACK, (150, 0, 900, 120))
+
+
+        x_box = 160
+        y_box = 15
+        weapon_buttons.clear()
+        for weapon_name, img in weapon_images.items():      # loop thought the weapon image
+            scaled_images = pygame.transform.smoothscale(img, (90, 90))
+            img_rect = pygame.Rect(x_box, y_box, 90, 90)
+            screen.blit(scaled_images, (x_box, y_box))
+            weapon_buttons.append((weapon_name, img_rect)) 
+            x_box += 100      # Spacing between images
+    
+        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     mario.shoot()
-        
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                for weapon_name, rect in weapon_buttons:
+                    if rect.collidepoint(mouse_pos):
+                        click_sound.play()
+                        print(f"Clicked weapon: {weapon_name}")
+                        # Apply the effect to Mario or Boss here
+                        WeaponEffects.apply(weapon_name, mario, boss)
+                
         all_sprites.update()
         for bullet in bullets:
             hit_fireballs = pygame.sprite.spritecollide(bullet, fireballs, False)
@@ -188,8 +227,7 @@ def boss_battle():
         for hit in boss_hits:
             boss.health -= 100
             if boss.health <= 0:
-                print("Boss defeated!")
-                all_sprites.remove(boss)
+                boss.kill()
                 running = False
             
         
@@ -208,5 +246,5 @@ def boss_battle():
 
         pygame.display.update()
 
-    pygame.quit()
-    sys.exit()
+    pygame.mixer.quit()
+    return  # goes back to overworld
