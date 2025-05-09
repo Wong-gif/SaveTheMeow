@@ -47,7 +47,9 @@ class WeaponEffects:
         if mario.attack_power == 100:  # only apply if attack power is normal
             mario.attack_power = 2000 # Boost Mario's attack power
             mario.power_timer = pygame.time.get_ticks() + 5000  # 5 seconds
-            print("Thunder Axe activated! Mario's attack power boosted to 180 for 15 seconds.")
+            mario.active_weapon = "Thunder Axe"
+            mario.activate_message = "Thunder Axe activated! Mario's attack power boosted to 180 for 15 seconds."
+            mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
     @staticmethod
     def essence_of_renewal(mario, boss):
@@ -55,28 +57,36 @@ class WeaponEffects:
         mario.health += restore_health
         if mario.health > 100:
             mario.health = 100  # 不超过最大生命
-        print(f"Essence of Renewal activated! Mario restored {restore_health} HP.")
+            mario.active_weapon = "Essence of Renewal"
+            mario.activate_message = f"Essence of Renewal activated! Mario restored {restore_health} HP."
+            mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
     @staticmethod
     def luna_bow(mario, boss):
         if mario.attack_power == 100:
             mario.attack_power = 2000
             mario.power_timer = pygame.time.get_ticks() + 5000
-            print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+            mario.active_weapon = "Luna Bow"
+            mario.activate_message = "Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds."
+            mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
     @staticmethod
     def hydro_strike(mario, boss):
         if mario.attack_power == 100:
             mario.attack_power = 2000
             mario.power_timer = pygame.time.get_ticks() + 5000
-            print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+            mario.active_weapon = "Hydro Strike"
+            mario.activate_message = "Hydro Strike activated! Mario's attack power boosted to 180 for 15 seconds."
+            mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
     
     @staticmethod
     def aegis_shield(mario, boss):
         mario.shield = True
-        mario.shield_timer = pygame.time.get_ticks() + 8000
-        print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+        mario.shield_timer = pygame.time.get_ticks() + 5000
+        mario.active_weapon = "Aegis Shield"
+        mario.activate_message = "Aegis Shield activated! Mario's attack power boosted to 180 for 15 seconds."
+        mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
     
     @staticmethod
@@ -84,6 +94,8 @@ class WeaponEffects:
         if mario.attack_power == 100:
             mario.attack_power = 2000
             mario.power_timer = pygame.time.get_ticks() + 5000
-            print("Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds.")
+            mario.active_weapon = "Hawk's Eye"
+            mario.activate_message = "Hawk's Eye activated! Mario's attack power boosted to 180 for 15 seconds."
+            mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
 
