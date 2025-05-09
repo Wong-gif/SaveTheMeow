@@ -246,5 +246,5 @@ def boss_battle():
 
         pygame.display.update()
 
-    pygame.quit()
-    sys.exit()
+    pygame.mixer.quit()
+    return  # goes back to overworld
