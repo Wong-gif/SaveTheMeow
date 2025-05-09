@@ -47,10 +47,10 @@ original_weapon_images = {
     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
-    "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
+    "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
     "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
+    "Shadow Gilt": pygame.image.load(os.path.join("assets", "images", "Shadow_gilt.png")).convert_alpha(),
     "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha()
 }
 
@@ -59,16 +59,16 @@ weapon_images = {
     for name, img in original_weapon_images.items()
 }
 
-weapon_effects = {
-    "Thunder Axe": {"attack_bonus": 180, "description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
-    "Essence of Renewal": {"heal": 30, "description": "Restore 30 health points for twice."},
-    "Luna Bow": {"attack_bonus": 150, "description": "Each arrow has 150 damage. Only for 10 seconds."},
-    "Hydro Strike": {"splash_damage": 200, "description": "Each bullet has 200 points of attack. Only for 10 seconds"},
-    "Libra of Eternity": {"defense_bonus": 1.0, "description": "The shield can block 3 attacks."},
-    "Hawk's Eye": {"attack_bonus": 130, "description": "Each arrow has 130 damage. Only for 10 seconds."},
-    "Lion Sword": {"attack_bonus": 150, "description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
-    "Aegis Shield": {"block_chance": 0.3, "description": "30% probability to block attack."},
-    "Phoenix Feather": {"attack_bonus": 120, "description": "Each arrow has 120 damage. Only for 10 seconds."}
+weapon_description = {
+    "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
+    "Essence of Renewal": {"description": "Restore 30 health points for twice."},
+    "Luna Bow": {"description": "Each arrow has 150 damage. Only for 10 seconds."},
+    "Hydro Strike": {"description": "Each bullet has 200 points of attack. Only for 10 seconds"},
+    "Aegis Shield": {"description": "30% probability to block attack."},
+    "Hawk's Eye": {"description": "Each arrow has 130 damage. Only for 10 seconds."},
+    "Lion Sword": {"description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
+    "Shadow Gilt": {"description": "30% probability to block attack."},
+    "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."}
 }
     
 player_coins = 500
@@ -79,10 +79,10 @@ market_item = [
     {"name": "Essence of Renewal", "price": 60, "currency": "coins", "bought": False},
     {"name": "Luna Bow", "price": 30, "currency": "gems", "bought": False},
     {"name": "Hydro Strike", "price": 50, "currency": "gems", "bought": False},
-    {"name": "Libra of Eternity", "price": 20, "currency": "gems", "bought": False},
+    {"name": "Aegis Shield", "price": 100, "currency": "coins", "bought": False},
     {"name": "Hawk's Eye", "price": 75, "currency": "coins", "bought": False},
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Aegis Shield", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Shadow Gilt", "price": 100, "currency": "coins", "bought": False},
     {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False}
 ]
 
@@ -102,23 +102,11 @@ def draw_arrow(surface, arrow_image, arrow_rect):
     else:
         screen.blit(arrow_image, arrow_rect) # make the image follow the rect
 
-def add_weapon(inventory, stats, item_name):
-        inventory.append(item_name)
-        effects = weapon_effects.get(item_name, {})
-        for key, value in effects.items():
-            if key == "description":
-                continue
-            if key in stats:
-                stats[key] += value
-            else:
-                stats[key] = value
-
 
 arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
 selected_item = None  # 选中的物品
 show_item_details = False  # 是否显示详情窗口
 inventory = []
-stats = {}
 message = ""
 message_timer = 0
 pygame.mixer.music.play(-1)
@@ -309,7 +297,7 @@ while running:
 
         # 描述
         desc_font = pygame.font.SysFont("arial", 22)
-        description = weapon_effects[selected_item["name"]]["description"]
+        description = weapon_description[selected_item["name"]]["description"]
         desc_text = desc_font.render(description, True, BLACK)
         desc_x = popup_x + popup_width // 2 - desc_text.get_width() // 2
         desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 90 
