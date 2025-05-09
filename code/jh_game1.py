@@ -2,7 +2,7 @@ import pygame
 import random
 import os
 
-class Level:
+class Game1:
     def __init__(self, screen):
         self.screen = screen
         self.screen_width, self.screen_height = screen.get_size()
@@ -18,6 +18,12 @@ class Level:
         self.portal_animation_speed = 0.2
         self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 27)
 
+        self.level_start_time = pygame.time.get_ticks()
+        self.time_used = 0
+
+        self.coins_collected = 0
+        self.diamonds_collected = 0
+
         self.coin_icon = pygame.image.load("assets/images/ui/coin_icon.png").convert_alpha()
         self.time_icon = pygame.image.load("assets/images/ui/time_icon.png").convert_alpha()
         self.diamond_icon = pygame.image.load("assets/images/ui/diamond_icon.png").convert_alpha()
@@ -32,11 +38,10 @@ class Level:
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
         
-
         self._load_game_assets()
 
         self.player_rect = self.player_images['idle'].get_rect()
-        self.player_rect.midbottom = (2500, 70)
+        self.player_rect.midbottom = (140, 70)
         self.player_speed = 5
         self.velocity_y = 0
         self.jump_power = -20
@@ -179,15 +184,17 @@ class Level:
         for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
+                self.coins_collected += 10
                 self.score += 10
                 self.coin_sound.play()
-
+                
         for diamond in self.diamond[:]: 
             if self.player_rect.colliderect(diamond["rect"]):
                 self.diamond.remove(diamond)
+                self.diamonds_collected += 10 
                 self.score += 10
                 self.diamond_sound.play()
-                   
+                                   
         #ground material        
         for i, pos in enumerate(self.split_positions):
             if not self.ground_split_flags[i] and abs(self.player_rect.centerx - pos) < 200:
@@ -234,6 +241,8 @@ class Level:
         for brick in self.bricks:
             if brick["type"] == "portal" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
+                    self.state != "next_level"
+                    self.time_used = pygame.time.get_ticks() - self.level_start_time
                     self.state = "next_level"
                     if not self.has_printed_success:
                         print("Congratulations！")
@@ -324,6 +333,7 @@ class Level:
         diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
 
+        pygame.display.update()
 
     def run(self):
         self.handle_input()
