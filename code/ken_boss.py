@@ -12,6 +12,7 @@ RED = (255, 0, 0)   #mario
 ORANGE = (255, 165, 0)   #boss
 YELLOW = (255, 255, 0)
 GREEN = (0, 255, 0)
+GREY = (200, 200, 200)
 
 pygame.init()
 
@@ -279,12 +280,28 @@ while running:
 
     if mario.activate_message and pygame.time.get_ticks() < mario.activate_message_timer:
         msg = font.render(mario.activate_message, True, RED)
-        screen.blit(msg, (WIDTH // 2 - msg.get_width() // 2, HEIGHT - 60))
+        msg_x = WIDTH // 2 - msg.get_width() // 2
+        msg_y = HEIGHT - 60
+        
+
+        msg_bg = pygame.Surface((msg.get_width() + 20, msg.get_height() + 10)) # Background box
+        msg_bg.set_alpha(100)  # Transparency
+        msg_bg.fill(GREY)
+        screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
+        screen.blit(msg, (msg_x, msg_y))         # Draw message
+
 
     # Show expired weapon message
     if mario.expired_message and pygame.time.get_ticks() < mario.expired_message_timer:
         msg = font.render(mario.expired_message, True, RED)
-        screen.blit(msg, (WIDTH // 2 - msg.get_width() // 2, HEIGHT - 30))
+        msg_x = WIDTH // 2 - msg.get_width() // 2
+        msg_y = HEIGHT - 30
+
+        msg_bg = pygame.Surface((msg.get_width() + 20, msg.get_height() + 10)) # Background box
+        msg_bg.set_alpha(100)  # Transparency
+        msg_bg.fill(GREY)
+        screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
+        screen.blit(msg, (msg_x, msg_y))         # Draw message
 
     pygame.display.update()
 
