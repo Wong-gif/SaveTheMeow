@@ -12,7 +12,7 @@ RED = (255, 0, 0)   #mario
 ORANGE = (255, 165, 0)   #boss
 YELLOW = (255, 255, 0)
 GREEN = (0, 255, 0)
-GREY = (200, 200, 200)
+GREY = (200, 200, 200) 
 
 pygame.init()
 
@@ -81,7 +81,7 @@ class Mario(pygame.sprite.Sprite):
         self.activate_message_timer = 0
         self.expired_message = ""
         self.expired_message_timer = 0
-
+        self.bullet_color = BLACK
 
 
     def update(self):
@@ -107,10 +107,11 @@ class Mario(pygame.sprite.Sprite):
 
         # Power-up duration check
         if self.power_timer and pygame.time.get_ticks() > self.power_timer:
-            self.expired_message = f"{self.active_weapon} effect expired. Attack power back to normal."
+            self.expired_message = f"{self. active_weapon} effect expired. Attack power back to normal."
             self.expired_message_timer = pygame.time.get_ticks() + 2000
             self.active_weapon = None
-            self.attack_power = 100  # reset to normal damage
+            self.attack_power = 100  # reset to normal
+            self.bullet_color = BLACK   # RESET TO NORMAL 
             self.power_timer = 0
             
 
@@ -122,7 +123,7 @@ class Mario(pygame.sprite.Sprite):
 
 
     def shoot(self):
-        bullet = Bullet(self.rect.centerx, self.rect.centery)
+        bullet = Bullet(self.rect.centerx, self.rect.centery, self.bullet_color)
         all_sprites.add(bullet)
         bullets.add(bullet)
         shoot_sound.play()
@@ -152,7 +153,7 @@ class Boss(pygame.sprite.Sprite):
             self.shoot()
 
         if self.health < 9000:
-            self.shoot_chance = 10
+            self.shoot_chance = 25
 
 
     def shoot(self):
@@ -162,10 +163,10 @@ class Boss(pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, color):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((10, 5))
-        self.image.fill(GREEN)
+        self.image.fill(color)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
