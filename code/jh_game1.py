@@ -1,6 +1,8 @@
 import pygame
 import random
 import os
+from jh_death_popup import DeathPopup
+
 
 class Game1:
     def __init__(self, screen):
@@ -37,6 +39,8 @@ class Game1:
         self.diamond_sound.set_volume(4.0)
         self.coin_sound = pygame.mixer.Sound('assets/sounds/coin.wav')
         self.coin_sound.set_volume(0.3)
+
+        self.death_popup = DeathPopup(screen, self.screen_width, self.screen_height)
         
         self._load_game_assets()
 
@@ -166,9 +170,8 @@ class Game1:
             self.time_left -= 1
             self.last_time_update = current_time
             if self.time_left <= 0:
-                print("Times up！Game Restart")
-                self.__init__(self.screen)
-            return
+                self.death_popup.show("Time’s up! Game over!")
+                return
         
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
@@ -214,16 +217,15 @@ class Game1:
         for index, dian in enumerate(self.dians):
             if not dian["collected"] and self.player_rect.colliderect(dian["rect"]):
                 if index == 1:
-                    print("Touched the second dian! Restarting game...")
-                    self.__init__(self.screen)
+                    self.death_popup.show("Please be advised not to place trust in any ball!")
                     return
                 else:
                     dian["collected"] = True
                     self.dian_sound.play()
                
         if self.player_rect.bottom > self.screen_height:
-            print("Fall Down, Game Start Again")
-            self.__init__(self.screen)
+            self.death_popup.show("You fell off the ground!")
+            return
         
         for brick in self.bricks:
             if brick["type"] == "spike" and brick["active"]:
@@ -235,7 +237,7 @@ class Game1:
         for brick in self.bricks:
             if brick["type"] == "spike" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
-                    self.__init__(self.screen)
+                    self.death_popup.show("Caution! You have been slain by deadly spikes!")
                     return
                     
         for brick in self.bricks:
@@ -333,9 +335,17 @@ class Game1:
         diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
 
+        self.death_popup.draw()
         pygame.display.update()
 
-    def run(self):
-        self.handle_input()
-        self.update_physics()
+    def run(self, event=None):
+        if event:
+            if self.death_popup.handle_event(event):
+                self.__init__(self.screen)
+                return
+            
+        if not self.death_popup.active:
+            self.handle_input()
+            self.update_physics()
+       
         self.draw()
