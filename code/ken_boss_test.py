@@ -13,6 +13,7 @@ def boss_battle():
     ORANGE = (255, 165, 0)   #boss
     YELLOW = (255, 255, 0)
     GREEN = (0, 255, 0)
+    GREY = (200, 200, 200) 
 
     pygame.init()
 
@@ -20,7 +21,8 @@ def boss_battle():
     pygame.display.set_caption("Mario vs Boss")
     pygame.mixer.init()
     clock = pygame.time.Clock()
-    font = pygame.font.SysFont(None, 30)
+
+    font = pygame.font.SysFont("arial", 20)
 
     fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
     fireball_img = pygame.transform.scale(fireball_img, (30, 30))
@@ -30,21 +32,21 @@ def boss_battle():
     player_img = pygame.transform.scale(player_img, (WIDTH, 300))
 
 
-    weapon_images = {
-        "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-        "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
-        "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
-        "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
-        "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
-        "Libra of Eternity": pygame.image.load(os.path.join("assets", "images", "Libra_eternity.png")).convert_alpha(),
-        "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
+    original_weapon_images = {
         "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
-        "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha()
+        "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
+        "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
+        "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
+        "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
+        "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
+        "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
+        "Shadow Gilt": pygame.image.load(os.path.join("assets", "images", "Shadow_gilt.png")).convert_alpha(),
+        "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
     }
 
-
     shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
-    click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
+    click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
+
 
 
     def draw_health_bar(surf, hp, max_hp, x, y):
@@ -71,6 +73,16 @@ def boss_battle():
             self.speedy = 10
             self.health = 100
             self.lives = 3
+            self.attack_power = 100  # Normal power
+            self.power_timer = 0     # Timer for power-ups
+            self.shield = False      # No shield
+            self.shield_timer = 0    # Timer for shield
+            self.active_weapon = None
+            self.activate_message = ""
+            self.activate_message_timer = 0
+            self.expired_message = ""
+            self.expired_message_timer = 0
+            self.bullet_color = BLACK
 
 
         def update(self):
@@ -94,8 +106,25 @@ def boss_battle():
             if self.rect.right > WIDTH:
                 self.rect.right = WIDTH
 
+            # Power-up duration check
+            if self.power_timer and pygame.time.get_ticks() > self.power_timer:
+                self.expired_message = f"{self. active_weapon} effect expired. Attack power back to normal."
+                self.expired_message_timer = pygame.time.get_ticks() + 2000
+                self.active_weapon = None
+                self.attack_power = 100  # reset to normal
+                self.bullet_color = BLACK   # RESET TO NORMAL 
+                self.power_timer = 0
+                
+
+            if self.shield_timer and pygame.time.get_ticks() > self.shield_timer:
+                self.expired_message = "Aegis Shield effect expired."
+                self.expired_message_timer = pygame.time.get_ticks() + 2000
+                self.shield = False
+                self.shield_timer = 0
+
+
         def shoot(self):
-            bullet = Bullet(self.rect.centerx, self.rect.centery)
+            bullet = Bullet(self.rect.centerx, self.rect.centery, self.bullet_color)
             all_sprites.add(bullet)
             bullets.add(bullet)
             shoot_sound.play()
@@ -125,7 +154,7 @@ def boss_battle():
                 self.shoot()
 
             if self.health < 9000:
-                self.shoot_chance = 100
+                self.shoot_chance = 25
 
 
         def shoot(self):
@@ -135,10 +164,10 @@ def boss_battle():
 
 
     class Bullet(pygame.sprite.Sprite):
-        def __init__(self, x, y):
+        def __init__(self, x, y, color):
             pygame.sprite.Sprite.__init__(self)
             self.image = pygame.Surface((10, 5))
-            self.image.fill(GREEN)
+            self.image.fill(color)
             self.rect = self.image.get_rect()
             self.rect.x = x
             self.rect.y = y
@@ -183,13 +212,17 @@ def boss_battle():
         screen.fill(WHITE)
         #screen.blit(background_img, (0, 500))
 
-        pygame.draw.rect(screen, BLACK, (150, 0, 900, 120))
-
+        x = 150
+        y = 0
+        box = pygame.Surface((900, 120), pygame.SRCALPHA)
+        box.fill((0, 0, 0, 0))  # Fully transparent base
+        pygame.draw.rect(box, (*BLACK, 100), box.get_rect(), border_radius=12)
+        screen.blit(box, (x, y))
 
         x_box = 160
         y_box = 15
         weapon_buttons.clear()
-        for weapon_name, img in weapon_images.items():      # loop thought the weapon image
+        for weapon_name, img in original_weapon_images.items():      # loop thought the weapon image
             scaled_images = pygame.transform.smoothscale(img, (90, 90))
             img_rect = pygame.Rect(x_box, y_box, 90, 90)
             screen.blit(scaled_images, (x_box, y_box))
@@ -210,7 +243,6 @@ def boss_battle():
                 for weapon_name, rect in weapon_buttons:
                     if rect.collidepoint(mouse_pos):
                         click_sound.play()
-                        print(f"Clicked weapon: {weapon_name}")
                         # Apply the effect to Mario or Boss here
                         WeaponEffects.apply(weapon_name, mario, boss)
                 
@@ -225,24 +257,53 @@ def boss_battle():
 
         boss_hits = pygame.sprite.spritecollide(boss, bullets, True)
         for hit in boss_hits:
-            boss.health -= 100
+            boss.health -= mario.attack_power
             if boss.health <= 0:
                 boss.kill()
                 running = False
+
             
         
         mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
         for hit in mario_hits:
-            mario.health -= 10
+            if mario.shield:
+                print("Blocked by Aegis Shield!")
+                continue  # 没伤害
+            mario.health -= 2
             if mario.health <= 0:
                 mario.lives -= 1
-                
                 running = False
 
         
         all_sprites.draw(screen)
-        draw_health_bar(screen, mario.health, 100, 5, 15)  # Mario HP
+        draw_health_bar(screen, mario.health, 100, mario.rect.x - 30, mario.rect.top - 20)  # Mario HP
         draw_health_bar(screen, boss.health, 10000, boss.rect.x - 20, boss.rect.top - 20)  # Boss HP
+
+
+        if mario.activate_message and pygame.time.get_ticks() < mario.activate_message_timer:
+            msg = font.render(mario.activate_message, True, RED)
+            msg_x = WIDTH // 2 - msg.get_width() // 2
+            msg_y = HEIGHT - 60
+            
+
+            msg_bg = pygame.Surface((msg.get_width() + 20, msg.get_height() + 10)) # Background box
+            msg_bg.set_alpha(100)  # Transparency
+            msg_bg.fill(GREY)
+            screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
+            screen.blit(msg, (msg_x, msg_y))         # Draw message
+
+
+        # Show expired weapon message
+        if mario.expired_message and pygame.time.get_ticks() < mario.expired_message_timer:
+            msg = font.render(mario.expired_message, True, RED)
+            msg_x = WIDTH // 2 - msg.get_width() // 2
+            msg_y = HEIGHT - 30
+
+            msg_bg = pygame.Surface((msg.get_width() + 20, msg.get_height() + 10)) # Background box
+            msg_bg.set_alpha(100)  # Transparency
+            msg_bg.fill(GREY)
+            screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
+            screen.blit(msg, (msg_x, msg_y))         # Draw message
 
         pygame.display.update()
 
