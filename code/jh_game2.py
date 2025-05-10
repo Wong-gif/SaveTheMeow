@@ -170,9 +170,9 @@ class Game2:
         self.ground_image_full = pygame.transform.smoothscale(self.ground_image_full, (self.world_width, 100))
 
         diamond_positions = [
-        (700, 700),
-        (600, 550),
-        (900, 480),
+        (700, 300),
+        (600, 350),
+        (860, 480),
         (1100, 400),
         (2300, 480),
         (2200, 500),
@@ -196,10 +196,10 @@ class Game2:
         ]
 
         coin_positions = [
-        (500, 500),
+        (500, 200),
         (700, 450),
-        (1000, 480),
-        (1500, 400),
+        (1000, 450),
+        (1500, 430),
         (2000, 480),
         (2500, 500),
     ]
