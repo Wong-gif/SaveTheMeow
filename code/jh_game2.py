@@ -1,6 +1,7 @@
 import pygame
 import random
 import os
+from jh_death_popup import DeathPopup
 
 class Button:
     def __init__(self, normal_image, pressed_image, x, y):
@@ -43,9 +44,10 @@ class Spring(pygame.sprite.Sprite):
                 self.image = self.normal_image
                 self.press_timer = 0
    
-class NextLevel:
+class Game2:
     def __init__(self, screen):
         self.screen = screen
+        self.clock = pygame.time.Clock()
         self.screen_width, self.screen_height = screen.get_size()
         self.world_width = 3200 
         self.camera_x = 0
@@ -55,10 +57,13 @@ class NextLevel:
     
         self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 27)
 
+        self.coins_collected = 0
+        self.diamonds_collected = 0
+
         self._load_game_assets()
 
         self.player_rect = self.player_images['idle'].get_rect()
-        self.player_rect.midbottom = (2600, 70)  # player position
+        self.player_rect.midbottom = (160, 70)  # player position
         self.player_speed = 5
         self.velocity_y = 0
         self.jump_power = -20
@@ -67,6 +72,8 @@ class NextLevel:
         self.facing_right = True
         self.animation_frame = 0
         self.animation_speed = 0.15
+
+        self.death_popup = DeathPopup(screen, self.screen_width, self.screen_height)
         
         self.portal_rect = pygame.Rect(3100, 221, 80, 100)  # 位置自己调  
         self.portal_frames = []
@@ -166,9 +173,9 @@ class NextLevel:
         self.ground_image_full = pygame.transform.smoothscale(self.ground_image_full, (self.world_width, 100))
 
         diamond_positions = [
-        (700, 700),
-        (600, 550),
-        (900, 480),
+        (700, 300),
+        (600, 350),
+        (860, 480),
         (1100, 400),
         (2300, 480),
         (2200, 500),
@@ -192,10 +199,10 @@ class NextLevel:
         ]
 
         coin_positions = [
-        (500, 500),
+        (500, 200),
         (700, 450),
-        (1000, 480),
-        (1500, 400),
+        (1000, 450),
+        (1500, 430),
         (2000, 480),
         (2500, 500),
     ]
@@ -256,9 +263,8 @@ class NextLevel:
             self.time_left -= 1
             self.last_time_update = current_time
             if self.time_left <= 0:
-                print("Times up！Game Restart")
-                self.__init__(self.screen)
-            return
+                self.death_popup.show("Time's up! Game over!")
+                return
         
         for coin in self.coins:
             coin["frame"] += coin["animation_speed"]
@@ -268,15 +274,17 @@ class NextLevel:
         for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
+                self.coins_collected += 10
                 self.score += 10
                 self.coin_sound.play()
-
+                
         for diamond in self.diamond[:]: 
             if self.player_rect.colliderect(diamond["rect"]):
                 self.diamond.remove(diamond)
+                self.diamonds_collected += 10
                 self.score += 10
                 self.diamond_sound.play()
-
+                
         self.on_ground = False  # 先假设不在地上
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
@@ -315,8 +323,7 @@ class NextLevel:
                         self.spike4_rect, self.spike5_rect, self.spike6_rect,
                         self.spike7_rect, self.spike8_rect, self.spike9_rect,
                     ]):
-                        print("Touched deadly ground!")
-                        self.__init__(self.screen)  # game restart
+                        self.death_popup.show("Please be advised not to place trust in any spike!")
                         return
                 self.on_ground = True
                 self.player_rect.bottom = ground_rect.top
@@ -333,19 +340,19 @@ class NextLevel:
             self.platform4_visible = True
 
         if self.player_rect.colliderect(self.spike_rect) and self.player_rect.centerx < 2000:
-            print("Beware of traps")
-            self.__init__(self.screen)
-
-        # 玩家是否跌落，重置
-        if self.player_rect.bottom > self.screen_height:
-            print("Fall Down, Game Start Again")
-            self.__init__(self.screen)
+            self.death_popup.show("Caution! You have been slain by deadly spikes!")
+            return
             
         if not self.spike_visible:  # 如果还没出现
            distance_to_spike = abs(self.player_rect.centerx - self.spike_rect.centerx)
            if distance_to_spike < 150:
                self.spike_visible = True
 
+        # 玩家是否跌落，重置
+        if self.player_rect.bottom > self.screen_height:
+            self.death_popup.show("You fell down!")
+            return
+            
 
         for fireball in self.fireballs:
             fireball["rect"].x -= fireball["speed"]  # 火球往左飞
@@ -358,8 +365,7 @@ class NextLevel:
        
     # 玩家被火球碰到就重新开始
             if self.player_rect.colliderect(fireball["rect"]):
-                print("You got hit by a fireball!")
-                self.__init__(self.screen)
+                self.death_popup.show("Boom! A fireball hits you with searing heat!")
                 return
 
 
@@ -376,17 +382,12 @@ class NextLevel:
 
         # Level completed logic
         if self.player_rect.colliderect(self.portal_rect):
-            print("Level Completed!")
-            time_used = pygame.time.get_ticks() - self.level_start_time  # Level time
-            from jh_level_summary import LevelSummary
-            summary = LevelSummary(self.screen, level=2, coins=self.score, time_ms=time_used)
-            result = summary.run()
-            if result == "next":
-                self.__init__(self.screen)
-            return
+            if self.state != "next_level":
+                print("Both Mini Game Completed!")
+                self.time_used = pygame.time.get_ticks() - self.level_start_time
+                self.state = "next_level"
 
-
-
+                
     def update_camera(self):
         player_center_x = self.player_rect.centerx
         screen_width = self.screen.get_width()
@@ -430,7 +431,6 @@ class NextLevel:
                 ground_rect = pygame.Rect(start_x, y, width, 100)
                 screen_pos = self.world_to_screen(ground_rect)
                 self.screen.blit(ground_surface, screen_pos)
-                '''self.screen.blit(ground_surface, (start_x - self.camera_x, y))'''
 
         for fireball in self.fireballs:
             self.screen.blit(self.fireball_image, self.world_to_screen(fireball["rect"]))
@@ -488,9 +488,20 @@ class NextLevel:
         diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
 
-    def run(self):
-        self.handle_input()
-        self.update_physics()
-        self.update_camera()
-        self.update(pygame.time.get_ticks() - self.level_start_time)
+        self.death_popup.draw()
+        pygame.display.update()
+
+    def run(self, event=None):
+        if event:
+            if self.death_popup.handle_event(event):
+                self.__init__(self.screen)
+                return
+            
+        if not self.death_popup.active:
+            dt = self.clock.tick(60)
+            self.update(dt)
+            self.handle_input()
+            self.update_physics()
+            self.update_camera()
+
         self.draw()
