@@ -21,15 +21,7 @@ class WeaponEffects:
             "Hydro Strike": 1, 
             "Aegis Shield": 3,
             "Hawk's Eye": 1
-        
         }
-
-        if name in max_usage:
-            WeaponEffects.num_of_usage.setdefault(name, 0)
-            if WeaponEffects.num_of_usage[name] >= max_usage[name]:
-                print(f"{name} has reached its usage limit. You can't use it anymore!")
-                return
-            WeaponEffects.num_of_usage[name] += 1
 
         effects = {
             "Thunder Axe": WeaponEffects.thunder_axe,
@@ -41,11 +33,20 @@ class WeaponEffects:
 
         }
 
-        
+
+        if name in max_usage:
+            WeaponEffects.num_of_usage.setdefault(name, 0)
+            if WeaponEffects.num_of_usage[name] >= max_usage[name]:
+                mario.activate_message = f"{name} has reached its usage limit. You can't use it anymore!"
+                mario.activate_message_timer = pygame.time.get_ticks() + 2000
+                return
+            WeaponEffects.num_of_usage[name] += 1
+
         if name in effects:
             effects[name](mario, boss)
         else:
-            print(f"No effect function for: {name}")
+            mario.activate_message = f"No effect function for: {name}"
+            mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
     @staticmethod
     def thunder_axe(mario, boss):
