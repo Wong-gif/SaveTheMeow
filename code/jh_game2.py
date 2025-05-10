@@ -1,6 +1,7 @@
 import pygame
 import random
 import os
+from jh_death_popup import DeathPopup
 
 class Button:
     def __init__(self, normal_image, pressed_image, x, y):
@@ -71,6 +72,8 @@ class Game2:
         self.facing_right = True
         self.animation_frame = 0
         self.animation_speed = 0.15
+
+        self.death_popup = DeathPopup(screen, self.screen_width, self.screen_height)
         
         self.portal_rect = pygame.Rect(3100, 221, 80, 100)  # 位置自己调  
         self.portal_frames = []
@@ -260,9 +263,8 @@ class Game2:
             self.time_left -= 1
             self.last_time_update = current_time
             if self.time_left <= 0:
-                print("Times up！Game Restart")
-                self.__init__(self.screen)
-            return
+                self.death_popup.show("Time's up! Game over!")
+                return
         
         for coin in self.coins:
             coin["frame"] += coin["animation_speed"]
@@ -321,8 +323,7 @@ class Game2:
                         self.spike4_rect, self.spike5_rect, self.spike6_rect,
                         self.spike7_rect, self.spike8_rect, self.spike9_rect,
                     ]):
-                        print("Touched deadly ground!")
-                        self.__init__(self.screen)  # game restart
+                        self.death_popup.show("Please be advised not to place trust in any spike!")
                         return
                 self.on_ground = True
                 self.player_rect.bottom = ground_rect.top
@@ -339,8 +340,8 @@ class Game2:
             self.platform4_visible = True
 
         if self.player_rect.colliderect(self.spike_rect) and self.player_rect.centerx < 2000:
-            print("Beware of traps")
-            self.__init__(self.screen)
+            self.death_popup.show("Caution! You have been slain by deadly spikes!")
+            return
             
         if not self.spike_visible:  # 如果还没出现
            distance_to_spike = abs(self.player_rect.centerx - self.spike_rect.centerx)
@@ -349,8 +350,8 @@ class Game2:
 
         # 玩家是否跌落，重置
         if self.player_rect.bottom > self.screen_height:
-            print("Fall Down, Game Start Again")
-            self.__init__(self.screen)
+            self.death_popup.show("You fell down!")
+            return
             
 
         for fireball in self.fireballs:
@@ -364,8 +365,7 @@ class Game2:
        
     # 玩家被火球碰到就重新开始
             if self.player_rect.colliderect(fireball["rect"]):
-                print("You got hit by a fireball!")
-                self.__init__(self.screen)
+                self.death_popup.show("Boom! A fireball hits you with searing heat!")
                 return
 
 
@@ -488,10 +488,20 @@ class Game2:
         diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
 
-    def run(self):
-        dt = self.clock.tick(60)
-        self.update(dt)
-        self.handle_input()
-        self.update_physics()
-        self.update_camera()
+        self.death_popup.draw()
+        pygame.display.update()
+
+    def run(self, event=None):
+        if event:
+            if self.death_popup.handle_event(event):
+                self.__init__(self.screen)
+                return
+            
+        if not self.death_popup.active:
+            dt = self.clock.tick(60)
+            self.update(dt)
+            self.handle_input()
+            self.update_physics()
+            self.update_camera()
+
         self.draw()
