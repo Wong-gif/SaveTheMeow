@@ -275,7 +275,7 @@ while running:
 
     
     all_sprites.draw(screen)
-    draw_health_bar(screen, mario.health, 100, 5, 15)  # Mario HP
+    draw_health_bar(screen, mario.health, 100, mario.rect.x - 30, mario.rect.top - 20)  # Mario HP
     draw_health_bar(screen, boss.health, 10000, boss.rect.x - 20, boss.rect.top - 20)  # Boss HP
 
 
