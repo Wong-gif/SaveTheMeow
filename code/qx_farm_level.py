@@ -2,6 +2,7 @@ import pygame
 from qx_farm_settings import *
 from qx_farm_groups import Tile, Player
 from qx_support import *
+from random import choice
 
 class Level:
     def __init__(self):
@@ -18,7 +19,13 @@ class Level:
 
     def create_map(self):
         layout = {
-            "boundary" : import_csv_layout("farm_map/farming_map_FloorBlocks.csv")
+            "boundary" : import_csv_layout("farm_map/farming_map_FloorBlocks.csv"),
+            "grass" : import_csv_layout("farm_map/farming_map_Grass.csv"),
+            "object" : import_csv_layout("farm_map/farming_map_Objects.csv")
+        }
+        
+        graphics = {
+            "grass" : import_folder_farm("graphics_qx/Grass")
         }
 
         for style,layout in layout.items():
@@ -28,7 +35,10 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == "boundary":
-                            Tile((x,y),[self.visible_sprites,self.obstacles_sprites],"invisible")
+                            Tile((x,y),[self.obstacles_sprites],"invisible")
+                        if style == "grass":
+                            random_grass_image = choice(graphics["grass"])
+                            Tile((x,y),[self.visible_sprites,self.obstacles_sprites],"grass",random_grass_image)
         self.player = Player((1800,1600),[self.visible_sprites],self.obstacles_sprites)
 
     def run(self):
