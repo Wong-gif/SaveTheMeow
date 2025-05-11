@@ -9,7 +9,7 @@ class Level:
         self.display_surface = pygame.display.get_surface()
 
         #sprite group setup
-        self.visible_sprites = pygame.sprite.Group()
+        self.visible_sprites = YSortCameraGroup()
         self.obstacles_sprites = pygame.sprite.Group()
 
         #sprite
@@ -27,5 +27,16 @@ class Level:
 
     def run(self):
         #update and draw game
-        self.visible_sprites.draw(self.display_surface)
+        self.visible_sprites.custom_draw()
         self.visible_sprites.update()
+
+class YSortCameraGroup(pygame.sprite.Group): #craetes a camera that follows the player and has overlapping effect
+    def __init__(self):
+
+        #general setup
+        super().__init__()
+        self.display_surface = pygame.display.get_surface()
+
+    def custom_draw(self):
+        for sprite in self.sprites():
+            self.display_surface.blit(sprite.image,sprite.rect)
