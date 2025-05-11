@@ -1,6 +1,7 @@
 import pygame
 from qx_farm_settings import *
 from qx_farm_groups import Tile, Player
+from qx_support import *
 
 class Level:
     def __init__(self):
@@ -17,7 +18,7 @@ class Level:
 
     def create_map(self):
         layout = {
-            "boundary" : import_csv_layout()
+            "boundary" : import_csv_layout("farm_map/farming_map_FloorBlocks.csv")
         }
         self.player = Player((1800,1600),[self.visible_sprites],self.obstacles_sprites)
 
