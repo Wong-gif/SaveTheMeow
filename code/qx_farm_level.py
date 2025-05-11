@@ -22,12 +22,13 @@ class Level:
         }
 
         for style,layout in layout.items():
-            for row_index,row in enumerate(WORLD_MAP):
+            for row_index,row in enumerate(layout):
                 for col_index, col in enumerate(row):
-                    x = col_index * TILESIZE
-                    y = row_index * TILESIZE
-                    if style == "boundary":
-                        Tile((x,y),[self.visible_sprites,self.obstacles_sprites],"invisible")
+                    if col != "-1":
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+                        if style == "boundary":
+                            Tile((x,y),[self.visible_sprites,self.obstacles_sprites],"invisible")
         self.player = Player((1800,1600),[self.visible_sprites],self.obstacles_sprites)
 
     def run(self):
