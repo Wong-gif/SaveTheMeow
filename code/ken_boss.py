@@ -46,19 +46,6 @@ original_weapon_images = {
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
 
-
-
-def draw_health_bar(surf, hp, max_hp, x, y):
-    if hp < 0:
-        hp = 0
-    HEALTH_LENGTH = 100
-    HEALTH_HEIGHT = 10
-    fill = (hp / max_hp) * HEALTH_LENGTH
-    outline_rect = pygame.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
-    fill_rect = pygame.Rect(x, y, fill, HEALTH_HEIGHT)
-    pygame.draw.rect(surf, GREEN, fill_rect) #生命线
-    pygame.draw.rect(surf, WHITE, outline_rect, 2) #框
-
  
 
 class Mario(pygame.sprite.Sprite):
@@ -218,12 +205,25 @@ while running:
     pygame.draw.rect(box, (*BLACK, 100), box.get_rect(), border_radius=12)
     screen.blit(box, (x, y))
 
-     # 画 health text above health bar 
-    mario_health_text = font.render(f"Mario HP: {mario.health}", True, GREEN)
-    boss_health_text = font.render(f"Boss HP: {boss.health}", True, ORANGE)
+    
+    # Mario 的命
+    mario_bar_width = 100
+    mario_bar_height = 15
+    mario_health_ratio = mario.health / 100
+    pygame.draw.rect(screen, GREY, (mario.rect.x - 30, mario.rect.top - 30, mario_bar_width, mario_bar_height), border_radius=5)  # Background
+    pygame.draw.rect(screen, GREEN, (mario.rect.x - 30, mario.rect.top - 30, mario_bar_width * mario_health_ratio, mario_bar_height), border_radius=5)  # Fill
+    mario_text = font.render(f"Mario HP: {mario.health}/100", True, BLACK)
+    screen.blit(mario_text, (mario.rect.x - 40, mario.rect.top - 55))
 
-    screen.blit(mario_health_text, (mario.rect.x - 30, mario.rect.top - 45))  # Slightly inside the bar
-    screen.blit(boss_health_text, (boss.rect.x - 30, boss.rect.top - 45))
+
+    # Boss 的命
+    boss_bar_width = 100
+    boss_bar_height = 15
+    boss_health_ratio = boss.health / 10000
+    pygame.draw.rect(screen, GREY, (boss.rect.x - 30, boss.rect.top - 30, boss_bar_width, boss_bar_height), border_radius=5)  # Background
+    pygame.draw.rect(screen, ORANGE, (boss.rect.x - 30, boss.rect.top - 30, boss_bar_width * boss_health_ratio, boss_bar_height), border_radius=5)  # Fill
+    boss_text = font.render(f"Boss HP: {boss.health}/10000", True, BLACK)
+    screen.blit(boss_text, (boss.rect.x - 60, boss.rect.top - 55))
 
     x_box = 160
     y_box = 15
@@ -282,8 +282,7 @@ while running:
 
     
     all_sprites.draw(screen)
-    draw_health_bar(screen, mario.health, 100, mario.rect.x - 30, mario.rect.top - 20)  # Mario HP
-    draw_health_bar(screen, boss.health, 10000, boss.rect.x - 20, boss.rect.top - 20)  # Boss HP
+   
 
 
     if mario.activate_message and pygame.time.get_ticks() < mario.activate_message_timer:
