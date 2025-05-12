@@ -25,7 +25,7 @@ class Level:
         }
         
         graphics = {
-            "grass" : import_folder_farm("graphics_qx/Grass"),
+            "grass" : import_folder_farm("graphics_qx/grass"),
             "objects" : import_folder_farm("graphics_qx/objects")
         }
 
