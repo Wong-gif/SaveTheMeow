@@ -218,6 +218,13 @@ while running:
     pygame.draw.rect(box, (*BLACK, 100), box.get_rect(), border_radius=12)
     screen.blit(box, (x, y))
 
+     # 画 health text above health bar 
+    mario_health_text = font.render(f"Mario HP: {mario.health}", True, GREEN)
+    boss_health_text = font.render(f"Boss HP: {boss.health}", True, ORANGE)
+
+    screen.blit(mario_health_text, (mario.rect.x - 30, mario.rect.top - 45))  # Slightly inside the bar
+    screen.blit(boss_health_text, (boss.rect.x - 30, boss.rect.top - 45))
+
     x_box = 160
     y_box = 15
     weapon_buttons.clear()
