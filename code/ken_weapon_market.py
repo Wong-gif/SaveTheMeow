@@ -61,7 +61,7 @@ weapon_images = {
 
 weapon_description = {
     "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
-    "Essence of Renewal": {"description": "Restore 30 health points for twice."},
+    "Essence of Renewal": {"description": "Restore 50 health points for three times."},
     "Luna Bow": {"description": "Each arrow has 150 damage. Only for 10 seconds."},
     "Hydro Strike": {"description": "Each bullet has 200 points of attack. Only for 10 seconds"},
     "Aegis Shield": {"description": "30% probability to block attack."},
@@ -75,12 +75,12 @@ player_coins = 500
 player_gems = 300
 
 market_item = [
-    {"name": "Thunder Axe", "price": 35, "currency": "gems", "bought": False},
-    {"name": "Essence of Renewal", "price": 60, "currency": "coins", "bought": False},
-    {"name": "Luna Bow", "price": 30, "currency": "gems", "bought": False},
-    {"name": "Hydro Strike", "price": 50, "currency": "gems", "bought": False},
-    {"name": "Aegis Shield", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Hawk's Eye", "price": 75, "currency": "coins", "bought": False},
+    {"name": "Thunder Axe", "price": 60, "currency": "gems", "bought": False},
+    {"name": "Essence of Renewal", "price": 130, "currency": "coins", "bought": False},
+    {"name": "Luna Bow", "price": 198, "currency": "coins", "bought": False},
+    {"name": "Hydro Strike", "price": 88, "currency": "gems", "bought": False},
+    {"name": "Aegis Shield", "price": 45, "currency": "gems", "bought": False},
+    {"name": "Hawk's Eye", "price": 250, "currency": "coins", "bought": False},
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Shadow Gilt", "price": 100, "currency": "coins", "bought": False},
     {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False}
