@@ -67,7 +67,7 @@ class Mario(pygame.sprite.Sprite):
         self.speedy = 10
         self.health = 100
         self.lives = 3
-        self.attack_power = 100  # Normal power
+        self.attack_power = random.randint(80, 100)  # Normal power
         self.power_timer = 0     # Timer for power-ups
         self.shield = False      # No shield
         self.shield_timer = 0    # Timer for shield
@@ -105,7 +105,7 @@ class Mario(pygame.sprite.Sprite):
             self.expired_message = f"{self. active_weapon} effect expired. Attack power back to normal."
             self.expired_message_timer = pygame.time.get_ticks() + 2000
             self.active_weapon = None
-            self.attack_power = 100  # reset to normal
+            self.attack_power = random.randint(80, 100)  # reset to normal
             self.bullet_color = BLACK   # RESET TO NORMAL 
             self.power_timer = 0
             
@@ -132,7 +132,7 @@ class Boss(pygame.sprite.Sprite):
         self.image = pygame.Surface((60, 100))
         self.image.fill(ORANGE)
         self.rect = self.image.get_rect()
-        self.rect.x = 1100
+        self.rect.x = 1080
         self.rect.y = HEIGHT/2
         self.speed = random.choice([-2, 2])
         self.shoot_chance = 5
@@ -255,10 +255,10 @@ while running:
     boss_bar_width = 100
     boss_bar_height = 15
     boss_health_ratio = boss.health / 10000
-    pygame.draw.rect(screen, GREY, (boss.rect.x - 30, boss.rect.top - 30, boss_bar_width, boss_bar_height), border_radius=5)  # Background
-    pygame.draw.rect(screen, ORANGE, (boss.rect.x - 30, boss.rect.top - 30, boss_bar_width * boss_health_ratio, boss_bar_height), border_radius=5)  # Fill
+    pygame.draw.rect(screen, GREY, (boss.rect.x - 20, boss.rect.top - 30, boss_bar_width, boss_bar_height), border_radius=5)  # Background
+    pygame.draw.rect(screen, RED, (boss.rect.x - 20, boss.rect.top - 30, boss_bar_width * boss_health_ratio, boss_bar_height), border_radius=5)  # Fill
     boss_text = font.render(f"Boss HP: {boss.health}/10000", True, BLACK)
-    screen.blit(boss_text, (boss.rect.x - 60, boss.rect.top - 55))
+    screen.blit(boss_text, (boss.rect.x - 55, boss.rect.top - 55))
 
     x_box = 160
     y_box = 15
