@@ -1,10 +1,11 @@
 
 import pygame
+import random
 import sys
 import time
 
 YELLOW = (255, 255, 0)
-DARK_GREEN = (0, 100, 0)
+LIGHT_GREEN = (144, 238, 144)
 LIGHT_BLUE = (135, 206, 250)
 LIGHT_PURPLE = (216, 191, 216)
 
@@ -50,8 +51,8 @@ class WeaponEffects:
 
     @staticmethod
     def thunder_axe(mario, boss):
-        if mario.attack_power == 100:  # only apply if attack power is normal
-            mario.attack_power = 2000 # Boost Mario's attack power
+        if 80 <= mario.attack_power <= 100:  # only apply if attack power is normal
+            mario.attack_power = random.randint(170, 190)  # Boost Mario's attack power
             mario.bullet_color = YELLOW
             mario.power_timer = pygame.time.get_ticks() + 5000  # 5 seconds
             mario.active_weapon = "Thunder Axe"
@@ -68,11 +69,12 @@ class WeaponEffects:
         mario.activate_message = f"Essence of Renewal activated! Mario restored {restore_health} HP."
         mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
+
     @staticmethod
     def luna_bow(mario, boss):
-        if mario.attack_power == 100:
-            mario.attack_power = 2000
-            mario.bullet_color = DARK_GREEN   
+        if 80 <= mario.attack_power <= 100:
+            mario.attack_power = random.randint(150, 180)
+            mario.bullet_color = LIGHT_GREEN   
             mario.power_timer = pygame.time.get_ticks() + 5000
             mario.active_weapon = "Luna Bow"
             mario.activate_message = "Luna Bow activated! Mario's attack power boosted to 180 for 15 seconds."
@@ -80,8 +82,8 @@ class WeaponEffects:
 
     @staticmethod
     def hydro_strike(mario, boss):
-        if mario.attack_power == 100:
-            mario.attack_power = 2000
+        if 80 <= mario.attack_power <= 100:
+            mario.attack_power = random.randint(210, 240)
             mario.bullet_color = LIGHT_BLUE
             mario.power_timer = pygame.time.get_ticks() + 5000
             mario.active_weapon = "Hydro Strike"
@@ -100,8 +102,8 @@ class WeaponEffects:
     
     @staticmethod
     def hawk_eye(mario, boss):
-        if mario.attack_power == 100:
-            mario.attack_power = 2000
+        if 80 <= mario.attack_power <= 100:
+            mario.attack_power = random.randint(210, 225)
             mario.bullet_color = LIGHT_PURPLE
             mario.power_timer = pygame.time.get_ticks() + 5000
             mario.active_weapon = "Hawk's Eye"
