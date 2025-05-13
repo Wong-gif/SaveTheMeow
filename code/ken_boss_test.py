@@ -44,24 +44,31 @@ def boss_battle():
         "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
     }
 
+    # Load water bullet animation frames
+    water_bullet_frames = []
+    for i in range(1, 5):
+        img = pygame.image.load(os.path.join("assets", "images", "water_bullet", f"water_bullet_{i}.png")).convert_alpha()
+        img = pygame.transform.scale(img, (40, 40)) 
+        water_bullet_frames.append(img)
+
+    hawk_arrow_frames = []
+    for i in range(1, 3):
+        img = pygame.image.load(os.path.join("assets", "images", "hawk_arrow", f"hawk_arrow_{i}.png")).convert_alpha()
+        img = pygame.transform.scale(img, (60, 60)) 
+        hawk_arrow_frames.append(img)
+
+    add_health_frames = []
+    for i in range(1, 5):
+        img = pygame.image.load(os.path.join("assets", "images", "add_health", f"add_health_{i}.png")).convert_alpha()
+        img = pygame.transform.scale(img, (200, 200))
+        add_health_frames.append(img)
+
+
     shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
     click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
 
-
-
-    def draw_health_bar(surf, hp, max_hp, x, y):
-        if hp < 0:
-            hp = 0
-        HEALTH_LENGTH = 100
-        HEALTH_HEIGHT = 10
-        fill = (hp / max_hp) * HEALTH_LENGTH
-        outline_rect = pygame.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
-        fill_rect = pygame.Rect(x, y, fill, HEALTH_HEIGHT)
-        pygame.draw.rect(surf, GREEN, fill_rect) #生命线
-        pygame.draw.rect(surf, WHITE, outline_rect, 2) #框
-
     
-
+    
     class Mario(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
@@ -73,7 +80,7 @@ def boss_battle():
             self.speedy = 10
             self.health = 100
             self.lives = 3
-            self.attack_power = 100  # Normal power
+            self.attack_power = random.randint(80, 100)  # Normal power
             self.power_timer = 0     # Timer for power-ups
             self.shield = False      # No shield
             self.shield_timer = 0    # Timer for shield
@@ -111,7 +118,7 @@ def boss_battle():
                 self.expired_message = f"{self. active_weapon} effect expired. Attack power back to normal."
                 self.expired_message_timer = pygame.time.get_ticks() + 2000
                 self.active_weapon = None
-                self.attack_power = 100  # reset to normal
+                self.attack_power = random.randint(80, 100)  # reset to normal
                 self.bullet_color = BLACK   # RESET TO NORMAL 
                 self.power_timer = 0
                 
@@ -124,9 +131,22 @@ def boss_battle():
 
 
         def shoot(self):
-            bullet = Bullet(self.rect.centerx, self.rect.centery, self.bullet_color)
-            all_sprites.add(bullet)
-            bullets.add(bullet)
+            if self.active_weapon == "Hydro Strike":
+                bullet = AnimatedBulletHydro(self.rect.centerx, self.rect.centery, water_bullet_frames)
+                all_sprites.add(bullet)
+                bullets.add(bullet)
+            elif self.active_weapon == "Essence of Renewal":
+                effect = AnimatedAddHealth(self, add_health_frames)
+                all_sprites.add(effect)  # 加这句，才能显示
+                shoot_sound.play()
+            elif self.active_weapon == "Hawk's Eye":
+                bullet = AnimatedArrowHawk(self.rect.centerx, self.rect.centery, hawk_arrow_frames)
+                all_sprites.add(bullet)
+                bullets.add(bullet)
+            else:
+                bullet = Bullet(self.rect.centerx, self.rect.centery, self.bullet_color)
+                all_sprites.add(bullet)
+                bullets.add(bullet)
             shoot_sound.play()
             
     class Boss(pygame.sprite.Sprite):
@@ -135,7 +155,7 @@ def boss_battle():
             self.image = pygame.Surface((60, 100))
             self.image.fill(ORANGE)
             self.rect = self.image.get_rect()
-            self.rect.x = 1100
+            self.rect.x = 1080
             self.rect.y = HEIGHT/2
             self.speed = random.choice([-2, 2])
             self.shoot_chance = 5
@@ -178,6 +198,79 @@ def boss_battle():
             if self.rect.left > WIDTH:
                 self.kill()
 
+    class AnimatedBulletHydro(pygame.sprite.Sprite):
+        def __init__(self, x, y, frames):
+            super().__init__()
+            self.frames = frames
+            self.frame_index = 0
+            self.image = self.frames[self.frame_index]
+            self.rect = self.image.get_rect(center=(x, y))
+            self.speed = 7
+            self.last_update = pygame.time.get_ticks()
+            self.frame_rate = 100  
+
+        def update(self):
+            # 当他正在动
+            self.rect.x += self.speed
+            if self.rect.left > WIDTH:
+                self.kill()
+
+            # 动画
+            if pygame.time.get_ticks() - self.last_update > self.frame_rate:
+                self.last_update = pygame.time.get_ticks()
+                self.frame_index = (self.frame_index + 1) % len(self.frames)
+                self.image = self.frames[self.frame_index]
+
+    class AnimatedArrowHawk(pygame.sprite.Sprite):
+        def __init__(self, x, y, frames):
+            super().__init__() 
+            self.frames = frames
+            self.frame_index = 0
+            self.image = self.frames[self.frame_index]
+            self.rect = self.image.get_rect(center=(x, y))
+            self.speed = 5
+            self.last_update = pygame.time.get_ticks()
+            self.frame_rate = 100  
+
+        def update(self):
+            # 当他正在动
+            self.rect.x += self.speed
+            if self.rect.left > WIDTH:
+                self.kill()
+
+            # 动画
+            if pygame.time.get_ticks() - self.last_update > self.frame_rate:
+                self.last_update = pygame.time.get_ticks()
+                self.frame_index = (self.frame_index + 1) % len(self.frames)
+                self.image = self.frames[self.frame_index]
+
+    class AnimatedAddHealth(pygame.sprite.Sprite):
+        def __init__(self, mario, frames):
+            super().__init__()
+            self.frames = frames
+            self.frame_index = 0
+            self.image = self.frames[self.frame_index]
+            self.mario = mario
+            self.rect = self.image.get_rect(center = self.mario.rect.center)
+            self.last_update = pygame.time.get_ticks()
+            self.frame_rate = 100  
+            self.duration = 1000
+            self.animation_done = False
+            self.start_time = pygame.time.get_ticks()
+        
+        def update(self):
+            self.rect.center = self.mario.rect.center
+            
+            if pygame.time.get_ticks() - self.last_update > self.frame_rate:
+                self.last_update = pygame.time.get_ticks()
+                self.frame_index = (self.frame_index + 1) % len(self.frames)
+                self.image = self.frames[self.frame_index]
+
+            if pygame.time.get_ticks() - self.start_time > self.duration:  # 持续一段时间后自动删除
+                self.kill()
+
+
+
 
     class Fireball(pygame.sprite.Sprite):
         def __init__(self, x, y):
@@ -219,12 +312,25 @@ def boss_battle():
         pygame.draw.rect(box, (*BLACK, 100), box.get_rect(), border_radius=12)
         screen.blit(box, (x, y))
 
-        # 画 health text above health bar 
-        mario_health_text = font.render(f"Mario HP: {mario.health}", True, GREEN)
-        boss_health_text = font.render(f"Boss HP: {boss.health}", True, ORANGE)
+        
+        # Mario 的命
+        mario_bar_width = 100
+        mario_bar_height = 15
+        mario_health_ratio = mario.health / 100
+        pygame.draw.rect(screen, GREY, (mario.rect.x - 30, mario.rect.top - 30, mario_bar_width, mario_bar_height), border_radius=5)  # Background
+        pygame.draw.rect(screen, GREEN, (mario.rect.x - 30, mario.rect.top - 30, mario_bar_width * mario_health_ratio, mario_bar_height), border_radius=5)  # Fill
+        mario_text = font.render(f"Mario HP: {mario.health}/100", True, BLACK)
+        screen.blit(mario_text, (mario.rect.x - 40, mario.rect.top - 55))
 
-        screen.blit(mario_health_text, (mario.rect.x - 30, mario.rect.top - 45))  # Slightly inside the bar
-        screen.blit(boss_health_text, (boss.rect.x - 30, boss.rect.top - 45))
+
+        # Boss 的命
+        boss_bar_width = 100
+        boss_bar_height = 15
+        boss_health_ratio = boss.health / 10000
+        pygame.draw.rect(screen, GREY, (boss.rect.x - 20, boss.rect.top - 30, boss_bar_width, boss_bar_height), border_radius=5)  # Background
+        pygame.draw.rect(screen, RED, (boss.rect.x - 20, boss.rect.top - 30, boss_bar_width * boss_health_ratio, boss_bar_height), border_radius=5)  # Fill
+        boss_text = font.render(f"Boss HP: {boss.health}/10000", True, BLACK)
+        screen.blit(boss_text, (boss.rect.x - 55, boss.rect.top - 55))
 
         x_box = 160
         y_box = 15
@@ -283,8 +389,7 @@ def boss_battle():
 
         
         all_sprites.draw(screen)
-        draw_health_bar(screen, mario.health, 100, mario.rect.x - 30, mario.rect.top - 20)  # Mario HP
-        draw_health_bar(screen, boss.health, 10000, boss.rect.x - 20, boss.rect.top - 20)  # Boss HP
+    
 
 
         if mario.activate_message and pygame.time.get_ticks() < mario.activate_message_timer:
