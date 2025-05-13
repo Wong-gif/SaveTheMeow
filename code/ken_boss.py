@@ -50,21 +50,29 @@ for i in range(1, 5):
     img = pygame.transform.scale(img, (40, 40)) 
     water_bullet_frames.append(img)
 
+luna_arrow_frames = []
+for i in range(1, 3):
+    img = pygame.image.load(os.path.join("assets", "images", "luna_arrow", f"luna_arrow_{i}.png")).convert_alpha()
+    img = pygame.transform.scale(img, (60, 60)) 
+    luna_arrow_frames.append(img)
+
+add_health_frames = []
+for i in range(1, 5):
+    img = pygame.image.load(os.path.join("assets", "images", "add_health", f"add_health_{i}.png")).convert_alpha()
+    img = pygame.transform.scale(img, (80, 80))
+    add_health_frames.append(img)
+
 hawk_arrow_frames = []
 for i in range(1, 3):
     img = pygame.image.load(os.path.join("assets", "images", "hawk_arrow", f"hawk_arrow_{i}.png")).convert_alpha()
     img = pygame.transform.scale(img, (60, 60)) 
     hawk_arrow_frames.append(img)
 
-add_health_frames = []
-for i in range(1, 5):
-    img = pygame.image.load(os.path.join("assets", "images", "add_health", f"add_health_{i}.png")).convert_alpha()
-    img = pygame.transform.scale(img, (200, 200))
-    add_health_frames.append(img)
 
 
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
-click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
+click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav")) 
+add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav")) 
 
  
  
@@ -80,6 +88,8 @@ class Mario(pygame.sprite.Sprite):
         self.health = 100
         self.lives = 3
         self.attack_power = random.randint(80, 100)  # Normal power
+        self.last_shoot_time = 0
+        self.shoot_delay = 300
         self.power_timer = 0     # Timer for power-ups
         self.shield = False      # No shield
         self.shield_timer = 0    # Timer for shield
@@ -130,14 +140,20 @@ class Mario(pygame.sprite.Sprite):
 
 
     def shoot(self):
+        now = pygame.time.get_ticks()
+        if now - self.last_shoot_time < self.shoot_delay:
+            return
+        
+        self.last_shoot_time = now
+
         if self.active_weapon == "Hydro Strike":
             bullet = AnimatedBulletHydro(self.rect.centerx, self.rect.centery, water_bullet_frames)
             all_sprites.add(bullet)
             bullets.add(bullet)
-        elif self.active_weapon == "Essence of Renewal":
-            effect = AnimatedAddHealth(self, add_health_frames)
-            all_sprites.add(effect)  # 加这句，才能显示
-            shoot_sound.play()
+        elif self.active_weapon == "Luna Bow":
+            bullet = AnimatedArrowLuna(self.rect.centerx, self.rect.centery, luna_arrow_frames)
+            all_sprites.add(bullet)
+            bullets.add(bullet)
         elif self.active_weapon == "Hawk's Eye":
             bullet = AnimatedArrowHawk(self.rect.centerx, self.rect.centery, hawk_arrow_frames)
             all_sprites.add(bullet)
@@ -220,29 +236,6 @@ class AnimatedBulletHydro(pygame.sprite.Sprite):
             self.frame_index = (self.frame_index + 1) % len(self.frames)
             self.image = self.frames[self.frame_index]
 
-class AnimatedArrowHawk(pygame.sprite.Sprite):
-    def __init__(self, x, y, frames):
-        super().__init__() 
-        self.frames = frames
-        self.frame_index = 0
-        self.image = self.frames[self.frame_index]
-        self.rect = self.image.get_rect(center=(x, y))
-        self.speed = 5
-        self.last_update = pygame.time.get_ticks()
-        self.frame_rate = 100  
-
-    def update(self):
-        # 当他正在动
-        self.rect.x += self.speed
-        if self.rect.left > WIDTH:
-            self.kill()
-
-        # 动画
-        if pygame.time.get_ticks() - self.last_update > self.frame_rate:
-            self.last_update = pygame.time.get_ticks()
-            self.frame_index = (self.frame_index + 1) % len(self.frames)
-            self.image = self.frames[self.frame_index]
-
 class AnimatedAddHealth(pygame.sprite.Sprite):
     def __init__(self, mario, frames):
         super().__init__()
@@ -267,6 +260,56 @@ class AnimatedAddHealth(pygame.sprite.Sprite):
 
         if pygame.time.get_ticks() - self.start_time > self.duration:  # 持续一段时间后自动删除
             self.kill()
+
+
+class AnimatedArrowLuna(pygame.sprite.Sprite):
+    def __init__(self, x, y, frames):
+        super().__init__() 
+        self.frames = frames
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(center=(x, y))
+        self.speed = 5
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 100  
+
+    def update(self):
+        # 当他正在动
+        self.rect.x += self.speed
+        if self.rect.left > WIDTH:
+            self.kill()
+
+        # 动画
+        if pygame.time.get_ticks() - self.last_update > self.frame_rate:
+            self.last_update = pygame.time.get_ticks()
+            self.frame_index = (self.frame_index + 1) % len(self.frames)
+            self.image = self.frames[self.frame_index]
+
+
+
+class AnimatedArrowHawk(pygame.sprite.Sprite):
+    def __init__(self, x, y, frames):
+        super().__init__() 
+        self.frames = frames
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(center=(x, y))
+        self.speed = 5
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 100  
+
+    def update(self):
+        # 当他正在动
+        self.rect.x += self.speed
+        if self.rect.left > WIDTH:
+            self.kill()
+
+        # 动画
+        if pygame.time.get_ticks() - self.last_update > self.frame_rate:
+            self.last_update = pygame.time.get_ticks()
+            self.frame_index = (self.frame_index + 1) % len(self.frames)
+            self.image = self.frames[self.frame_index]
+
 
 
 
@@ -357,6 +400,12 @@ while running:
                     click_sound.play()
                     # Apply the effect to Mario or Boss here
                     WeaponEffects.apply(weapon_name, mario, boss)
+
+                    if weapon_name == "Essence of Renewal":
+                        effect = AnimatedAddHealth(mario, add_health_frames)
+                        all_sprites.add(effect)
+                        add_health_sound.play()
+
             
     all_sprites.update()
     for bullet in bullets:
@@ -416,7 +465,7 @@ while running:
         screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
         screen.blit(msg, (msg_x, msg_y))         # Draw message
 
-    pygame.display.update()
+    pygame.display.flip()
 
 pygame.quit()
 sys.exit()

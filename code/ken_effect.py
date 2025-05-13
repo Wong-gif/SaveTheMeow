@@ -1,8 +1,6 @@
 
 import pygame
 import random
-import sys
-import time
 
 YELLOW = (255, 255, 0)
 LIGHT_GREEN = (144, 238, 144)
