@@ -82,6 +82,9 @@ class Player(pygame.sprite.Sprite):
                     self.status = self.status.replace("_idle","_attack")
                 else:
                     self.status = self.status + "_attack"
+        else:
+            if "attack" in self.status:
+                self.status = self.status.replace("_attack","")
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
