@@ -54,7 +54,7 @@ class WeaponEffects:
         if 80 <= mario.attack_power <= 100:  # only apply if attack power is normal
             mario.attack_power = random.randint(170, 190)  # Boost Mario's attack power
             mario.bullet_color = YELLOW
-            mario.power_timer = pygame.time.get_ticks() + 3000  # 5 seconds
+            mario.power_timer = pygame.time.get_ticks() + 5000  # 5 seconds
             mario.active_weapon = "Thunder Axe"
             mario.activate_message = "Thunder Axe activated! Mario's attack power boosted to 180 for 15 seconds."
             mario.activate_message_timer = pygame.time.get_ticks() + 2000

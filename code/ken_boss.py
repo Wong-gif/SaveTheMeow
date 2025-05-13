@@ -50,6 +50,12 @@ for i in range(1, 5):
     img = pygame.transform.scale(img, (40, 40)) 
     water_bullet_frames.append(img)
 
+hawk_arrow_frames = []
+for i in range(1, 3):
+    img = pygame.image.load(os.path.join("assets", "images", "hawk_arrow", f"hawk_arrow_{i}.png")).convert_alpha()
+    img = pygame.transform.scale(img, (60, 60)) 
+    hawk_arrow_frames.append(img)
+
 
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
@@ -119,7 +125,9 @@ class Mario(pygame.sprite.Sprite):
 
     def shoot(self):
         if self.active_weapon == "Hydro Strike":
-            bullet = AnimatedBullet(self.rect.centerx, self.rect.centery, water_bullet_frames)
+            bullet = AnimatedBulletHydro(self.rect.centerx, self.rect.centery, water_bullet_frames)
+        elif self.active_weapon == "Hawk's Eye":
+            bullet = AnimatedArrowHawk(self.rect.centerx, self.rect.centery, hawk_arrow_frames)
         else:
             bullet = Bullet(self.rect.centerx, self.rect.centery, self.bullet_color)
         all_sprites.add(bullet)
@@ -175,7 +183,7 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.left > WIDTH:
             self.kill()
 
-class AnimatedBullet(pygame.sprite.Sprite):
+class AnimatedBulletHydro(pygame.sprite.Sprite):
     def __init__(self, x, y, frames):
         super().__init__()
         self.frames = frames
@@ -197,6 +205,31 @@ class AnimatedBullet(pygame.sprite.Sprite):
             self.last_update = pygame.time.get_ticks()
             self.frame_index = (self.frame_index + 1) % len(self.frames)
             self.image = self.frames[self.frame_index]
+
+class AnimatedArrowHawk(pygame.sprite.Sprite):
+    def __init__(self, x, y, frames):
+        super().__init__() 
+        self.frames = frames
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(center=(x, y))
+        self.speed = 5
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 100  
+
+    def update(self):
+        # 当他正在动
+        self.rect.x += self.speed
+        if self.rect.left > WIDTH:
+            self.kill()
+
+        # 动画
+        if pygame.time.get_ticks() - self.last_update > self.frame_rate:
+            self.last_update = pygame.time.get_ticks()
+            self.frame_index = (self.frame_index + 1) % len(self.frames)
+            self.image = self.frames[self.frame_index]
+
+
 
 
 
