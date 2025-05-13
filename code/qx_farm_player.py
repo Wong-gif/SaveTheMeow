@@ -1,5 +1,6 @@
 import pygame
 from qx_farm_settings import *
+from qx_support import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups,obstacle_sprites):
@@ -10,6 +11,7 @@ class Player(pygame.sprite.Sprite):
 
         #graphics
         self.import_player_assets()
+        self.status = "down"
 
         #movement
         self.direction = pygame.math.Vector2()
@@ -27,7 +29,9 @@ class Player(pygame.sprite.Sprite):
                            "right_attack":[],"left_attack":[],"up_attack":[],"down_attack":[]}
         
         for animation in self.animations.keys():
-            print(animation)
+            full_path = character_path + animation
+            self.animations[animation] = import_folder_farm(full_path)
+        print(self.animations)
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -58,6 +62,11 @@ class Player(pygame.sprite.Sprite):
             self.attack_time = pygame.time.get_ticks()
             self.attacking = True
             print("aha")
+
+    def get_status(self):
+        #idle status
+        if self.direction.x == 0 and self.direction.y == 0:
+            self.status = self.status + "_idle"
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
@@ -96,4 +105,5 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.input()
         self.cooldowns()
+        self.get_status()
         self.move(self.speed)
