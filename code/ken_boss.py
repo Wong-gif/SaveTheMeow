@@ -56,12 +56,18 @@ for i in range(1, 3):
     img = pygame.transform.scale(img, (60, 60)) 
     hawk_arrow_frames.append(img)
 
+add_health_frames = []
+for i in range(1, 5):
+    img = pygame.image.load(os.path.join("assets", "images", "add_health", f"add_health_{i}.png")).convert_alpha()
+    img = pygame.transform.scale(img, (200, 200))
+    add_health_frames.append(img)
+
 
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
 
  
-
+ 
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -126,12 +132,20 @@ class Mario(pygame.sprite.Sprite):
     def shoot(self):
         if self.active_weapon == "Hydro Strike":
             bullet = AnimatedBulletHydro(self.rect.centerx, self.rect.centery, water_bullet_frames)
+            all_sprites.add(bullet)
+            bullets.add(bullet)
+        elif self.active_weapon == "Essence of Renewal":
+            effect = AnimatedAddHealth(self, add_health_frames)
+            all_sprites.add(effect)  # 加这句，才能显示
+            shoot_sound.play()
         elif self.active_weapon == "Hawk's Eye":
             bullet = AnimatedArrowHawk(self.rect.centerx, self.rect.centery, hawk_arrow_frames)
+            all_sprites.add(bullet)
+            bullets.add(bullet)
         else:
             bullet = Bullet(self.rect.centerx, self.rect.centery, self.bullet_color)
-        all_sprites.add(bullet)
-        bullets.add(bullet)
+            all_sprites.add(bullet)
+            bullets.add(bullet)
         shoot_sound.play()
         
 class Boss(pygame.sprite.Sprite):
@@ -229,6 +243,30 @@ class AnimatedArrowHawk(pygame.sprite.Sprite):
             self.frame_index = (self.frame_index + 1) % len(self.frames)
             self.image = self.frames[self.frame_index]
 
+class AnimatedAddHealth(pygame.sprite.Sprite):
+    def __init__(self, mario, frames):
+        super().__init__()
+        self.frames = frames
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+        self.mario = mario
+        self.rect = self.image.get_rect(center = self.mario.rect.center)
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 100  
+        self.duration = 1000
+        self.animation_done = False
+        self.start_time = pygame.time.get_ticks()
+    
+    def update(self):
+        self.rect.center = self.mario.rect.center
+        
+        if pygame.time.get_ticks() - self.last_update > self.frame_rate:
+            self.last_update = pygame.time.get_ticks()
+            self.frame_index = (self.frame_index + 1) % len(self.frames)
+            self.image = self.frames[self.frame_index]
+
+        if pygame.time.get_ticks() - self.start_time > self.duration:  # 持续一段时间后自动删除
+            self.kill()
 
 
 

@@ -69,6 +69,7 @@ class WeaponEffects:
         mario.activate_message = f"Essence of Renewal activated! Mario restored {restore_health} HP."
         mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
+
     @staticmethod
     def luna_bow(mario, boss):
         if 80 <= mario.attack_power <= 100:

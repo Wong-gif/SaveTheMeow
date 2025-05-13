@@ -6,6 +6,7 @@ from  random import randint
 from jh_test_main import platform_map #import function to start platform level
 from ken_boss_test import boss_battle #import function to start boss level
 from ken_weapon_market_test import open_store #import function to open the store
+from qx_test_farm import farming_map
 
 class Overworld: #creates the overworld class
     def __init__(self, tmx_map,data, overworld_frames): #initializes overworld with map, data, and sprite frames
@@ -35,6 +36,7 @@ class Overworld: #creates the overworld class
         self.open_store = open_store #assign store function to a variable
         self.platform_map = platform_map #assign platform map to a variable
         self.boss_battle = boss_battle #assign boss battle to a variable
+        self.farming_map = farming_map
 
     def setup(self,tmx_map,overworld_frames): #sets up tiles, paths, and characters from tmc map
         #layers
@@ -119,7 +121,7 @@ class Overworld: #creates the overworld class
       elif character_id == "o3":
         return boss_battle
       elif character_id == "o4":
-        return platform_map
+        return farming_map
       elif character_id == "o5":
         return boss_battle
       else :
