@@ -87,6 +87,8 @@ class Mario(pygame.sprite.Sprite):
         self.health = 100
         self.lives = 3
         self.attack_power = random.randint(80, 100)  # Normal power
+        self.last_shoot_time = 0
+        self.shoot_delay = 300
         self.power_timer = 0     # Timer for power-ups
         self.shield = False      # No shield
         self.shield_timer = 0    # Timer for shield
@@ -137,6 +139,12 @@ class Mario(pygame.sprite.Sprite):
 
 
     def shoot(self):
+        now = pygame.time.get_ticks()
+        if now - self.last_shoot_time < self.shoot_delay:
+            return
+        
+        self.last_shoot_time = now
+
         if self.active_weapon == "Hydro Strike":
             bullet = AnimatedBulletHydro(self.rect.centerx, self.rect.centery, water_bullet_frames)
             all_sprites.add(bullet)
@@ -146,7 +154,7 @@ class Mario(pygame.sprite.Sprite):
             all_sprites.add(effect)  # 加这句，才能显示
             shoot_sound.play()
         elif self.active_weapon == "Luna Bow":
-            bullet = AnimatedArrowLuna(self.rect.centerx, self.rect.centery, hawk_arrow_frames)
+            bullet = AnimatedArrowLuna(self.rect.centerx, self.rect.centery, luna_arrow_frames)
             all_sprites.add(bullet)
             bullets.add(bullet)
         elif self.active_weapon == "Hawk's Eye":
@@ -459,7 +467,7 @@ while running:
         screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
         screen.blit(msg, (msg_x, msg_y))         # Draw message
 
-    pygame.display.update()
+    pygame.display.flip()
 
 pygame.quit()
 sys.exit()
