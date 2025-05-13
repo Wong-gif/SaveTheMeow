@@ -39,15 +39,19 @@ class Player(pygame.sprite.Sprite):
         #movement input
         if keys[pygame.K_UP]:
             self.direction.y = -1
+            self.status = "up"
         elif keys[pygame.K_DOWN]:
             self.direction.y = 1
+            self.status = "down"
         else:
             self.direction.y = 0
 
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
+            self.status = "right"
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
+            self.status = "left"
         else:   
             self.direction.x = 0
 
@@ -66,7 +70,18 @@ class Player(pygame.sprite.Sprite):
     def get_status(self):
         #idle status
         if self.direction.x == 0 and self.direction.y == 0:
-            self.status = self.status + "_idle"
+            if not "idle" in self.status and not "attack" in self.status:
+                self.status = self.status + "_idle"
+
+        if self.attacking:
+            self.direction.x = 0
+            self.direction.y = 0
+            if not "attack" in self.status:
+                if "idle" in self.status:
+                    #overwrite idle
+                    self.status = self.status.replace("_idle","_attack")
+                else:
+                    self.status = self.status + "_attack"
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
