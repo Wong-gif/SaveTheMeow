@@ -84,7 +84,7 @@ def platform_map():
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                return
             
             if current_state == MENU:
                 if start_button.is_clicked(event):
@@ -124,7 +124,9 @@ def platform_map():
                 current_state = SUMMARY
             
         elif current_state == SUMMARY:
-            summary.run()
+            result = summary.run()
+            if result == "menu":
+                current_state = MENU
 
         pygame.display.update()
 
