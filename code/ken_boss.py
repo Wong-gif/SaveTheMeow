@@ -71,7 +71,8 @@ for i in range(1, 3):
 
 
 shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
-click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))    
+click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav")) 
+add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav")) 
 
  
  
@@ -149,10 +150,6 @@ class Mario(pygame.sprite.Sprite):
             bullet = AnimatedBulletHydro(self.rect.centerx, self.rect.centery, water_bullet_frames)
             all_sprites.add(bullet)
             bullets.add(bullet)
-        elif self.active_weapon == "Essence of Renewal":
-            effect = AnimatedAddHealth(self, add_health_frames)
-            all_sprites.add(effect)  # 加这句，才能显示
-            shoot_sound.play()
         elif self.active_weapon == "Luna Bow":
             bullet = AnimatedArrowLuna(self.rect.centerx, self.rect.centery, luna_arrow_frames)
             all_sprites.add(bullet)
@@ -407,6 +404,7 @@ while running:
                     if weapon_name == "Essence of Renewal":
                         effect = AnimatedAddHealth(mario, add_health_frames)
                         all_sprites.add(effect)
+                        add_health_sound.play()
 
             
     all_sprites.update()
