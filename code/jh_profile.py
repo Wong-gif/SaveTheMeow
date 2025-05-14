@@ -77,7 +77,9 @@ def login(): # here is log in part
     # Checking Username and Password
     if os.path.exists(f"{username}.txt"):
         with open(f"{username}.txt", "r") as file:
-            stored_password = file.read()
+            user_data = json.load(file)  
+
+        stored_password = user_data["password"]
 
         if password == stored_password:
             messagebox.showinfo("Success", "You have successfully logged in!")
