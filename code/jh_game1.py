@@ -187,8 +187,8 @@ class Game1:
         for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
-                self.coins_collected += 10
-                self.score += 10
+                self.coins_collected += 20
+                self.score += 20
                 self.coin_sound.play()
                 
         for diamond in self.diamond[:]: 
@@ -324,7 +324,7 @@ class Game1:
         self.screen.blit(ui_bar, (20, 20))
 
         self.screen.blit(self.coin_icon, (22, 24))
-        score_text = self.font.render(f"Coin:{self.score}", True, (0, 0, 0))
+        score_text = self.font.render(f"Coins:{self.score}", True, (0, 0, 0))
         self.screen.blit(score_text, (70, 35))
 
         self.screen.blit(self.time_icon, (680, 30))
@@ -332,7 +332,7 @@ class Game1:
         self.screen.blit(time_text, (730, 35))
 
         self.screen.blit(self.diamond_icon, (310, 24))
-        diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
+        diamond_text = self.font.render(f"Diamonds:{self.score}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
 
         self.death_popup.draw()
