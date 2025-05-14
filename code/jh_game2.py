@@ -1,7 +1,25 @@
 import pygame
 import random
+import json
 import os
 from jh_death_popup import DeathPopup
+
+
+def save_game2_data(username, coin, diamond, time_taken):
+    try:
+        with open(f"{username}.txt", "r") as file:
+            user_data = json.load(file)
+
+        user_data["game2"]["coin"] = coin
+        user_data["game2"]["diamond"] = diamond
+        user_data["game2"]["timeTaken"] = time_taken
+
+        with open(f"{username}.txt", "w") as file:
+            json.dump(user_data, file)
+
+        print("Game 2 data saved successfully!")
+    except Exception as e:
+        print("Failed to save Game 2 data:", e)
 
 class Button:
     def __init__(self, normal_image, pressed_image, x, y):
@@ -45,8 +63,9 @@ class Spring(pygame.sprite.Sprite):
                 self.press_timer = 0
    
 class Game2:
-    def __init__(self, screen):
+    def __init__(self, screen,username):
         self.screen = screen
+        self.username = username
         self.clock = pygame.time.Clock()
         self.screen_width, self.screen_height = screen.get_size()
         self.world_width = 3200 
@@ -386,6 +405,13 @@ class Game2:
                 print("Both Mini Game Completed!")
                 self.time_used = pygame.time.get_ticks() - self.level_start_time
                 self.state = "next_level"
+
+                save_game2_data(
+                    username=self.username,
+                    coin=self.coins_collected,
+                    diamond=self.diamonds_collected,
+                    time_taken=self.time_used / 1000
+                )
 
                 
     def update_camera(self):
