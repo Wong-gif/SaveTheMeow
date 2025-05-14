@@ -1,1 +1,1 @@
-Heng@0913
+{"password": "Heng@0913", "game1": {"coin": 0, "diamond": 0, "timeTaken": 0.0}, "game2": {"coin": 0, "diamond": 0, "timeTaken": 0.0}}
