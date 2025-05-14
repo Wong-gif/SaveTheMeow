@@ -366,7 +366,7 @@ class Game1:
     def run(self, event=None):
         if event:
             if self.death_popup.handle_event(event):
-                self.__init__(self.screen)
+                self.__init__(self.screen, self.username)
                 return
             
         if not self.death_popup.active:
