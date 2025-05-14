@@ -1,12 +1,30 @@
 import pygame
 import random
 import os
+import json
 from jh_death_popup import DeathPopup
 
 
+def save_game1_data(username, coin, diamond, time_taken):
+    try:
+        with open(f"{username}.txt", "r") as file:
+            user_data = json.load(file)
+
+        user_data["game1"]["coin"] = coin
+        user_data["game1"]["diamond"] = diamond
+        user_data["game1"]["timeTaken"] = time_taken
+
+        with open(f"{username}.txt", "w") as file:
+            json.dump(user_data, file)
+
+        print("Game 1 data saved successfully!")
+    except Exception as e:
+        print("Failed to save Game 1 data:", e)
+
 class Game1:
-    def __init__(self, screen):
+    def __init__(self, screen, username):
         self.screen = screen
+        self.username = username
         self.screen_width, self.screen_height = screen.get_size()
         self.font = pygame.font.SysFont('Arial', 32)
         self.has_printed_success = False 
@@ -99,7 +117,6 @@ class Game1:
             {"rect": pygame.Rect(2800, 585, 40, 30), "type": "spike", "active": True, "visible": False},
             {"rect": pygame.Rect(3100, 521, 40, 40), "type": "portal", "active": True}
         ]
-
 
     def _load_game_assets(self):
 
@@ -247,7 +264,15 @@ class Game1:
                     self.time_used = pygame.time.get_ticks() - self.level_start_time
                     self.state = "next_level"
                     if not self.has_printed_success:
-                        print("Congratulations！")
+                        print("Congratulations!")
+
+                        save_game1_data(
+                            username=self.username,
+                            coin=self.coins_collected,
+                            diamond=self.diamonds_collected,
+                            time_taken=self.time_used / 1000
+                        )
+
                         self.has_printed_success = True
                                         
         self.player_rect.left = max(0, self.player_rect.left)

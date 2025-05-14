@@ -2,6 +2,7 @@ import pygame
 import os
 '''import sys'''
 import threading
+import json
 import tkinter as tk
 from tkinter import messagebox
 
@@ -36,15 +37,29 @@ def register(): #here is the register part
     if password_error: #if the password are not strong it will show out the error using the tkinter function which is message
         messagebox.showerror("Password not strong enough", password_error)
         return
-
-    # Whether user exist or not
+    
+        # Whether user exist or not
     if os.path.exists(f"{username}.txt"): # this whole thing is a function in python to help us to check whether got a file or not #os this is a module and path is a connection between code and file, however, you can say path like a road or highway between a plece to place.
         messagebox.showerror("Error", "User already exists. Please log in directly.") #if error it will print out "Error", "User already exists. Please log in directly." by using a function in tkinter which is messagebox.
         return #it meaning is finsh this knid of thing then can quit the function or stop the function.
+    
+    user_data = {
+        "password": password,
+        "game1": {
+            "coin": 0,
+            "diamond": 0,
+            "timeTaken": 0.0
+        },
+        "game2": {
+            "coin": 0,
+            "diamond": 0,
+            "timeTaken": 0.0
+        }
+    }
 
     # Store username and password into textfile
     with open(f"{username}.txt", "w") as file: #this is our file that store the username and password #however using txt is not safe, easy to hack our info, but now foundation only please forgive it.
-        file.write(password)
+        json.dump(user_data, file)
 
     messagebox.showinfo("Success", "Registration completed! You can proceed to log in.") #else you will get the info is "Success", "Registration completed! You can proceed to log in." with using the function in tkinter which is messagebox.
     clear_entries()
@@ -62,7 +77,9 @@ def login(): # here is log in part
     # Checking Username and Password
     if os.path.exists(f"{username}.txt"):
         with open(f"{username}.txt", "r") as file:
-            stored_password = file.read()
+            user_data = json.load(file)  
+
+        stored_password = user_data["password"]
 
         if password == stored_password:
             messagebox.showinfo("Success", "You have successfully logged in!")
