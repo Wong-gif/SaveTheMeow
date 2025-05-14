@@ -78,13 +78,13 @@ def platform_map():
     )
 
     running = True
-    current_state = GAME2
+    #current_state = GAME2
     while running:
         clock.tick(FPS)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                return
             
             if current_state == MENU:
                 if start_button.is_clicked(event):
@@ -101,7 +101,7 @@ def platform_map():
             start_button.draw(screen)
 
         elif current_state == GAME1:
-            game1.run()
+            game1.run(event)
             if game1.state == "next_level":
                 levels_data["level1"] = {
                     "time_ms": game1.time_used,
@@ -111,7 +111,7 @@ def platform_map():
                 current_state = GAME2
 
         elif current_state == GAME2:
-            game2.run()
+            game2.run(event)
             if game2.state == "next_level":
                 levels_data["level2"] = {
                     "time_ms": game2.time_used,
@@ -124,7 +124,9 @@ def platform_map():
                 current_state = SUMMARY
             
         elif current_state == SUMMARY:
-            summary.run()
+            result = summary.run()
+            if result == "menu":
+                current_state = MENU
 
         pygame.display.update()
 
