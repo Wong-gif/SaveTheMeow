@@ -187,8 +187,8 @@ class Game1:
         for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
-                self.coins_collected += 10
-                self.score += 10
+                self.coins_collected += 20
+                self.score += 20
                 self.coin_sound.play()
                 
         for diamond in self.diamond[:]: 
