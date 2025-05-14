@@ -1,12 +1,13 @@
-import pygame
-from qx_settings import *
-from pytmx.util_pygame import load_pygame
-from os.path import join
-from qx_overworld import Overworld
-from qx_support import * 
-from qx_data import Data
-
 def platform_map(username):
+
+    import pygame
+    from qx_settings import window_height,window_width,Z_layers,animation_speed
+    from pytmx.util_pygame import load_pygame
+    from os.path import join
+    from qx_overworld import Overworld
+    from qx_support import import_folder,import_folder_dict,import_sub_folders,all_character_import
+    from qx_data import Data
+
     class Game: # main game class that runs the main loop to load the game, 
         def __init__(self): #calls this lines of code and initialize the game when an object is built
             pygame.init() #initialize pygame modules (eg. display, image, mixer ...)
