@@ -57,5 +57,4 @@ class GameSummary:
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.arrow_rect.collidepoint(event.pos):
-                        pygame.quit()
-                        sys.exit()
+                        return "menu"

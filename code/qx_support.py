@@ -2,6 +2,7 @@ from qx_settings import *
 from os.path import join
 from os import walk #import walk to show the directories
 from pytmx.util_pygame import load_pygame
+from csv import reader
 
 def import_image(*path, alpha = True, format = "png"): #function to import a single image
     full_path = join(*path) + f".{format}" #
@@ -63,3 +64,21 @@ def all_character_import(*path):
                new_dict[image_name] = character_importer(4,4,*path,image_name)
 
      return new_dict
+
+def import_csv_layout(path):
+     terrain_map = []
+     with open(path) as level_map:
+          layout = reader(level_map, delimiter=",")
+          for row in layout:
+               terrain_map.append(list(row))
+          return terrain_map
+     
+def import_folder_farm(path):
+    surface_list = []
+
+    for _,__,img_files in walk(path):
+         for image in img_files:
+              full_path = path + "/" + image
+              image_surf = pygame.image.load(full_path).convert_alpha()
+              surface_list.append(image_surf)
+    return surface_list
