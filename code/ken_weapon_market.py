@@ -50,7 +50,7 @@ original_weapon_images = {
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
     "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    "Shadow Gilt": pygame.image.load(os.path.join("assets", "images", "Shadow_gilt.png")).convert_alpha(),
+    "Shadow Saber": pygame.image.load(os.path.join("assets", "images", "Shadow_saber.png")).convert_alpha(),
     "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha()
 }
 
@@ -67,7 +67,7 @@ weapon_description = {
     "Aegis Shield": {"description": "30% probability to block attack."},
     "Hawk's Eye": {"description": "Each arrow has 130 damage. Only for 10 seconds."},
     "Lion Sword": {"description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
-    "Shadow Gilt": {"description": "30% probability to block attack."}, 
+    "Shadow Saber": {"description": "30% probability to block attack."}, 
     "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
 }
     
@@ -82,7 +82,7 @@ market_item = [
     {"name": "Aegis Shield", "price": 45, "currency": "gems", "bought": False},
     {"name": "Hawk's Eye", "price": 250, "currency": "coins", "bought": False},
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Shadow Gilt", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False},
     {"name": "Thunder Axe", "price": 60, "currency": "gems", "bought": False}
 ]
 
