@@ -67,7 +67,7 @@ weapon_description = {
     "Aegis Shield": {"description": "30% probability to block attack."},
     "Hawk's Eye": {"description": "Each arrow has 130 damage. Only for 10 seconds."},
     "Lion Sword": {"description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
-    "Shadow Gilt": {"description": "30% probability to block attack."},
+    "Shadow Gilt": {"description": "30% probability to block attack."}, 
     "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."}
 }
     
