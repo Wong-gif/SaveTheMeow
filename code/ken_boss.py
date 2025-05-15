@@ -28,7 +28,7 @@ fireball_img = pygame.transform.scale(fireball_img, (30, 30))
 background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.png")).convert_alpha()
 background_img = pygame.transform.scale(background_img, (WIDTH, 300))
 player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
-player_img = pygame.transform.scale(player_img, (WIDTH, 300))
+bullet_img = pygame.image.load(os.path.join("assets", "images", "bullet.png")).convert_alpha()
 
 
 original_weapon_images = {
@@ -45,9 +45,9 @@ original_weapon_images = {
 
 # Load animation frames
 fire_arrow_frames = []
-for i in range(1, 4):
-    img = pygame.image.load(os.path.join("assets", "images", "fire", f"fire_{i}.png")).convert_alpha()
-    img = pygame.transform.scale(img, (40, 40))
+for i in range(1, 7):
+    img = pygame.image.load(os.path.join("assets", "images", "fire_arrow", f"fire_arrow_{i}.png")).convert_alpha()
+    img = pygame.transform.scale(img, (90, 30))
     fire_arrow_frames.append(img)
 
 water_bullet_frames = []
@@ -211,8 +211,8 @@ class Boss(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, color):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((10, 5))
-        self.image.fill(color)
+        self.image = pygame.transform.scale(bullet_img, (30, 30))
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -232,7 +232,7 @@ class AnimatedArrowFire(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(x, y))
         self.speed = 7
         self.last_update = pygame.time.get_ticks()
-        self.frame_rate = 100  
+        self.frame_rate = 100
 
     def update(self):
         # 当他正在动
@@ -240,15 +240,12 @@ class AnimatedArrowFire(pygame.sprite.Sprite):
         if self.rect.left > WIDTH:
             self.kill()
 
-        # 动画
         if pygame.time.get_ticks() - self.last_update > self.frame_rate:
-            self.last_update = pygame.time.get_ticks()
-            self.frame_index = (self.frame_index + 1) % len(self.frames)
-            self.image = self.frames[self.frame_index]
+                self.last_update = pygame.time.get_ticks()
+                self.frame_index = (self.frame_index + 1) % len(self.frames)
+                self.image = self.frames[self.frame_index]
 
-
-
-
+     
 class AnimatedBulletHydro(pygame.sprite.Sprite):
     def __init__(self, x, y, frames):
         super().__init__()
