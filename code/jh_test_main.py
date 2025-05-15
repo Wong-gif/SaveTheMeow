@@ -130,5 +130,4 @@ def platform_map():
 
         pygame.display.update()
 
-    pygame.quit()
-    sys.exit()
+    return
