@@ -280,7 +280,7 @@ class AnimatedAddHealth(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = self.mario.rect.center)
         self.last_update = pygame.time.get_ticks()
         self.frame_rate = 100  
-        self.duration = 1000
+        self.duration = 5000
         self.animation_done = False
         self.start_time = pygame.time.get_ticks()
     
