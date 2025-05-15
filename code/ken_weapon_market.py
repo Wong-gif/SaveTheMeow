@@ -43,15 +43,15 @@ pygame.mixer.music.set_volume(0.5)  # Adjust volume
 font = pygame.font.SysFont("arial", 20)
 
 original_weapon_images = {
-    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
     "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    "Shadow Gilt": pygame.image.load(os.path.join("assets", "images", "Shadow_gilt.png")).convert_alpha(),
-    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha()
+    "Shadow Saber": pygame.image.load(os.path.join("assets", "images", "Shadow_saber.png")).convert_alpha(),
+    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha()
 }
 
 weapon_images = {
@@ -60,30 +60,30 @@ weapon_images = {
 }
 
 weapon_description = {
-    "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
+    "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."},
     "Essence of Renewal": {"description": "Restore 50 health points for three times."},
     "Luna Bow": {"description": "Each arrow has 150 damage. Only for 10 seconds."},
     "Hydro Strike": {"description": "Each bullet has 200 points of attack. Only for 10 seconds"},
     "Aegis Shield": {"description": "30% probability to block attack."},
     "Hawk's Eye": {"description": "Each arrow has 130 damage. Only for 10 seconds."},
     "Lion Sword": {"description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
-    "Shadow Gilt": {"description": "30% probability to block attack."},
-    "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."}
+    "Shadow Saber": {"description": "30% probability to block attack."}, 
+    "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
 }
     
-player_coins = 500
-player_gems = 300
+player_coins = 700
+player_gems = 500
 
 market_item = [
-    {"name": "Thunder Axe", "price": 60, "currency": "gems", "bought": False},
+    {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False},
     {"name": "Essence of Renewal", "price": 130, "currency": "coins", "bought": False},
-    {"name": "Luna Bow", "price": 198, "currency": "coins", "bought": False},
-    {"name": "Hydro Strike", "price": 88, "currency": "gems", "bought": False},
+    {"name": "Luna Bow", "price": 228, "currency": "coins", "bought": False},
+    {"name": "Hydro Strike", "price": 108, "currency": "gems", "bought": False},
     {"name": "Aegis Shield", "price": 45, "currency": "gems", "bought": False},
-    {"name": "Hawk's Eye", "price": 250, "currency": "coins", "bought": False},
+    {"name": "Hawk's Eye", "price": 65, "currency": "gems", "bought": False},
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Shadow Gilt", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False}
+    {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False},
+    {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False}
 ]
 
 # Gems and coins that on top
@@ -106,7 +106,8 @@ def draw_arrow(surface, arrow_image, arrow_rect):
 arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
 selected_item = None  # 选中的物品
 show_item_details = False  # 是否显示详情窗口
-inventory = []
+inventory_boss = []
+inventory_farm = []
 message = ""
 message_timer = 0
 pygame.mixer.music.play(-1)
@@ -131,23 +132,42 @@ while running:
     gems_text = font.render(f"{player_gems}", True, WHITE)
     screen.blit(gems_text, (325 + coins_text.get_width() + 60, 20))
     
-    # Inventory background box
-    inventory_box_width = 210
-    inventory_box_height = max(150, 40 + len(inventory) * 40 + 20)
+    # Inventory background box（boss)
+    inventory_box_width = 215
+    inventory_box_height = max(150, 40 + len(inventory_boss) * 40 + 20)
     inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
     pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
     screen.blit(inventory_box, (10, 90))
 
     #Inventory title
-    inventory_title_text = font.render("Inventory :", True, WHITE)
+    inventory_title_text = font.render("Inventory for boss :", True, WHITE)
     screen.blit(inventory_title_text, (20, 105))
 
-    for i, item_name in enumerate(inventory):
+    for i, item_name in enumerate(inventory_boss):  # Only show first 6 items
+        if item_name in weapon_images:
+            img = pygame.transform.scale(weapon_images[item_name], (30, 30))
+            screen.blit(img, (20, 150 + i * 40))
+            name_text = font.render(item_name, True, WHITE)
+            screen.blit(name_text, (60, 155 + i * 40))
+
+    # Inventory background box （Bottom)
+    inventory_box_width = 215
+    inventory_box_height = max(150, 40 + len(inventory_farm) * 40 + 20)
+    inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
+    pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
+    screen.blit(inventory_box, (10, 400))
+
+    #Inventory title
+    inventory_title_text = font.render("Inventory for farm :", True, WHITE)
+    screen.blit(inventory_title_text, (20, 415))
+
+
+    for i, item_name in enumerate(inventory_farm):
         if item_name in weapon_images:
             img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
-            screen.blit(img, (20, 150 + i * 40))  # Draw image
+            screen.blit(img, (20, 460 + i * 40))  # Draw image
             name_text = font.render(item_name, True, WHITE)
-            screen.blit(name_text, (60, 155 + i * 40))  # Name next to image
+            screen.blit(name_text, (60, 465 + i * 40))  # Name next to image
 
     screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
 
@@ -222,7 +242,11 @@ while running:
                     if currency == "coins" and player_coins >= price:
                         player_coins -= price
                         item["bought"] = True
-                        inventory.append(item["name"])
+                        if item["name"] in ["Phoenix Feather", "Essence of Renewal", "Luna Bow", 
+                           "Hydro Strike", "Aegis Shield", "Hawk's Eye"]:
+                            inventory_boss.append(item["name"])  # 前6个进上面
+                        else:
+                            inventory_farm.append(item["name"])  # 后3个进下面
                         buying_sound.play()
                         message = f"Bought {item['name']} for {price} coins!"
                         show_item_details = False
@@ -230,7 +254,11 @@ while running:
                     elif currency == "gems" and player_gems >= price:
                         player_gems -= price
                         item["bought"] = True
-                        inventory.append(item["name"])
+                        if item["name"] in ["Phoenix Feather", "Essence of Renewal", "Luna Bow", 
+                           "Hydro Strike", "Aegis Shield", "Hawk's Eye"]:
+                            inventory_boss.append(item["name"])  # 前6个进上面
+                        else:
+                            inventory_farm.append(item["name"])  # 后3个进下面
                         buying_sound.play()
                         message = f"Bought {item['name']} for {price} gems!"
                         show_item_details = False

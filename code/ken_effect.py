@@ -13,7 +13,7 @@ class WeaponEffects:
     def apply(name, mario, boss):
 
         max_usage = {
-            "Thunder Axe": 1,
+            "Phoenix Feather": 1,
             "Essence of Renewal": 3,
             "Luna Bow": 1,
             "Hydro Strike": 1, 
@@ -22,7 +22,7 @@ class WeaponEffects:
         }
 
         effects = {
-            "Thunder Axe": WeaponEffects.thunder_axe,
+            "Phoenix Feather": WeaponEffects.phoenix_feather,
             "Essence of Renewal": WeaponEffects.essence_of_renewal,
             "Luna Bow": WeaponEffects.luna_bow,
             "Hydro Strike": WeaponEffects.hydro_strike,
@@ -47,13 +47,13 @@ class WeaponEffects:
             mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
     @staticmethod
-    def thunder_axe(mario, boss):
+    def phoenix_feather(mario, boss):
         if 80 <= mario.attack_power <= 100:  # only apply if attack power is normal
             mario.attack_power = random.randint(170, 190)  # Boost Mario's attack power
             mario.bullet_color = YELLOW
             mario.power_timer = pygame.time.get_ticks() + 5000  # 5 seconds
-            mario.active_weapon = "Thunder Axe"
-            mario.activate_message = "Thunder Axe activated! Mario's attack power boosted to 180 for 15 seconds."
+            mario.active_weapon = "Phoenix Feather"
+            mario.activate_message = "Phoenix Feather activated! Mario's attack power boosted to 180 for 15 seconds."
             mario.activate_message_timer = pygame.time.get_ticks() + 2000
 
     @staticmethod

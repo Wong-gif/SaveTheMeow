@@ -28,22 +28,28 @@ fireball_img = pygame.transform.scale(fireball_img, (30, 30))
 background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.png")).convert_alpha()
 background_img = pygame.transform.scale(background_img, (WIDTH, 300))
 player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
-player_img = pygame.transform.scale(player_img, (WIDTH, 300))
+bullet_img = pygame.image.load(os.path.join("assets", "images", "bullet.png")).convert_alpha()
 
 
 original_weapon_images = {
-    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
     "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    "Shadow Gilt": pygame.image.load(os.path.join("assets", "images", "Shadow_gilt.png")).convert_alpha(),
-    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
+    "Shadow Saber": pygame.image.load(os.path.join("assets", "images", "Shadow_saber.png")).convert_alpha(),
+    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha()
 }
 
-# Load water bullet animation frames
+# Load animation frames
+fire_arrow_frames = []
+for i in range(1, 7):
+    img = pygame.image.load(os.path.join("assets", "images", "fire_arrow", f"fire_arrow_{i}.png")).convert_alpha()
+    img = pygame.transform.scale(img, (90, 30))
+    fire_arrow_frames.append(img)
+
 water_bullet_frames = []
 for i in range(1, 5):
     img = pygame.image.load(os.path.join("assets", "images", "water_bullet", f"water_bullet_{i}.png")).convert_alpha()
@@ -51,9 +57,9 @@ for i in range(1, 5):
     water_bullet_frames.append(img)
 
 luna_arrow_frames = []
-for i in range(1, 3):
+for i in range(1, 4):
     img = pygame.image.load(os.path.join("assets", "images", "luna_arrow", f"luna_arrow_{i}.png")).convert_alpha()
-    img = pygame.transform.scale(img, (60, 60)) 
+    img = pygame.transform.scale(img, (60, 60))
     luna_arrow_frames.append(img)
 
 add_health_frames = []
@@ -146,7 +152,11 @@ class Mario(pygame.sprite.Sprite):
         
         self.last_shoot_time = now
 
-        if self.active_weapon == "Hydro Strike":
+        if self.active_weapon == "Phoenix Feather":
+            bullet = AnimatedArrowFire(self.rect.centerx, self.rect.centery, fire_arrow_frames)
+            all_sprites.add(bullet)
+            bullets.add(bullet) 
+        elif self.active_weapon == "Hydro Strike":
             bullet = AnimatedBulletHydro(self.rect.centerx, self.rect.centery, water_bullet_frames)
             all_sprites.add(bullet)
             bullets.add(bullet)
@@ -201,8 +211,8 @@ class Boss(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, color):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((10, 5))
-        self.image.fill(color)
+        self.image = pygame.transform.scale(bullet_img, (30, 30))
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -213,6 +223,30 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.left > WIDTH:
             self.kill()
 
+class AnimatedArrowFire(pygame.sprite.Sprite):
+    def __init__(self, x, y, frames):
+        super().__init__()
+        self.frames = frames
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(center=(x, y))
+        self.speed = 7
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 100
+
+    def update(self):
+        # 当他正在动
+        self.rect.x += self.speed
+        if self.rect.left > WIDTH:
+            self.kill()
+
+        
+        if pygame.time.get_ticks() - self.last_update > self.frame_rate:
+                self.last_update = pygame.time.get_ticks()
+                self.frame_index = (self.frame_index + 1) % len(self.frames)
+                self.image = self.frames[self.frame_index]
+
+     
 class AnimatedBulletHydro(pygame.sprite.Sprite):
     def __init__(self, x, y, frames):
         super().__init__()
@@ -246,7 +280,7 @@ class AnimatedAddHealth(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = self.mario.rect.center)
         self.last_update = pygame.time.get_ticks()
         self.frame_rate = 100  
-        self.duration = 1000
+        self.duration = 5000
         self.animation_done = False
         self.start_time = pygame.time.get_ticks()
     
