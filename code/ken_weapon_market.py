@@ -131,8 +131,8 @@ while running:
     gems_text = font.render(f"{player_gems}", True, WHITE)
     screen.blit(gems_text, (325 + coins_text.get_width() + 60, 20))
     
-    # Inventory background box
-    inventory_box_width = 210
+    # Inventory background box（boss)
+    inventory_box_width = 215
     inventory_box_height = max(150, 40 + len(inventory) * 40 + 20)
     inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
     pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
@@ -142,12 +142,31 @@ while running:
     inventory_title_text = font.render("Inventory :", True, WHITE)
     screen.blit(inventory_title_text, (20, 105))
 
+    for i, item_name in enumerate(inventory):  # Only show first 6 items
+        if item_name in weapon_images:
+            img = pygame.transform.scale(weapon_images[item_name], (30, 30))
+            screen.blit(img, (20, 150 + i * 40))
+            name_text = font.render(item_name, True, WHITE)
+            screen.blit(name_text, (60, 155 + i * 40))
+
+    # Inventory background box （Bottom)
+    inventory_box_width = 215
+    inventory_box_height = max(150, 40 + len(inventory) * 40 + 20)
+    inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
+    pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
+    screen.blit(inventory_box, (10, 400))
+
+    #Inventory title
+    inventory_title_text = font.render("Inventory :", True, WHITE)
+    screen.blit(inventory_title_text, (20, 415))
+
+
     for i, item_name in enumerate(inventory):
         if item_name in weapon_images:
             img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
-            screen.blit(img, (20, 150 + i * 40))  # Draw image
+            screen.blit(img, (20, 460 + i * 40))  # Draw image
             name_text = font.render(item_name, True, WHITE)
-            screen.blit(name_text, (60, 155 + i * 40))  # Name next to image
+            screen.blit(name_text, (60, 465 + i * 40))  # Name next to image
 
     screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
 
