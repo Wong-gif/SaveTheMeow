@@ -106,7 +106,8 @@ def draw_arrow(surface, arrow_image, arrow_rect):
 arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
 selected_item = None  # 选中的物品
 show_item_details = False  # 是否显示详情窗口
-inventory = []
+inventory_boss = []
+inventory_farm = []
 message = ""
 message_timer = 0
 pygame.mixer.music.play(-1)
@@ -133,16 +134,16 @@ while running:
     
     # Inventory background box（boss)
     inventory_box_width = 215
-    inventory_box_height = max(150, 40 + len(inventory) * 40 + 20)
+    inventory_box_height = max(150, 40 + len(inventory_boss) * 40 + 20)
     inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
     pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
     screen.blit(inventory_box, (10, 90))
 
     #Inventory title
-    inventory_title_text = font.render("Inventory :", True, WHITE)
+    inventory_title_text = font.render("Inventory for boss :", True, WHITE)
     screen.blit(inventory_title_text, (20, 105))
 
-    for i, item_name in enumerate(inventory):  # Only show first 6 items
+    for i, item_name in enumerate(inventory_boss):  # Only show first 6 items
         if item_name in weapon_images:
             img = pygame.transform.scale(weapon_images[item_name], (30, 30))
             screen.blit(img, (20, 150 + i * 40))
@@ -151,17 +152,17 @@ while running:
 
     # Inventory background box （Bottom)
     inventory_box_width = 215
-    inventory_box_height = max(150, 40 + len(inventory) * 40 + 20)
+    inventory_box_height = max(150, 40 + len(inventory_farm) * 40 + 20)
     inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
     pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
     screen.blit(inventory_box, (10, 400))
 
     #Inventory title
-    inventory_title_text = font.render("Inventory :", True, WHITE)
+    inventory_title_text = font.render("Inventory for farm :", True, WHITE)
     screen.blit(inventory_title_text, (20, 415))
 
 
-    for i, item_name in enumerate(inventory):
+    for i, item_name in enumerate(inventory_farm):
         if item_name in weapon_images:
             img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
             screen.blit(img, (20, 460 + i * 40))  # Draw image
@@ -241,7 +242,11 @@ while running:
                     if currency == "coins" and player_coins >= price:
                         player_coins -= price
                         item["bought"] = True
-                        inventory.append(item["name"])
+                        if item["name"] in ["Phoenix Feather", "Essence of Renewal", "Luna Bow", 
+                           "Hydro Strike", "Aegis Shield", "Hawk's Eye"]:
+                            inventory_boss.append(item["name"])  # 前6个进上面
+                        else:
+                            inventory_farm.append(item["name"])  # 后3个进下面
                         buying_sound.play()
                         message = f"Bought {item['name']} for {price} coins!"
                         show_item_details = False
@@ -249,7 +254,11 @@ while running:
                     elif currency == "gems" and player_gems >= price:
                         player_gems -= price
                         item["bought"] = True
-                        inventory.append(item["name"])
+                        if item["name"] in ["Phoenix Feather", "Essence of Renewal", "Luna Bow", 
+                           "Hydro Strike", "Aegis Shield", "Hawk's Eye"]:
+                            inventory_boss.append(item["name"])  # 前6个进上面
+                        else:
+                            inventory_farm.append(item["name"])  # 后3个进下面
                         buying_sound.play()
                         message = f"Bought {item['name']} for {price} gems!"
                         show_item_details = False
