@@ -46,14 +46,14 @@ def register(): #here is the register part
     user_data = {
         "password": password,
         "game1": {
-            "coin": 0,
-            "diamond": 0,
-            "timeTaken": 0.0
+            "Coins": 0,
+            "Diamonds": 0,
+            "Time Taken": 0.0
         },
         "game2": {
-            "coin": 0,
-            "diamond": 0,
-            "timeTaken": 0.0
+            "Coins": 0,
+            "Diamonds": 0,
+            "Time Taken": 0.0
         }
     }
 
