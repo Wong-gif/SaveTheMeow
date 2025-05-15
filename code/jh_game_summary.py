@@ -32,8 +32,8 @@ class GameSummary:
             for level_name, data in self.levels_data.items():
                 if level_name == "level1":
                     level_text = self.font.render("Game 1", True, (255, 255, 0))
-                    coin_text = self.small_font.render(f"Coins score: {data['coins']}", True, (0, 0, 0))
-                    diamond_text = self.small_font.render(f"Diamonds score: {data['diamonds']}", True, (0, 0, 0))
+                    coin_text = self.small_font.render(f"Coins: {data['coins']}", True, (0, 0, 0))
+                    diamond_text = self.small_font.render(f"Diamonds: {data['diamonds']}", True, (0, 0, 0))
                     time_text = self.small_font.render(f"Time Taken: {data['time_ms'] // 1000}s", True, (0, 0, 0))
                     self.screen.blit(level_text, (800, 400))
                     self.screen.blit(coin_text, (800, 490))
@@ -41,8 +41,8 @@ class GameSummary:
                     self.screen.blit(time_text, (800, 670))
                 elif level_name == "level2":
                     level_text = self.font.render("Game 2", True, (255, 255, 0))
-                    coin_text = self.small_font.render(f"Coins score: {data['coins']}", True, (255, 255, 255))
-                    diamond_text = self.small_font.render(f"Diamonds score: {data['diamonds']}", True, (255, 255, 255))
+                    coin_text = self.small_font.render(f"Coins: {data['coins']}", True, (255, 255, 255))
+                    diamond_text = self.small_font.render(f"Diamonds: {data['diamonds']}", True, (255, 255, 255))
                     time_text = self.small_font.render(f"Time Taken: {data['time_ms'] // 1000}s", True, (255, 255, 255))
                     self.screen.blit(level_text, (240, 50))
                     self.screen.blit(coin_text, (240, 140))
@@ -57,5 +57,4 @@ class GameSummary:
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.arrow_rect.collidepoint(event.pos):
-                        pygame.quit()
-                        sys.exit()
+                        return "menu"
