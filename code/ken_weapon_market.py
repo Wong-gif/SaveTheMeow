@@ -71,19 +71,19 @@ weapon_description = {
     "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
 }
     
-player_coins = 500
-player_gems = 300
+player_coins = 700
+player_gems = 500
 
 market_item = [
-    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False},
+    {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False},
     {"name": "Essence of Renewal", "price": 130, "currency": "coins", "bought": False},
-    {"name": "Luna Bow", "price": 198, "currency": "coins", "bought": False},
-    {"name": "Hydro Strike", "price": 88, "currency": "gems", "bought": False},
+    {"name": "Luna Bow", "price": 228, "currency": "coins", "bought": False},
+    {"name": "Hydro Strike", "price": 108, "currency": "gems", "bought": False},
     {"name": "Aegis Shield", "price": 45, "currency": "gems", "bought": False},
-    {"name": "Hawk's Eye", "price": 250, "currency": "coins", "bought": False},
+    {"name": "Hawk's Eye", "price": 65, "currency": "gems", "bought": False},
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Thunder Axe", "price": 60, "currency": "gems", "bought": False}
+    {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False}
 ]
 
 # Gems and coins that on top
