@@ -240,6 +240,7 @@ class AnimatedArrowFire(pygame.sprite.Sprite):
         if self.rect.left > WIDTH:
             self.kill()
 
+        
         if pygame.time.get_ticks() - self.last_update > self.frame_rate:
                 self.last_update = pygame.time.get_ticks()
                 self.frame_index = (self.frame_index + 1) % len(self.frames)
