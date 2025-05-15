@@ -1,12 +1,30 @@
 import pygame
 import random
 import os
+import json
 from jh_death_popup import DeathPopup
 
 
+def save_game1_data(username, coin, diamond, time_taken):
+    try:
+        with open(f"{username}.txt", "r") as file:
+            user_data = json.load(file)
+
+        user_data["game1"]["coin"] = coin
+        user_data["game1"]["diamond"] = diamond
+        user_data["game1"]["timeTaken"] = time_taken
+
+        with open(f"{username}.txt", "w") as file:
+            json.dump(user_data, file)
+
+        print("Game 1 data saved successfully!")
+    except Exception as e:
+        print("Failed to save Game 1 data:", e)
+
 class Game1:
-    def __init__(self, screen):
+    def __init__(self, screen, username):
         self.screen = screen
+        self.username = username
         self.screen_width, self.screen_height = screen.get_size()
         self.font = pygame.font.SysFont('Arial', 32)
         self.has_printed_success = False 
@@ -100,7 +118,6 @@ class Game1:
             {"rect": pygame.Rect(3100, 521, 40, 40), "type": "portal", "active": True}
         ]
 
-
     def _load_game_assets(self):
 
         sky = pygame.image.load("assets/images/level1_background.png").convert()
@@ -187,8 +204,8 @@ class Game1:
         for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
                 self.coins.remove(coin)
-                self.coins_collected += 10
-                self.score += 10
+                self.coins_collected += 20
+                self.score += 20
                 self.coin_sound.play()
                 
         for diamond in self.diamond[:]: 
@@ -247,7 +264,15 @@ class Game1:
                     self.time_used = pygame.time.get_ticks() - self.level_start_time
                     self.state = "next_level"
                     if not self.has_printed_success:
-                        print("Congratulations！")
+                        print("Congratulations!")
+
+                        save_game1_data(
+                            username=self.username,
+                            coin=self.coins_collected,
+                            diamond=self.diamonds_collected,
+                            time_taken=self.time_used / 1000
+                        )
+
                         self.has_printed_success = True
                                         
         self.player_rect.left = max(0, self.player_rect.left)
@@ -324,7 +349,7 @@ class Game1:
         self.screen.blit(ui_bar, (20, 20))
 
         self.screen.blit(self.coin_icon, (22, 24))
-        score_text = self.font.render(f"Coin:{self.score}", True, (0, 0, 0))
+        score_text = self.font.render(f"Coins:{self.score}", True, (0, 0, 0))
         self.screen.blit(score_text, (70, 35))
 
         self.screen.blit(self.time_icon, (680, 30))
@@ -332,7 +357,7 @@ class Game1:
         self.screen.blit(time_text, (730, 35))
 
         self.screen.blit(self.diamond_icon, (310, 24))
-        diamond_text = self.font.render(f"Diamond:{self.score}", True, (0, 0, 0))
+        diamond_text = self.font.render(f"Diamonds:{self.score}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
 
         self.death_popup.draw()
@@ -341,7 +366,7 @@ class Game1:
     def run(self, event=None):
         if event:
             if self.death_popup.handle_event(event):
-                self.__init__(self.screen)
+                self.__init__(self.screen, self.username)
                 return
             
         if not self.death_popup.active:

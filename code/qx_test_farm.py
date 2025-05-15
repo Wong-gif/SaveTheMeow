@@ -18,8 +18,7 @@ def farming_map():
             while True:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
+                        return
 
                 self.screen.fill("black")
                 self.level.run()

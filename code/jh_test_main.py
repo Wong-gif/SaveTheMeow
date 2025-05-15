@@ -27,8 +27,8 @@ def platform_map():
     background = pygame.image.load('assets/images/background.png').convert()
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))  
 
-    game1 = Game1(screen)
-    game2 = Game2(screen)
+    game1 = Game1(screen,"game 1")
+    game2 = Game2(screen,"game 2")
 
     final_score = game2.score  # 游戏的最终分数
     diamond_score = game2.diamonds_collected  # 玩家收集的钻石数量
@@ -124,9 +124,10 @@ def platform_map():
                 current_state = SUMMARY
             
         elif current_state == SUMMARY:
-            summary.run()
+            result = summary.run()
+            if result == "menu":
+                current_state = MENU
 
         pygame.display.update()
 
-    pygame.quit()
-    sys.exit()
+    return

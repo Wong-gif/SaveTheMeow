@@ -43,7 +43,7 @@ pygame.mixer.music.set_volume(0.5)  # Adjust volume
 font = pygame.font.SysFont("arial", 20)
 
 original_weapon_images = {
-    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha(),
+    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
     "Essence of Renewal": pygame.image.load(os.path.join("assets", "images", "Essence_renewal.png")).convert_alpha(),
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
@@ -51,7 +51,7 @@ original_weapon_images = {
     "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
     "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
     "Shadow Gilt": pygame.image.load(os.path.join("assets", "images", "Shadow_gilt.png")).convert_alpha(),
-    "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha()
+    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha()
 }
 
 weapon_images = {
@@ -60,7 +60,7 @@ weapon_images = {
 }
 
 weapon_description = {
-    "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."},
+    "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."},
     "Essence of Renewal": {"description": "Restore 50 health points for three times."},
     "Luna Bow": {"description": "Each arrow has 150 damage. Only for 10 seconds."},
     "Hydro Strike": {"description": "Each bullet has 200 points of attack. Only for 10 seconds"},
@@ -68,14 +68,14 @@ weapon_description = {
     "Hawk's Eye": {"description": "Each arrow has 130 damage. Only for 10 seconds."},
     "Lion Sword": {"description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
     "Shadow Gilt": {"description": "30% probability to block attack."}, 
-    "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."}
+    "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
 }
     
 player_coins = 500
 player_gems = 300
 
 market_item = [
-    {"name": "Thunder Axe", "price": 60, "currency": "gems", "bought": False},
+    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False},
     {"name": "Essence of Renewal", "price": 130, "currency": "coins", "bought": False},
     {"name": "Luna Bow", "price": 198, "currency": "coins", "bought": False},
     {"name": "Hydro Strike", "price": 88, "currency": "gems", "bought": False},
@@ -83,7 +83,7 @@ market_item = [
     {"name": "Hawk's Eye", "price": 250, "currency": "coins", "bought": False},
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Shadow Gilt", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Phoenix Feather", "price": 90, "currency": "coins", "bought": False}
+    {"name": "Thunder Axe", "price": 60, "currency": "gems", "bought": False}
 ]
 
 # Gems and coins that on top

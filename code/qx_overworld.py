@@ -119,7 +119,7 @@ class Overworld: #creates the overworld class
       if character_id == "o2":
         return open_store
       elif character_id == "o3":
-        return boss_battle
+        return platform_map
       elif character_id == "o4":
         return farming_map
       elif character_id == "o5":
