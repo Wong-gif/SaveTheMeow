@@ -7,15 +7,22 @@ from jh_death_popup import DeathPopup
 
 def save_game1_data(username, coin, diamond, time_taken):
     try:
-        with open(f"{username}.txt", "r") as file:
-            user_data = json.load(file)
+        filename = f"{username}.txt"
+        if os.path.exists(filename):
+            with open(filename, "r") as file:
+                user_data = json.load(file)
+        else:
+            user_data = {
+                "game1": {},
+                "game2": {}
+            }
+            
+        user_data["game1"]["Coins"] = coin
+        user_data["game1"]["Diamonds"] = diamond
+        user_data["game1"]["Time Taken"] = time_taken
 
-        user_data["game1"]["coin"] = coin
-        user_data["game1"]["diamond"] = diamond
-        user_data["game1"]["timeTaken"] = time_taken
-
-        with open(f"{username}.txt", "w") as file:
-            json.dump(user_data, file)
+        with open(filename, "w") as file:
+            json.dump(user_data, file, indent=4)
 
         print("Game 1 data saved successfully!")
     except Exception as e:
@@ -34,7 +41,7 @@ class Game1:
         self.score = 0
         self.time_left = 30
         self.last_time_update = pygame.time.get_ticks()
-        self.portal_frame_index = 0
+        self.portal_frame_index = 0 
         self.portal_animation_speed = 0.2
         self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 27)
 
@@ -260,20 +267,21 @@ class Game1:
         for brick in self.bricks:
             if brick["type"] == "portal" and brick["active"]:
                 if self.player_rect.colliderect(brick["rect"]):
-                    self.state != "next_level"
-                    self.time_used = pygame.time.get_ticks() - self.level_start_time
-                    self.state = "next_level"
-                    if not self.has_printed_success:
-                        print("Congratulations!")
+                    if self.state != "next_level":
+                        self.time_used = pygame.time.get_ticks() - self.level_start_time
+                        self.state = "next_level"
 
-                        save_game1_data(
-                            username=self.username,
-                            coin=self.coins_collected,
-                            diamond=self.diamonds_collected,
-                            time_taken=self.time_used / 1000
-                        )
+                        if not self.has_printed_success:
+                           print("Congratulations!")
 
-                        self.has_printed_success = True
+                           save_game1_data(
+                               username=self.username,
+                               coin=self.coins_collected,
+                               diamond=self.diamonds_collected,
+                               time_taken=self.time_used / 1000
+                           )
+
+                           self.has_printed_success = True
                                         
         self.player_rect.left = max(0, self.player_rect.left)
         self.player_rect.right = min(self.world_width, self.player_rect.right)
@@ -349,7 +357,7 @@ class Game1:
         self.screen.blit(ui_bar, (20, 20))
 
         self.screen.blit(self.coin_icon, (22, 24))
-        score_text = self.font.render(f"Coins:{self.score}", True, (0, 0, 0))
+        score_text = self.font.render(f"Coins:{self.coins_collected}", True, (0, 0, 0))
         self.screen.blit(score_text, (70, 35))
 
         self.screen.blit(self.time_icon, (680, 30))
@@ -357,7 +365,7 @@ class Game1:
         self.screen.blit(time_text, (730, 35))
 
         self.screen.blit(self.diamond_icon, (310, 24))
-        diamond_text = self.font.render(f"Diamonds:{self.score}", True, (0, 0, 0))
+        diamond_text = self.font.render(f"Diamonds:{self.diamonds_collected}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
 
         self.death_popup.draw()

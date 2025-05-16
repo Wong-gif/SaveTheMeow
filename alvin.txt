@@ -1,0 +1,1 @@
+{"password": "Alvin123$", "game1": {"Coins": 0, "Diamonds": 0, "Time Taken": 0.0}, "game2": {"Coins": 0, "Diamonds": 0, "Time Taken": 0.0}}
