@@ -25,8 +25,8 @@ font = pygame.font.SysFont("arial", 20)
 
 fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (30, 30))
-background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.png")).convert_alpha()
-background_img = pygame.transform.scale(background_img, (WIDTH, 300))
+background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.jpg")).convert_alpha()
+background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
 player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
 bullet_img = pygame.image.load(os.path.join("assets", "images", "bullet.png")).convert_alpha()
 shield_img = pygame.image.load(os.path.join("assets", "images", "shield.png")).convert_alpha()
@@ -347,10 +347,6 @@ class AnimatedArrowHawk(pygame.sprite.Sprite):
             self.frame_index = (self.frame_index + 1) % len(self.frames)
             self.image = self.frames[self.frame_index]
 
-
-
-
-
 class Fireball(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -382,7 +378,7 @@ running = True
 while running:
     clock.tick(60)
     screen.fill(WHITE)
-    #screen.blit(background_img, (0, 500))
+    screen.blit(background_img, (0, 0))
 
     x = 290
     y = 0
@@ -408,7 +404,7 @@ while running:
     mario_health_ratio = mario.health / 100
     pygame.draw.rect(screen, GREY, (20, 50, mario_bar_width, mario_bar_height), border_radius=5)  # Background
     pygame.draw.rect(screen, GREEN, (20, 50, mario_bar_width * mario_health_ratio, mario_bar_height), border_radius=5)  # Fill
-    mario_text = font.render(f"Mario HP: {mario.health}/100", True, BLACK)
+    mario_text = font.render(f"Mario HP: {mario.health}/100", True, WHITE)
     screen.blit(mario_text, (20, 20))
 
 
@@ -418,7 +414,7 @@ while running:
     boss_health_ratio = boss.health / 10000
     pygame.draw.rect(screen, GREY, (930, 50, boss_bar_width, boss_bar_height), border_radius=5)  # Background
     pygame.draw.rect(screen, RED, (930, 50, boss_bar_width * boss_health_ratio, boss_bar_height), border_radius=5)  # Fill
-    boss_text = font.render(f"Boss HP: {boss.health}/10000", True, BLACK)
+    boss_text = font.render(f"Boss HP: {boss.health}/10000", True, WHITE)
     screen.blit(boss_text, (930, 20))
 
    
