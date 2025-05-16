@@ -29,7 +29,8 @@ background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.p
 background_img = pygame.transform.scale(background_img, (WIDTH, 300))
 player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
 bullet_img = pygame.image.load(os.path.join("assets", "images", "bullet.png")).convert_alpha()
-
+shield_img = pygame.image.load(os.path.join("assets", "images", "shield.png")).convert_alpha()
+shield_img = pygame.transform.smoothscale(shield_img, (60, 60))
 
 original_weapon_images = {
     "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
@@ -37,10 +38,7 @@ original_weapon_images = {
     "Luna Bow": pygame.image.load(os.path.join("assets", "images", "Luna_bow.png")).convert_alpha(),
     "Hydro Strike": pygame.image.load(os.path.join("assets", "images", "Hydro_strike.png")).convert_alpha(),
     "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
-    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha(),
-    "Lion Sword": pygame.image.load(os.path.join("assets", "images", "Lion_sword.png")).convert_alpha(),
-    "Shadow Saber": pygame.image.load(os.path.join("assets", "images", "Shadow_saber.png")).convert_alpha(),
-    "Thunder Axe": pygame.image.load(os.path.join("assets", "images", "Thunder_axe.png")).convert_alpha()
+    "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha()
 }
 
 # Load animation frames
@@ -80,8 +78,7 @@ shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav")) 
 add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav")) 
 
- 
- 
+
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -98,13 +95,19 @@ class Mario(pygame.sprite.Sprite):
         self.shoot_delay = 300
         self.power_timer = 0     # Timer for power-ups
         self.shield = False      # No shield
-        self.shield_timer = 0    # Timer for shield
+        self.shield_timer = 0    # Timer for shield 
         self.active_weapon = None
         self.activate_message = ""
         self.activate_message_timer = 0
         self.expired_message = ""
         self.expired_message_timer = 0
         self.bullet_color = BLACK
+        self.shield_img = shield_img  # Store the shield image
+
+    def draw_shield(self, screen):
+        if self.shield:
+            shield_rect = self.shield_img.get_rect(center=self.rect.center)
+            screen.blit(self.shield_img, shield_rect)
 
 
     def update(self):
@@ -199,7 +202,7 @@ class Boss(pygame.sprite.Sprite):
             self.shoot()
 
         if self.health < 9000:
-            self.shoot_chance = 25
+            self.shoot_chance = 10
 
 
     def shoot(self):
@@ -280,7 +283,7 @@ class AnimatedAddHealth(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = self.mario.rect.center)
         self.last_update = pygame.time.get_ticks()
         self.frame_rate = 100  
-        self.duration = 5000
+        self.duration = 1000
         self.animation_done = False
         self.start_time = pygame.time.get_ticks()
     
@@ -381,34 +384,14 @@ while running:
     screen.fill(WHITE)
     #screen.blit(background_img, (0, 500))
 
-    x = 150
+    x = 290
     y = 0
-    box = pygame.Surface((900, 120), pygame.SRCALPHA)
+    box = pygame.Surface((620, 120), pygame.SRCALPHA)
     box.fill((0, 0, 0, 0))  # Fully transparent base
     pygame.draw.rect(box, (*BLACK, 100), box.get_rect(), border_radius=12)
     screen.blit(box, (x, y))
 
-    
-    # Mario 的命
-    mario_bar_width = 100
-    mario_bar_height = 15
-    mario_health_ratio = mario.health / 100
-    pygame.draw.rect(screen, GREY, (mario.rect.x - 30, mario.rect.top - 30, mario_bar_width, mario_bar_height), border_radius=5)  # Background
-    pygame.draw.rect(screen, GREEN, (mario.rect.x - 30, mario.rect.top - 30, mario_bar_width * mario_health_ratio, mario_bar_height), border_radius=5)  # Fill
-    mario_text = font.render(f"Mario HP: {mario.health}/100", True, BLACK)
-    screen.blit(mario_text, (mario.rect.x - 40, mario.rect.top - 55))
-
-
-    # Boss 的命
-    boss_bar_width = 100
-    boss_bar_height = 15
-    boss_health_ratio = boss.health / 10000
-    pygame.draw.rect(screen, GREY, (boss.rect.x - 20, boss.rect.top - 30, boss_bar_width, boss_bar_height), border_radius=5)  # Background
-    pygame.draw.rect(screen, RED, (boss.rect.x - 20, boss.rect.top - 30, boss_bar_width * boss_health_ratio, boss_bar_height), border_radius=5)  # Fill
-    boss_text = font.render(f"Boss HP: {boss.health}/10000", True, BLACK)
-    screen.blit(boss_text, (boss.rect.x - 55, boss.rect.top - 55))
-
-    x_box = 160
+    x_box = 300
     y_box = 15
     weapon_buttons.clear()
     for weapon_name, img in original_weapon_images.items():      # loop thought the weapon image
@@ -417,6 +400,27 @@ while running:
         screen.blit(scaled_images, (x_box, y_box))
         weapon_buttons.append((weapon_name, img_rect)) 
         x_box += 100      # Spacing between images
+
+    
+    # Mario 的命
+    mario_bar_width = 250
+    mario_bar_height = 15
+    mario_health_ratio = mario.health / 100
+    pygame.draw.rect(screen, GREY, (20, 50, mario_bar_width, mario_bar_height), border_radius=5)  # Background
+    pygame.draw.rect(screen, GREEN, (20, 50, mario_bar_width * mario_health_ratio, mario_bar_height), border_radius=5)  # Fill
+    mario_text = font.render(f"Mario HP: {mario.health}/100", True, BLACK)
+    screen.blit(mario_text, (20, 20))
+
+
+    # Boss 的命
+    boss_bar_width = 250
+    boss_bar_height = 15
+    boss_health_ratio = boss.health / 10000
+    pygame.draw.rect(screen, GREY, (930, 50, boss_bar_width, boss_bar_height), border_radius=5)  # Background
+    pygame.draw.rect(screen, RED, (930, 50, boss_bar_width * boss_health_ratio, boss_bar_height), border_radius=5)  # Fill
+    boss_text = font.render(f"Boss HP: {boss.health}/10000", True, BLACK)
+    screen.blit(boss_text, (930, 20))
+
    
     
 
@@ -440,6 +444,12 @@ while running:
                         all_sprites.add(effect)
                         add_health_sound.play()
 
+                    if weapon_name == "Essence of Renewal":
+                        effect = AnimatedAddHealth(mario, add_health_frames)
+                        all_sprites.add(effect)
+                        add_health_sound.play()
+
+
             
     all_sprites.update()
     for bullet in bullets:
@@ -462,7 +472,8 @@ while running:
     mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
     for hit in mario_hits:
         if mario.shield:
-            print("Blocked by Aegis Shield!")
+            mario.activate_message = "Blocked by Aegis Shield!"
+            mario.activate_message_timer = pygame.time.get_ticks() + 2000
             continue  # 没伤害
         mario.health -= 2
         if mario.health <= 0:
@@ -471,9 +482,10 @@ while running:
 
     
     all_sprites.draw(screen)
+    mario.draw_shield(screen) 
    
 
-
+    # Activated message
     if mario.activate_message and pygame.time.get_ticks() < mario.activate_message_timer:
         msg = font.render(mario.activate_message, True, RED)
         msg_x = WIDTH // 2 - msg.get_width() // 2
