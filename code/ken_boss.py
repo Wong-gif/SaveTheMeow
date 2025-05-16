@@ -21,7 +21,7 @@ pygame.display.set_caption("Mario vs Boss")
 pygame.mixer.init()
 clock = pygame.time.Clock()
 
-font = pygame.font.SysFont("arial", 20)
+font = pygame.font.SysFont("arial", 22)
 
 fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (30, 30))
@@ -92,10 +92,10 @@ class Mario(pygame.sprite.Sprite):
         self.lives = 3
         self.attack_power = random.randint(80, 100)  # Normal power
         self.last_shoot_time = 0
-        self.shoot_delay = 300
+        self.shoot_delay = 100
         self.power_timer = 0     # Timer for power-ups
         self.shield = False      # No shield
-        self.shield_timer = 0    # Timer for shield 
+        self.shield_timer = 0    # Timer for shield
         self.active_weapon = None
         self.activate_message = ""
         self.activate_message_timer = 0
@@ -202,7 +202,7 @@ class Boss(pygame.sprite.Sprite):
             self.shoot()
 
         if self.health < 9000:
-            self.shoot_chance = 10
+            self.shoot_chance = 8
 
 
     def shoot(self):
@@ -371,6 +371,9 @@ mario = Mario()
 boss = Boss()
 all_sprites.add(mario)
 all_sprites.add(boss)
+game_over = False
+start_time = pygame.time.get_ticks()  # Get initial time in milliseconds
+time_limit = 120000
 
 
 # Game loop
@@ -379,6 +382,26 @@ while running:
     clock.tick(60)
     screen.fill(WHITE)
     screen.blit(background_img, (0, 0))
+
+    current_time = pygame.time.get_ticks()  # Get current time
+    elapsed_time = current_time - start_time  # Time passed since start
+    remaining_time = max(0, time_limit - elapsed_time)  # Prevent negative time
+    remaining_seconds = remaining_time // 1000
+    minutes = remaining_seconds // 60
+    seconds = remaining_seconds % 60
+
+    timer_color = RED if remaining_time <= 10000 else WHITE
+    timer_text = font.render(f"Time: {minutes:02}:{seconds:02}", True, timer_color)
+    screen.blit(timer_text, (WIDTH // 2 - 50, 120))
+
+    if remaining_time <= 0 and not game_over:
+        game_over = True
+        time_up_text = font.render("TIME'S UP! GAME OVER.", True, RED)
+        screen.blit(time_up_text, (WIDTH // 2 - 100, HEIGHT // 2))
+        pygame.display.flip()
+        pygame.time.delay(3000)  # Show message for 3 seconds
+        running = False
+
 
     x = 290
     y = 0
@@ -446,36 +469,37 @@ while running:
                         add_health_sound.play()
 
 
-            
-    all_sprites.update()
-    for bullet in bullets:
-        hit_fireballs = pygame.sprite.spritecollide(bullet, fireballs, False)
-        for fireball in hit_fireballs:
-            bullet.kill()  # Remove bullet on hit
-            fireball.hit_count += 1  
-            if fireball.hit_count >= 3:
-                fireball.kill()
+    if not game_over:        
+        all_sprites.update()
+        for bullet in bullets:
+            hit_fireballs = pygame.sprite.spritecollide(bullet, fireballs, False)
+            for fireball in hit_fireballs:
+                bullet.kill()  # Remove bullet on hit
+                fireball.hit_count += 1  
+                if fireball.hit_count >= 2:
+                    fireball.kill()
 
-    boss_hits = pygame.sprite.spritecollide(boss, bullets, True)
-    for hit in boss_hits:
-        boss.health -= mario.attack_power
-        if boss.health <= 0:
-            boss.kill()
-            running = False
+        boss_hits = pygame.sprite.spritecollide(boss, bullets, True)
+        for hit in boss_hits:
+            boss.health -= mario.attack_power
+            if boss.health <= 0:
+                boss.kill()
+                running = False
 
            
     
-    mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
-    for hit in mario_hits:
-        if mario.shield:
-            mario.activate_message = "Blocked by Aegis Shield!"
-            mario.activate_message_timer = pygame.time.get_ticks() + 2000
-            continue  # 没伤害
-        mario.health -= 2
-        if mario.health <= 0:
-            mario.lives -= 1
-            running = False
-
+        mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
+        for hit in mario_hits:
+            if mario.shield:
+                mario.activate_message = "Blocked by Aegis Shield!"
+                mario.activate_message_timer = pygame.time.get_ticks() + 2000
+                continue  # 没伤害
+            mario.health -= random.randint(5, 8)
+            if mario.health <= 0:
+                mario.lives -= 1
+                running = False
+        
+   
     
     all_sprites.draw(screen)
     mario.draw_shield(screen) 
