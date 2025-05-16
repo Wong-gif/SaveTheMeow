@@ -10,12 +10,12 @@ def save_game2_data(username, coin, diamond, time_taken):
         with open(f"{username}.txt", "r") as file:
             user_data = json.load(file)
 
-        user_data["game2"]["coin"] = coin
-        user_data["game2"]["diamond"] = diamond
-        user_data["game2"]["timeTaken"] = time_taken
+        user_data["game2"]["Coins"] = coin
+        user_data["game2"]["Diamonds"] = diamond
+        user_data["game2"]["Time Taken"] = time_taken
 
         with open(f"{username}.txt", "w") as file:
-            json.dump(user_data, file)
+            json.dump(user_data, file, indent=4)
 
         print("Game 2 data saved successfully!")
     except Exception as e:
@@ -503,7 +503,7 @@ class Game2:
         self.screen.blit(ui_bar, (20, 20))
 
         self.screen.blit(self.coin_icon, (22, 24))
-        score_text = self.font.render(f"Coins:{self.score}", True, (0, 0, 0))
+        score_text = self.font.render(f"Coins:{self.coins_collected}", True, (0, 0, 0))
         self.screen.blit(score_text, (70, 35))
 
         self.screen.blit(self.time_icon, (680, 30))
@@ -511,7 +511,7 @@ class Game2:
         self.screen.blit(time_text, (730, 35))
 
         self.screen.blit(self.diamond_icon, (310, 24))
-        diamond_text = self.font.render(f"Diamonds:{self.score}", True, (0, 0, 0))
+        diamond_text = self.font.render(f"Diamonds:{self.diamonds_collected}", True, (0, 0, 0))
         self.screen.blit(diamond_text, (370, 35))
 
         self.death_popup.draw()
