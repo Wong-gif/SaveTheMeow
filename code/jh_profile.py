@@ -85,11 +85,11 @@ def login(): # here is log in part
             messagebox.showinfo("Success", "You have successfully logged in!")
             app.withdraw()  # Hide the login window
 
-            def start_game():
+            def start_game_thread():
                 import qx_test_main
                 qx_test_main.platform_map(username)
             
-            threading.Thread(target=start_game).start()
+            threading.Thread(target=start_game_thread).start()
            
         else:
             messagebox.showerror("Error", "Wrong Password, Please try again!")
