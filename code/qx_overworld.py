@@ -9,7 +9,8 @@ from ken_weapon_market_test import open_store #import function to open the store
 from qx_test_farm import farming_map
 
 class Overworld: #creates the overworld class
-    def __init__(self, tmx_map,data, overworld_frames): #initializes overworld with map, data, and sprite frames
+    def __init__(self, tmx_map,data, overworld_frames,username): #initializes overworld with map, data, and sprite frames
+        self.username = username
         self.display_surface = pygame.display.get_surface() ## Gets main display surface to render
         self.data = data #stores reference to game data object
 
@@ -119,7 +120,7 @@ class Overworld: #creates the overworld class
       if character_id == "o2":
         return open_store
       elif character_id == "o3":
-        return platform_map
+        return lambda: platform_map(self.username)  # Pass username to platform_map
       elif character_id == "o4":
         return farming_map
       elif character_id == "o5":
