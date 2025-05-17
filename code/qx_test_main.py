@@ -9,7 +9,8 @@ def platform_map(username):
     from qx_data import Data
 
     class Game: # main game class that runs the main loop to load the game, 
-        def __init__(self): #calls this lines of code and initialize the game when an object is built
+        def __init__(self, username): #calls this lines of code and initialize the game when an object is built
+            self.username = username
             pygame.init() #initialize pygame modules (eg. display, image, mixer ...)
             self.display_surface = pygame.display.set_mode((window_width,window_height)) #set the game window with specific dimension
             pygame.display.set_caption("Save The Meow") #set the title of the game
@@ -41,6 +42,6 @@ def platform_map(username):
                 self.current_stage.run(dt) #run the current stage (overworld) logic and rendering, time is passed to the current scene so it can update accordingly
                 pygame.display.update() #update the display with what has been drawn
 
-    game = Game() #create an instance of the game class
+    game = Game(username) #create an instance of the game class
     game.run() #start the game by running the main loop
  
