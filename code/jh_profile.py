@@ -87,7 +87,7 @@ def login(): # here is log in part
 
             def start_game_thread():
                 import qx_test_main
-                qx_test_main.platform_map(username)
+                qx_test_main.open_game(username)
             
             threading.Thread(target=start_game_thread).start()
            

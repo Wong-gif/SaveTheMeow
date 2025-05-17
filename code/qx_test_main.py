@@ -1,4 +1,4 @@
-def platform_map(username):
+def open_game(username):
 
     import pygame
     from qx_settings import window_height,window_width,Z_layers,animation_speed
@@ -20,7 +20,7 @@ def platform_map(username):
             self.data = Data() #creates an instance of the Data class to store game state or progress
             #generate the world map
             self.tmx_overworld = load_pygame(join("tiled_data_qianxian","tmx","overworld.tmx")) #load the Tiled overworld map, join from os adds either / or \ depending on your own device
-            self.current_stage = Overworld(self.tmx_overworld,self.data,self.overworld_frames) #create the overworld stage with the map, data and graphics
+            self.current_stage = Overworld(self.tmx_overworld,self.data,self.overworld_frames,self.username) #create the overworld stage with the map, data and graphics
         
         def import_assets(self):
             self.overworld_frames = { #dictionary to hold different types of animation frames for the overworld
