@@ -129,6 +129,9 @@ def boss_stage():
     click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav")) 
     add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav"))
     expl_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "expl.wav"))
+    pygame.mixer.music.load(os.path.join("assets", "sounds", "bossback_music.wav"))
+    pygame.mixer.music.set_volume(0.5)  
+
 
 
     class Mario(pygame.sprite.Sprite):
@@ -447,7 +450,7 @@ def boss_stage():
     game_over = False
     start_time = pygame.time.get_ticks()  # Get initial time in milliseconds
     time_limit = 121000
-
+    pygame.mixer.music.play(-1)
 
     # Game loop
     running = True
