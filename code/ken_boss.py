@@ -116,6 +116,13 @@ def boss_stage():
         img = pygame.transform.scale(img, (60, 60)) 
         hawk_arrow_frames.append(img)
 
+    explosion_animation = []
+    for i in range(9):
+        explosion_img = pygame.image.load(os.path.join("assets", "images", "explosion", f"expl{i}.png")).convert_alpha()
+        explosion_img.set_colorkey(BLACK)
+        explosion_img = pygame.transform.scale(explosion_img, (60, 60)) 
+        explosion_animation.append(explosion_img)
+
 
 
     shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
@@ -406,6 +413,27 @@ def boss_stage():
             if self.rect.right < 0:
                 self.kill()
 
+    class Explosion(pygame.sprite.Sprite):
+        def __init__(self, center, frames):
+            super().__init__()
+            self.frames = frames
+            self.frame_index = 0
+            self.image = self.frames[self.frame_index]
+            self.rect = self.image.get_rect(center=center)
+            self.last_update = pygame.time.get_ticks()
+            self.frame_rate = 50  # milliseconds between frames
+            
+        def update(self):
+            now = pygame.time.get_ticks()
+            if now - self.last_update > self.frame_rate:
+                self.last_update = now
+                self.frame_index += 1
+                if self.frame_index == len(self.frames):
+                    self.kill()
+                else:
+                    self.image = self.frames[self.frame_index]
+                    self.rect = self.image.get_rect(center=self.rect.center)
+
     weapon_buttons = [] 
 
     all_sprites = pygame.sprite.Group()
@@ -516,6 +544,8 @@ def boss_stage():
             for bullet in bullets:
                 hit_fireballs = pygame.sprite.spritecollide(bullet, fireballs, False)
                 for fireball in hit_fireballs:
+                    explosion = Explosion(fireball.rect.center, explosion_animation)
+                    all_sprites.add(explosion)
                     bullet.kill()  # Remove bullet on hit
                     fireball.hit_count += 1  
                     if fireball.hit_count >= 2:
