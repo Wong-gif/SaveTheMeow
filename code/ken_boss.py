@@ -416,7 +416,7 @@ def boss_stage():
     all_sprites.add(boss)
     game_over = False
     start_time = pygame.time.get_ticks()  # Get initial time in milliseconds
-    time_limit = 120000
+    time_limit = 121000
 
 
     # Game loop
@@ -428,9 +428,8 @@ def boss_stage():
         current_time = pygame.time.get_ticks()  # Get current time
         elapsed_time = current_time - start_time  # Time passed since start
         remaining_time = max(0, time_limit - elapsed_time)  # Prevent negative time
-        remaining_seconds = remaining_time // 1000
-        minutes = remaining_seconds // 60
-        seconds = remaining_seconds % 60
+        minutes = remaining_time // 60000
+        seconds = remaining_time % 60000 // 1000
 
         timer_color = RED if remaining_time <= 10000 else WHITE
         timer_text = font.render(f"Time: {minutes:02}:{seconds:02}", True, timer_color)
