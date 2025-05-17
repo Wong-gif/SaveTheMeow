@@ -127,7 +127,8 @@ def boss_stage():
 
     shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
     click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav")) 
-    add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav")) 
+    add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav"))
+    expl_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "expl.wav"))
 
 
     class Mario(pygame.sprite.Sprite):
@@ -421,7 +422,7 @@ def boss_stage():
             self.image = self.frames[self.frame_index]
             self.rect = self.image.get_rect(center=center)
             self.last_update = pygame.time.get_ticks()
-            self.frame_rate = 50  # milliseconds between frames
+            self.frame_rate = 150  # milliseconds between frames
             
         def update(self):
             now = pygame.time.get_ticks()
@@ -546,6 +547,7 @@ def boss_stage():
                 for fireball in hit_fireballs:
                     explosion = Explosion(fireball.rect.center, explosion_animation)
                     all_sprites.add(explosion)
+                    expl_sound.play()
                     bullet.kill()  # Remove bullet on hit
                     fireball.hit_count += 1  
                     if fireball.hit_count >= 2:
