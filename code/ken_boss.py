@@ -71,6 +71,7 @@ def boss_stage():
     background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.jpg")).convert_alpha()
     background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
     player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
+    boss_img = pygame.image.load(os.path.join("assets", "images", "boss.png")).convert_alpha()
     bullet_img = pygame.image.load(os.path.join("assets", "images", "bullet.png")).convert_alpha()
     shield_img = pygame.image.load(os.path.join("assets", "images", "shield.png")).convert_alpha()
     shield_img = pygame.transform.smoothscale(shield_img, (60, 60))
@@ -115,11 +116,22 @@ def boss_stage():
         img = pygame.transform.scale(img, (60, 60)) 
         hawk_arrow_frames.append(img)
 
+    explosion_animation = []
+    for i in range(9):
+        explosion_img = pygame.image.load(os.path.join("assets", "images", "explosion", f"expl{i}.png")).convert_alpha()
+        explosion_img.set_colorkey(BLACK)
+        explosion_img = pygame.transform.scale(explosion_img, (60, 60)) 
+        explosion_animation.append(explosion_img)
+
 
 
     shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
     click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav")) 
-    add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav")) 
+    add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav"))
+    expl_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "expl.wav"))
+    pygame.mixer.music.load(os.path.join("assets", "sounds", "bossback_music.wav"))
+    pygame.mixer.music.set_volume(0.5)  
+
 
 
     class Mario(pygame.sprite.Sprite):
@@ -223,8 +235,8 @@ def boss_stage():
     class Boss(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.Surface((60, 100))
-            self.image.fill(ORANGE)
+            self.image = pygame.transform.scale(boss_img, (120, 200))
+            self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             self.rect.x = 1080
             self.rect.y = HEIGHT/2
@@ -405,6 +417,27 @@ def boss_stage():
             if self.rect.right < 0:
                 self.kill()
 
+    class Explosion(pygame.sprite.Sprite):
+        def __init__(self, center, frames):
+            super().__init__()
+            self.frames = frames
+            self.frame_index = 0
+            self.image = self.frames[self.frame_index]
+            self.rect = self.image.get_rect(center=center)
+            self.last_update = pygame.time.get_ticks()
+            self.frame_rate = 150  # milliseconds between frames
+            
+        def update(self):
+            now = pygame.time.get_ticks()
+            if now - self.last_update > self.frame_rate:
+                self.last_update = now
+                self.frame_index += 1
+                if self.frame_index == len(self.frames):
+                    self.kill()
+                else:
+                    self.image = self.frames[self.frame_index]
+                    self.rect = self.image.get_rect(center=self.rect.center)
+
     weapon_buttons = [] 
 
     all_sprites = pygame.sprite.Group()
@@ -416,8 +449,8 @@ def boss_stage():
     all_sprites.add(boss)
     game_over = False
     start_time = pygame.time.get_ticks()  # Get initial time in milliseconds
-    time_limit = 120000
-
+    time_limit = 121000
+    pygame.mixer.music.play(-1)
 
     # Game loop
     running = True
@@ -428,9 +461,8 @@ def boss_stage():
         current_time = pygame.time.get_ticks()  # Get current time
         elapsed_time = current_time - start_time  # Time passed since start
         remaining_time = max(0, time_limit - elapsed_time)  # Prevent negative time
-        remaining_seconds = remaining_time // 1000
-        minutes = remaining_seconds // 60
-        seconds = remaining_seconds % 60
+        minutes = remaining_time // 60000
+        seconds = remaining_time % 60000 // 1000
 
         timer_color = RED if remaining_time <= 10000 else WHITE
         timer_text = font.render(f"Time: {minutes:02}:{seconds:02}", True, timer_color)
@@ -516,6 +548,9 @@ def boss_stage():
             for bullet in bullets:
                 hit_fireballs = pygame.sprite.spritecollide(bullet, fireballs, False)
                 for fireball in hit_fireballs:
+                    explosion = Explosion(fireball.rect.center, explosion_animation)
+                    all_sprites.add(explosion)
+                    expl_sound.play()
                     bullet.kill()  # Remove bullet on hit
                     fireball.hit_count += 1  
                     if fireball.hit_count >= 2:
