@@ -71,6 +71,7 @@ def boss_stage():
     background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.jpg")).convert_alpha()
     background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
     player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
+    boss_img = pygame.image.load(os.path.join("assets", "images", "boss.png")).convert_alpha()
     bullet_img = pygame.image.load(os.path.join("assets", "images", "bullet.png")).convert_alpha()
     shield_img = pygame.image.load(os.path.join("assets", "images", "shield.png")).convert_alpha()
     shield_img = pygame.transform.smoothscale(shield_img, (60, 60))
@@ -223,8 +224,8 @@ def boss_stage():
     class Boss(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.Surface((60, 100))
-            self.image.fill(ORANGE)
+            self.image = pygame.transform.scale(boss_img, (120, 200))
+            self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             self.rect.x = 1080
             self.rect.y = HEIGHT/2
