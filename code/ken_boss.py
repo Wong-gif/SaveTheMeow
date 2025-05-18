@@ -16,7 +16,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("BOSS STAGE")
 clock = pygame.time.Clock()
 
+menu_background = pygame.image.load(os.path.join("assets", "images", "menu_background.png")).convert_alpha()
+menu_background = pygame.transform.smoothscale(menu_background, (WIDTH, HEIGHT))
+
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
+
+pygame.mixer.music.load(os.path.join("assets", "sounds", "menu_music.wav"))
+pygame.mixer.music.set_volume(0.8)
+pygame.mixer.music.play(-1)
 
 # Game states
 MENU = "menu"
@@ -59,8 +66,7 @@ start_button = Button(
 
 def boss_stage():
 
-    RED = (255, 0, 0)   # mario
-    ORANGE = (255, 165, 0)   # boss
+    RED = (255, 0, 0)  
     GREEN = (0, 255, 0)
     GREY = (200, 200, 200) 
 
@@ -68,6 +74,8 @@ def boss_stage():
 
     fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
     fireball_img = pygame.transform.scale(fireball_img, (30, 30))
+    bluefire_img = pygame.image.load(os.path.join("assets", "images", "bluefire.png")).convert_alpha()
+    bluefire_img = pygame.transform.scale(bluefire_img, (30, 30))
     background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.jpg")).convert_alpha()
     background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
     player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
@@ -130,7 +138,7 @@ def boss_stage():
     add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav"))
     expl_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "expl.wav"))
     pygame.mixer.music.load(os.path.join("assets", "sounds", "bossback_music.wav"))
-    pygame.mixer.music.set_volume(0.5)  
+    pygame.mixer.music.set_volume(0.4)  
 
 
 
@@ -178,8 +186,8 @@ def boss_stage():
 
             if self.rect.top < 125:
                 self.rect.top = 125
-            if self.rect.bottom > HEIGHT:
-                self.rect.bottom = HEIGHT
+            if self.rect.bottom > 700:
+                self.rect.bottom = 700
 
             if self.rect.left < 0:
                 self.rect.left = 0
@@ -231,40 +239,6 @@ def boss_stage():
                 all_sprites.add(bullet)
                 bullets.add(bullet)
             shoot_sound.play()
-            
-    class Boss(pygame.sprite.Sprite):
-        def __init__(self):
-            pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.transform.scale(boss_img, (120, 200))
-            self.image.set_colorkey(BLACK)
-            self.rect = self.image.get_rect()
-            self.rect.x = 1080
-            self.rect.y = HEIGHT/2
-            self.speed = random.choice([-2, 2])
-            self.shoot_chance = 5
-            self.health = 10000
-        
-        def update(self):
-            self.rect.y += self.speed
-
-            if self.rect.top <= 125 or self.rect.bottom >= HEIGHT:
-                self.speed *= -1
-                self.speed += random.choice([-1, 0, 1])
-                if self.speed == 0:
-                    self.speed = random.choice([-2, 2])
-
-            if random.randint(1, 100) <= self.shoot_chance:
-                self.shoot()
-
-            if self.health < 9000:
-                self.shoot_chance = 8
-
-
-        def shoot(self):
-            fireball = Fireball(self.rect.x, self.rect.y)
-            all_sprites.add(fireball)
-            fireballs.add(fireball)
-
 
     class Bullet(pygame.sprite.Sprite):
         def __init__(self, x, y, color):
@@ -304,7 +278,6 @@ def boss_stage():
                     self.frame_index = (self.frame_index + 1) % len(self.frames)
                     self.image = self.frames[self.frame_index]
 
-        
     class AnimatedBulletHydro(pygame.sprite.Sprite):
         def __init__(self, x, y, frames):
             super().__init__()
@@ -353,7 +326,6 @@ def boss_stage():
             if pygame.time.get_ticks() - self.start_time > self.duration:  # 持续一段时间后自动删除
                 self.kill()
 
-
     class AnimatedArrowLuna(pygame.sprite.Sprite):
         def __init__(self, x, y, frames):
             super().__init__() 
@@ -376,8 +348,6 @@ def boss_stage():
                 self.last_update = pygame.time.get_ticks()
                 self.frame_index = (self.frame_index + 1) % len(self.frames)
                 self.image = self.frames[self.frame_index]
-
-
 
     class AnimatedArrowHawk(pygame.sprite.Sprite):
         def __init__(self, x, y, frames):
@@ -402,10 +372,46 @@ def boss_stage():
                 self.frame_index = (self.frame_index + 1) % len(self.frames)
                 self.image = self.frames[self.frame_index]
 
-    class Fireball(pygame.sprite.Sprite):
-        def __init__(self, x, y):
+    class Boss(pygame.sprite.Sprite):
+        def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = fireball_img
+            self.image = pygame.transform.scale(boss_img, (120, 200))
+            self.image.set_colorkey(BLACK)
+            self.rect = self.image.get_rect()
+            self.rect.x = 1080
+            self.rect.y = HEIGHT/2
+            self.speed = random.choice([-2, 2])
+            self.shoot_chance = 5
+            self.health = 10000
+        
+        def update(self):
+            self.rect.y += self.speed
+
+            if self.rect.top <= 125 or self.rect.bottom >= HEIGHT:
+                self.speed *= -1
+                self.speed += random.choice([-1, 0, 1])
+                if self.speed == 0:
+                    self.speed = random.choice([-2, 2])
+
+            if random.randint(1, 100) <= self.shoot_chance:
+                self.shoot()
+
+            if self.health < 4000:
+                self.shoot_chance = 10
+
+
+        def shoot(self):
+            if self.health < 4000:
+                fireball = Fireball(self.rect.x, self.rect.y, bluefire_img)
+            else:
+                fireball = Fireball(self.rect.x, self.rect.y, fireball_img)
+            all_sprites.add(fireball)
+            fireballs.add(fireball)
+
+    class Fireball(pygame.sprite.Sprite):
+        def __init__(self, x, y, image):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = image
             self.rect = self.image.get_rect()
             self.rect.x = x
             self.rect.y = y
@@ -438,6 +444,8 @@ def boss_stage():
                     self.image = self.frames[self.frame_index]
                     self.rect = self.image.get_rect(center=self.rect.center)
 
+                    
+
     weapon_buttons = [] 
 
     all_sprites = pygame.sprite.Group()
@@ -457,7 +465,8 @@ def boss_stage():
     while running:
         clock.tick(60)
         screen.blit(background_img, (0, 0))
-
+        
+        #Timer
         current_time = pygame.time.get_ticks()  # Get current time
         elapsed_time = current_time - start_time  # Time passed since start
         remaining_time = max(0, time_limit - elapsed_time)  # Prevent negative time
@@ -475,8 +484,9 @@ def boss_stage():
             pygame.display.flip()
             pygame.time.delay(3000)  # Show message for 3 seconds
             running = False
+            continue
 
-
+        # Top box for weapon
         x = 290
         y = 0
         box = pygame.Surface((620, 120), pygame.SRCALPHA)
@@ -563,8 +573,6 @@ def boss_stage():
                     boss.kill()
                     running = False
 
-            
-        
             mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
             for hit in mario_hits:
                 if mario.shield:
@@ -576,7 +584,6 @@ def boss_stage():
                     mario.lives -= 1
                     running = False
             
-    
         
         all_sprites.draw(screen)
         mario.draw_shield(screen) 
@@ -588,7 +595,6 @@ def boss_stage():
             msg_x = WIDTH // 2 - msg.get_width() // 2
             msg_y = HEIGHT - 60
             
-
             msg_bg = pygame.Surface((msg.get_width() + 20, msg.get_height() + 10)) # Background box
             msg_bg.set_alpha(100)  # Transparency
             msg_bg.fill(GREY)
@@ -609,7 +615,8 @@ def boss_stage():
             screen.blit(msg, (msg_x, msg_y))         # Draw message
 
         pygame.display.flip()
-
+    
+    pygame.mixer.music.stop()
     return True
 
 # Main game loop
@@ -618,7 +625,7 @@ while running:
     clock.tick(60)
     
     if current_state == MENU:
-        screen.fill(WHITE)
+        screen.blit(menu_background, (0, 0))
         start_button.draw(screen)
         
         for event in pygame.event.get():
@@ -628,6 +635,7 @@ while running:
             if start_button.is_clicked(event):
                 current_state = BOSS_STAGE
                 click_sound.play()
+                pygame.mixer.music.stop()
                 # Run the boss stage and check if we should return to menu or quit
                 should_continue = boss_stage()
                 if not should_continue:
