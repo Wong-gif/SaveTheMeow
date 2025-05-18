@@ -173,7 +173,7 @@ while running:
 
     for i, item in enumerate(market_item):    # 9 Boxes 
         col = 3
-        x = 230 + (i % col) * 230
+        x = 240 + (i % col) * 220
         y = 80 + (i // col) * 230
         box = pygame.Surface((190, 160), pygame.SRCALPHA)
         box.fill((0, 0, 0, 0))  # Fully transparent base
