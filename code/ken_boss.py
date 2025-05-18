@@ -16,10 +16,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("BOSS STAGE")
 clock = pygame.time.Clock()
 
-menu_background = pygame.image.load(os.path.join("assets", "images", "menu_background.webp"))
-menu_background = pygame.transform.scale(menu_background, (WIDTH, HEIGHT))
+menu_background = pygame.image.load(os.path.join("assets", "images", "menu_background.png")).convert_alpha()
+menu_background = pygame.transform.smoothscale(menu_background, (WIDTH, HEIGHT))
 
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
+
+pygame.mixer.music.load(os.path.join("assets", "sounds", "menu_music.wav"))
+pygame.mixer.music.set_volume(0.8)
+pygame.mixer.music.play(-1)
 
 # Game states
 MENU = "menu"
@@ -134,7 +138,7 @@ def boss_stage():
     add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav"))
     expl_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "expl.wav"))
     pygame.mixer.music.load(os.path.join("assets", "sounds", "bossback_music.wav"))
-    pygame.mixer.music.set_volume(0.5)  
+    pygame.mixer.music.set_volume(0.4)  
 
 
 
@@ -611,7 +615,8 @@ def boss_stage():
             screen.blit(msg, (msg_x, msg_y))         # Draw message
 
         pygame.display.flip()
-
+    
+    pygame.mixer.music.stop()
     return True
 
 # Main game loop
@@ -630,6 +635,7 @@ while running:
             if start_button.is_clicked(event):
                 current_state = BOSS_STAGE
                 click_sound.play()
+                pygame.mixer.music.stop()
                 # Run the boss stage and check if we should return to menu or quit
                 should_continue = boss_stage()
                 if not should_continue:
