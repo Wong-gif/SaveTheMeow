@@ -68,6 +68,8 @@ def boss_stage():
 
     fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
     fireball_img = pygame.transform.scale(fireball_img, (30, 30))
+    bluefire_img = pygame.image.load(os.path.join("assets", "images", "bluefire.png")).convert_alpha()
+    bluefire_img = pygame.transform.scale(bluefire_img, (30, 30))
     background_img = pygame.image.load(os.path.join("assets", "images", "boss_back.jpg")).convert_alpha()
     background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
     player_img = pygame.image.load(os.path.join("assets", "images", "playerboss.png")).convert_alpha()
@@ -231,40 +233,6 @@ def boss_stage():
                 all_sprites.add(bullet)
                 bullets.add(bullet)
             shoot_sound.play()
-            
-    class Boss(pygame.sprite.Sprite):
-        def __init__(self):
-            pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.transform.scale(boss_img, (120, 200))
-            self.image.set_colorkey(BLACK)
-            self.rect = self.image.get_rect()
-            self.rect.x = 1080
-            self.rect.y = HEIGHT/2
-            self.speed = random.choice([-2, 2])
-            self.shoot_chance = 5
-            self.health = 10000
-        
-        def update(self):
-            self.rect.y += self.speed
-
-            if self.rect.top <= 125 or self.rect.bottom >= HEIGHT:
-                self.speed *= -1
-                self.speed += random.choice([-1, 0, 1])
-                if self.speed == 0:
-                    self.speed = random.choice([-2, 2])
-
-            if random.randint(1, 100) <= self.shoot_chance:
-                self.shoot()
-
-            if self.health < 9000:
-                self.shoot_chance = 8
-
-
-        def shoot(self):
-            fireball = Fireball(self.rect.x, self.rect.y)
-            all_sprites.add(fireball)
-            fireballs.add(fireball)
-
 
     class Bullet(pygame.sprite.Sprite):
         def __init__(self, x, y, color):
@@ -304,7 +272,6 @@ def boss_stage():
                     self.frame_index = (self.frame_index + 1) % len(self.frames)
                     self.image = self.frames[self.frame_index]
 
-        
     class AnimatedBulletHydro(pygame.sprite.Sprite):
         def __init__(self, x, y, frames):
             super().__init__()
@@ -353,7 +320,6 @@ def boss_stage():
             if pygame.time.get_ticks() - self.start_time > self.duration:  # 持续一段时间后自动删除
                 self.kill()
 
-
     class AnimatedArrowLuna(pygame.sprite.Sprite):
         def __init__(self, x, y, frames):
             super().__init__() 
@@ -376,8 +342,6 @@ def boss_stage():
                 self.last_update = pygame.time.get_ticks()
                 self.frame_index = (self.frame_index + 1) % len(self.frames)
                 self.image = self.frames[self.frame_index]
-
-
 
     class AnimatedArrowHawk(pygame.sprite.Sprite):
         def __init__(self, x, y, frames):
@@ -402,10 +366,46 @@ def boss_stage():
                 self.frame_index = (self.frame_index + 1) % len(self.frames)
                 self.image = self.frames[self.frame_index]
 
-    class Fireball(pygame.sprite.Sprite):
-        def __init__(self, x, y):
+    class Boss(pygame.sprite.Sprite):
+        def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = fireball_img
+            self.image = pygame.transform.scale(boss_img, (120, 200))
+            self.image.set_colorkey(BLACK)
+            self.rect = self.image.get_rect()
+            self.rect.x = 1080
+            self.rect.y = HEIGHT/2
+            self.speed = random.choice([-2, 2])
+            self.shoot_chance = 5
+            self.health = 10000
+        
+        def update(self):
+            self.rect.y += self.speed
+
+            if self.rect.top <= 125 or self.rect.bottom >= HEIGHT:
+                self.speed *= -1
+                self.speed += random.choice([-1, 0, 1])
+                if self.speed == 0:
+                    self.speed = random.choice([-2, 2])
+
+            if random.randint(1, 100) <= self.shoot_chance:
+                self.shoot()
+
+            if self.health < 4000:
+                self.shoot_chance = 10
+
+
+        def shoot(self):
+            if self.health < 4000:
+                fireball = Fireball(self.rect.x, self.rect.y, bluefire_img)
+            else:
+                fireball = Fireball(self.rect.x, self.rect.y, fireball_img)
+            all_sprites.add(fireball)
+            fireballs.add(fireball)
+
+    class Fireball(pygame.sprite.Sprite):
+        def __init__(self, x, y, image):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = image
             self.rect = self.image.get_rect()
             self.rect.x = x
             self.rect.y = y
@@ -437,6 +437,8 @@ def boss_stage():
                 else:
                     self.image = self.frames[self.frame_index]
                     self.rect = self.image.get_rect(center=self.rect.center)
+
+                    
 
     weapon_buttons = [] 
 
