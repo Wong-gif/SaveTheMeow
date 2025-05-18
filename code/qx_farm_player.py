@@ -3,7 +3,7 @@ from qx_farm_settings import *
 from qx_support import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups,obstacle_sprites):
+    def __init__(self,pos,groups,obstacle_sprites,craete_attack):
         super().__init__(groups)
         self.image = pygame.image.load("graphics_qx/test/player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
+        self.create_attack = craete_attack
 
         self.obstacle_sprites = obstacle_sprites
 
@@ -62,7 +63,7 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_SPACE]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
-                print("attack")
+                self.create_attack()
 
             #special powers input
             if keys[pygame.K_LCTRL]:

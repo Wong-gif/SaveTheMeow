@@ -4,6 +4,7 @@ from qx_farm_player import Player
 from qx_farm_tile import Tile
 from qx_support import *
 from random import choice
+from qx_farm_weapons import Weapon
 
 class Level:
     def __init__(self):
@@ -45,7 +46,11 @@ class Level:
                         if style == "object":
                             surf = graphics['objects'][int(col)]
                             Tile((x,y),[self.visible_sprites,self.obstacles_sprites],"object",surf)
-        self.player = Player((1800,1600),[self.visible_sprites],self.obstacles_sprites)
+
+        self.player = Player((1800,1600),[self.visible_sprites],self.obstacles_sprites,self.craete_attack)
+
+    def craete_attack(self):
+        Weapon(self.player,[self.visible_sprites])
 
     def run(self):
         #update and draw game
