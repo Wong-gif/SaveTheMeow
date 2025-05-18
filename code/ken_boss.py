@@ -16,6 +16,9 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("BOSS STAGE")
 clock = pygame.time.Clock()
 
+menu_background = pygame.image.load(os.path.join("assets", "images", "menu_background.webp"))
+menu_background = pygame.transform.scale(menu_background, (WIDTH, HEIGHT))
+
 click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav"))
 
 # Game states
@@ -59,8 +62,7 @@ start_button = Button(
 
 def boss_stage():
 
-    RED = (255, 0, 0)   # mario
-    ORANGE = (255, 165, 0)   # boss
+    RED = (255, 0, 0)  
     GREEN = (0, 255, 0)
     GREY = (200, 200, 200) 
 
@@ -180,8 +182,8 @@ def boss_stage():
 
             if self.rect.top < 125:
                 self.rect.top = 125
-            if self.rect.bottom > HEIGHT:
-                self.rect.bottom = HEIGHT
+            if self.rect.bottom > 700:
+                self.rect.bottom = 700
 
             if self.rect.left < 0:
                 self.rect.left = 0
@@ -459,7 +461,8 @@ def boss_stage():
     while running:
         clock.tick(60)
         screen.blit(background_img, (0, 0))
-
+        
+        #Timer
         current_time = pygame.time.get_ticks()  # Get current time
         elapsed_time = current_time - start_time  # Time passed since start
         remaining_time = max(0, time_limit - elapsed_time)  # Prevent negative time
@@ -477,8 +480,9 @@ def boss_stage():
             pygame.display.flip()
             pygame.time.delay(3000)  # Show message for 3 seconds
             running = False
+            continue
 
-
+        # Top box for weapon
         x = 290
         y = 0
         box = pygame.Surface((620, 120), pygame.SRCALPHA)
@@ -565,8 +569,6 @@ def boss_stage():
                     boss.kill()
                     running = False
 
-            
-        
             mario_hits = pygame.sprite.spritecollide(mario, fireballs, True)
             for hit in mario_hits:
                 if mario.shield:
@@ -578,7 +580,6 @@ def boss_stage():
                     mario.lives -= 1
                     running = False
             
-    
         
         all_sprites.draw(screen)
         mario.draw_shield(screen) 
@@ -590,7 +591,6 @@ def boss_stage():
             msg_x = WIDTH // 2 - msg.get_width() // 2
             msg_y = HEIGHT - 60
             
-
             msg_bg = pygame.Surface((msg.get_width() + 20, msg.get_height() + 10)) # Background box
             msg_bg.set_alpha(100)  # Transparency
             msg_bg.fill(GREY)
@@ -620,7 +620,7 @@ while running:
     clock.tick(60)
     
     if current_state == MENU:
-        screen.fill(WHITE)
+        screen.blit(menu_background, (0, 0))
         start_button.draw(screen)
         
         for event in pygame.event.get():
