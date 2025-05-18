@@ -21,9 +21,12 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
-        self.create_attack = craete_attack
-
         self.obstacle_sprites = obstacle_sprites
+
+        #weapons
+        self.create_attack = craete_attack
+        self.weapons_index = 0
+        self.weapon = list(weapons_data.keys())[self.weapons_index]
 
     def import_player_assets(self):
         character_path = "graphics_qx/player/"
