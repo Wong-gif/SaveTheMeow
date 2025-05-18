@@ -7,6 +7,7 @@ def boss_battle():
 
     WIDTH, HEIGHT = 1200, 800
     BLACK = (0, 0, 0)
+    LIGHT_BLACK = (30, 30, 30)
     WHITE = (255, 255, 255) 
 
     pygame.init()
@@ -37,7 +38,7 @@ def boss_battle():
             self.text = text
             self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 28)
             self.normal_color = BLACK
-            self.hover_color = BLACK
+            self.hover_color = LIGHT_BLACK
         
         def draw(self, surface):
             mouse_pos = pygame.mouse.get_pos()
@@ -135,6 +136,7 @@ def boss_battle():
 
 
         shoot_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "shoot.wav"))
+        shoot_sound.set_volume(0.5)
         click_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "click.wav")) 
         add_health_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "add_health.wav"))
         expl_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "expl.wav"))
@@ -156,7 +158,7 @@ def boss_battle():
                 self.lives = 3
                 self.attack_power = random.randint(80, 100)  # Normal power
                 self.last_shoot_time = 0
-                self.shoot_delay = 100
+                self.shoot_delay = 150
                 self.power_timer = 0     # Timer for power-ups
                 self.shield = False      # No shield
                 self.shield_timer = 0    # Timer for shield
