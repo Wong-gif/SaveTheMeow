@@ -1,8 +1,0 @@
-{
-    "game1": {
-        "Coins": 180,
-        "Diamonds": 40,
-        "Time Taken": 11.984
-    },
-    "game2": {}
-}
