@@ -6,6 +6,7 @@ WIDTH, HEIGHT = 1200, 800
 FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 LIGHT_GREEN = (0, 255, 100)
 GREY = (200, 200, 200)
@@ -155,19 +156,19 @@ while running:
     inventory_box_height = max(150, 40 + len(inventory_farm) * 40 + 20)
     inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
     pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
-    screen.blit(inventory_box, (10, 400))
+    screen.blit(inventory_box, (10, 550))
 
     #Inventory title
     inventory_title_text = font.render("Inventory for farm :", True, WHITE)
-    screen.blit(inventory_title_text, (20, 415))
+    screen.blit(inventory_title_text, (20, 565))
 
 
     for i, item_name in enumerate(inventory_farm):
         if item_name in weapon_images:
             img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
-            screen.blit(img, (20, 460 + i * 40))  # Draw image
+            screen.blit(img, (20, 610 + i * 40))  # Draw image
             name_text = font.render(item_name, True, WHITE)
-            screen.blit(name_text, (60, 465 + i * 40))  # Name next to image
+            screen.blit(name_text, (60, 615 + i * 40))  # Name next to image
 
     screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
 
@@ -208,7 +209,7 @@ while running:
         screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
 
         if item["bought"]:
-            sold_out_text = font.render("Sold out", True, WHITE)
+            sold_out_text = font.render("Sold out", True, RED)
             text_x = x + box.get_width() // 2 - sold_out_text.get_width() // 2
             text_y = y + box.get_height() // 2 - sold_out_text.get_height() // 2
             screen.blit(sold_out_text, (text_x, text_y))
@@ -283,7 +284,7 @@ while running:
 
 
     if message and pygame.time.get_ticks() < message_timer:    # Message that show below   
-        msg_text = font.render(message, True, WHITE)
+        msg_text = font.render(message, True, RED)
         msg_x = WIDTH // 2 - msg_text.get_width() // 2
         msg_y = HEIGHT - 30
 
