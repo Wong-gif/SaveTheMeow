@@ -4,6 +4,8 @@ from qx_farm_player import Player
 from qx_farm_tile import Tile
 from qx_support import *
 from random import choice
+from qx_farm_weapons import Weapon
+from qx_farm_ui import UI
 
 class Level:
     def __init__(self):
@@ -15,8 +17,14 @@ class Level:
         self.visible_sprites = YSortCameraGroup()
         self.obstacles_sprites = pygame.sprite.Group()
 
+        #attack sprites
+        self.current_attack = None
+
         #sprite
         self.create_map()
+
+        #ui
+        self.ui = UI()
 
     def create_map(self):
         layout = {
@@ -45,12 +53,22 @@ class Level:
                         if style == "object":
                             surf = graphics['objects'][int(col)]
                             Tile((x,y),[self.visible_sprites,self.obstacles_sprites],"object",surf)
-        self.player = Player((1800,1600),[self.visible_sprites],self.obstacles_sprites)
+
+        self.player = Player((1800,1600),[self.visible_sprites],self.obstacles_sprites,self.craete_attack,self.destroy_attack)
+
+    def craete_attack(self):
+        self.current_attack = Weapon(self.player,[self.visible_sprites])
+
+    def destroy_attack(self):
+        if self.current_attack:
+            self.current_attack.kill()
+        self.current_attack = None
 
     def run(self):
         #update and draw game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.ui.display(self.player)
 
 class YSortCameraGroup(pygame.sprite.Group): #craetes a camera that follows the player and has overlapping effect
     def __init__(self):
