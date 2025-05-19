@@ -113,8 +113,8 @@ def create_login_window():
     global app, username_entry, password_entry, logged_in
 
     app = tk.Tk() #create a tkinter window
-    app.title("Registration and Log in") # the title for top of window 
-    app.geometry("350x300") # the window size, width and height
+    app.title("Save The Meow") # the title for top of window 
+    app.geometry("1200x800") # the window size, width and height
 
     def on_close():
         global logged_in
@@ -125,35 +125,35 @@ def create_login_window():
     app.protocol("WM_DELETE_WINDOW", on_close) #"WM_DELETE_WINDOW" this sentence is represents the window close event #i use this is prevent accidental closure and ensures cleanup
 
     # Username label and input space
-    username_label = tk.Label(app, text="Username:")
-    username_label.pack(pady=5)
-    username_entry = tk.Entry(app) #create a space to input the username and when the user input the username
-    username_entry.pack(pady=5)
+    username_label = tk.Label(app, text="Username:", font=("Arial", 14))
+    username_label.place(x=400, y=200) 
+    username_entry = tk.Entry(app, font=("Arial", 14)) #create a space to input the username and when the user input the username
+    username_entry.place(x=550, y=203) 
 
     # Password label and input space
-    password_label = tk.Label(app, text="Password:") #text="Password:" the word inside text will show out on window, also inside the label
-    password_label.pack(pady=5)
-    password_entry = tk.Entry(app, show="*") #create a space to input the password and when the user input the password, it will genarate to * this symbol
-    password_entry.pack(pady=5)
+    password_label = tk.Label(app, text="Password:", font=("Arial", 14)) #text="Password:" the word inside text will show out on window, also inside the label
+    password_label.place(x=400, y=300)
+    password_entry = tk.Entry(app, show="*", font=("Arial", 14)) #create a space to input the password and when the user input the password, it will genarate to * this symbol
+    password_entry.place(x=550, y=303)
 
     # Password rules
     password_hint = tk.Label(
         app, #The parent window where the label is placed 
-        text="Password requirements: At least 8 letters, including capital, small alphabets and special characters(@, #, $, %).", # display the text at the window
+        text="Password requirements: At least 8 letters, including capital, small alphabets and special characters( @, #, $, % ).", # display the text at the window
         fg="red", # color of the word is red
-        font=("Time New roman", 9), # font and size
+        font=("Time New roman", 12), # font and size
         wraplength=300,
         justify="left", # allign the text to the left
     )
-    password_hint.pack(pady=5)
+    password_hint.place(x=550, y=400)
 
     # Register button
-    register_button = tk.Button(app, text="Register", command=register)
-    register_button.pack(pady=5)
+    register_button = tk.Button(app, text="Register", command=register, font=("Arial", 20))
+    register_button.place(x=300, y=550) 
 
     # Log in button
-    login_button = tk.Button(app, text="Log in", command=login) # tk.button is generate a button to give user click it.
-    login_button.pack(pady=5) #is a geometry manager in Tkinter, used to place the button inside the window.
+    login_button = tk.Button(app, text="Log in", command=login, font=("Arial", 20))
+    login_button.place(x=850, y=550)
 
     # Initialize login status
     logged_in = False
