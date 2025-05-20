@@ -548,12 +548,6 @@ def boss_stage():
                             all_sprites.add(effect)
                             add_health_sound.play()
 
-                        if weapon_name == "Essence of Renewal":
-                            effect = AnimatedAddHealth(mario, add_health_frames)
-                            all_sprites.add(effect)
-                            add_health_sound.play()
-
-
         if not game_over:        
             all_sprites.update()
             for bullet in bullets:
@@ -592,12 +586,12 @@ def boss_stage():
 
         # Activated message
         if mario.activate_message and pygame.time.get_ticks() < mario.activate_message_timer:
-            msg = font.render(mario.activate_message, True, RED)
+            msg = font.render(mario.activate_message, True, WHITE)
             msg_x = WIDTH // 2 - msg.get_width() // 2
             msg_y = HEIGHT - 60
             
             msg_bg = pygame.Surface((msg.get_width() + 20, msg.get_height() + 10)) # Background box
-            msg_bg.set_alpha(100)  # Transparency
+            msg_bg.set_alpha(50)  # Transparency
             msg_bg.fill(GREY)
             screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
             screen.blit(msg, (msg_x, msg_y))         # Draw message
@@ -605,7 +599,7 @@ def boss_stage():
 
         # Show expired weapon message
         if mario.expired_message and pygame.time.get_ticks() < mario.expired_message_timer:
-            msg = font.render(mario.expired_message, True, RED)
+            msg = font.render(mario.expired_message, True, WHITE)
             msg_x = WIDTH // 2 - msg.get_width() // 2
             msg_y = HEIGHT - 30
 
