@@ -166,7 +166,6 @@ def boss_stage():
             self.activate_message_timer = 0
             self.expired_message = ""
             self.expired_message_timer = 0
-            self.bullet_color = BLACK
             self.shield_img = shield_img  # Store the shield image
 
         def draw_shield(self, screen):
@@ -237,19 +236,19 @@ def boss_stage():
                 all_sprites.add(bullet)
                 bullets.add(bullet)
             else:
-                bullet = Bullet(self.rect.centerx, self.rect.centery, self.bullet_color)
+                bullet = Bullet(self.rect.centerx, self.rect.centery)
                 all_sprites.add(bullet)
                 bullets.add(bullet)
             shoot_sound.play()
 
     class Bullet(pygame.sprite.Sprite):
-        def __init__(self, x, y, color):
+        def __init__(self, x, y,):
             pygame.sprite.Sprite.__init__(self)
             self.image = pygame.transform.scale(bullet_img, (30, 30))
             self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             self.rect.x = x
-            self.rect.y = y
+            self.rect.y = y - 10
             self.speed = 5
 
         def update(self):
@@ -416,7 +415,7 @@ def boss_stage():
             self.image = image
             self.rect = self.image.get_rect()
             self.rect.x = x
-            self.rect.y = y
+            self.rect.y = y + 30
             self.speed = random.randint(3, 6)
             self.hit_count = 0
 
@@ -549,12 +548,6 @@ def boss_stage():
                             all_sprites.add(effect)
                             add_health_sound.play()
 
-                        if weapon_name == "Essence of Renewal":
-                            effect = AnimatedAddHealth(mario, add_health_frames)
-                            all_sprites.add(effect)
-                            add_health_sound.play()
-
-
         if not game_over:        
             all_sprites.update()
             for bullet in bullets:
@@ -593,12 +586,12 @@ def boss_stage():
 
         # Activated message
         if mario.activate_message and pygame.time.get_ticks() < mario.activate_message_timer:
-            msg = font.render(mario.activate_message, True, RED)
+            msg = font.render(mario.activate_message, True, WHITE)
             msg_x = WIDTH // 2 - msg.get_width() // 2
             msg_y = HEIGHT - 60
             
             msg_bg = pygame.Surface((msg.get_width() + 20, msg.get_height() + 10)) # Background box
-            msg_bg.set_alpha(100)  # Transparency
+            msg_bg.set_alpha(50)  # Transparency
             msg_bg.fill(GREY)
             screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
             screen.blit(msg, (msg_x, msg_y))         # Draw message
@@ -606,7 +599,7 @@ def boss_stage():
 
         # Show expired weapon message
         if mario.expired_message and pygame.time.get_ticks() < mario.expired_message_timer:
-            msg = font.render(mario.expired_message, True, RED)
+            msg = font.render(mario.expired_message, True, WHITE)
             msg_x = WIDTH // 2 - msg.get_width() // 2
             msg_y = HEIGHT - 30
 
@@ -644,7 +637,10 @@ while running:
                     running = False
                 else:
                     current_state = MENU  # Return to menu after boss stage ends
-    
+                    pygame.mixer.music.load(os.path.join("assets", "sounds", "menu_music.wav"))
+                    pygame.mixer.music.set_volume(0.8)
+                    pygame.mixer.music.play(-1)
+                        
     pygame.display.update()
 
 pygame.quit()
