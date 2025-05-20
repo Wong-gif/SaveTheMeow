@@ -1,10 +1,11 @@
 import pygame
 import os
-'''import sys'''
 import threading
 import json
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk
+
 
 # Password strength detection
 def is_password_strong(password):
@@ -124,17 +125,24 @@ def create_login_window():
 
     app.protocol("WM_DELETE_WINDOW", on_close) #"WM_DELETE_WINDOW" this sentence is represents the window close event #i use this is prevent accidental closure and ensures cleanup
 
+    bg_image = Image.open("assets/images/123.png")
+    bg_image = bg_image.resize((1200, 800), Image.LANCZOS)
+    bg_photo = ImageTk.PhotoImage(bg_image)
+    bg_label = tk.Label(app, image=bg_photo)
+    bg_label.image = bg_photo
+    bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
     # Username label and input space
     username_label = tk.Label(app, text="Username:", font=("Arial", 14))
-    username_label.place(x=400, y=200) 
+    username_label.place(x=300, y=100) 
     username_entry = tk.Entry(app, font=("Arial", 14)) #create a space to input the username and when the user input the username
-    username_entry.place(x=550, y=203) 
+    username_entry.place(x=430, y=101) 
 
     # Password label and input space
     password_label = tk.Label(app, text="Password:", font=("Arial", 14)) #text="Password:" the word inside text will show out on window, also inside the label
-    password_label.place(x=400, y=300)
+    password_label.place(x=300, y=200)
     password_entry = tk.Entry(app, show="*", font=("Arial", 14)) #create a space to input the password and when the user input the password, it will genarate to * this symbol
-    password_entry.place(x=550, y=303)
+    password_entry.place(x=430, y=201)
 
     # Password rules
     password_hint = tk.Label(
@@ -145,15 +153,15 @@ def create_login_window():
         wraplength=300,
         justify="left", # allign the text to the left
     )
-    password_hint.place(x=550, y=400)
+    password_hint.place(x=430, y=250)
 
     # Register button
     register_button = tk.Button(app, text="Register", command=register, font=("Arial", 20))
-    register_button.place(x=300, y=550) 
+    register_button.place(x=150, y=550) 
 
     # Log in button
     login_button = tk.Button(app, text="Log in", command=login, font=("Arial", 20))
-    login_button.place(x=850, y=550)
+    login_button.place(x=950, y=550)
 
     # Initialize login status
     logged_in = False
