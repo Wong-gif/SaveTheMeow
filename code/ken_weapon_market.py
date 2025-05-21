@@ -1,6 +1,7 @@
 import pygame
 import sys
 import os
+import json 
 
 WIDTH, HEIGHT = 1200, 800
 FPS = 60
@@ -72,8 +73,31 @@ weapon_description = {
     "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
 }
     
-player_coins = 700
-player_gems = 500
+import json
+
+# 尝试从 jh.txt 中加载数据
+try:
+    with open("jh.txt", "r") as f:
+        data = json.load(f)
+   
+    total_coins = data["game1"]["Coins"] + data["game2"]["Coins"]
+    total_diamonds = data["game1"]["Diamonds"] + data["game2"]["Diamonds"]
+    
+    player_coins = total_coins
+    player_gems = total_diamonds
+    
+except FileNotFoundError:
+    print("警告：jh.txt 未找到，使用默认值")
+    player_coins = 700
+    player_gems = 500
+except KeyError:
+    print("警告：jh.txt 格式错误或缺少必要字段，使用默认值")
+    player_coins = 700
+    player_gems = 500
+except json.JSONDecodeError:
+    print("警告：jh.txt 不是有效的 JSON，使用默认值")
+    player_coins = 700
+    player_gems = 500
 
 market_item = [
     {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False},
