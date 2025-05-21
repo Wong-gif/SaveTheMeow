@@ -1,0 +1,10 @@
+{
+    "game1": {
+        "Coins": 140,
+        "Diamonds": 30
+    },
+    "game2": {
+        "Coins": 100,
+        "Diamonds": 50
+    }
+}
