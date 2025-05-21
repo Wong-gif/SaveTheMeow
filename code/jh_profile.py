@@ -24,10 +24,14 @@ def register(): #here is the register part
         "game1": {
             "Coins": 0,
             "Diamonds": 0,
+            "Best Coins": 0,
+            "Best Diamonds": 0
         },
         "game2": {
             "Coins": 0,
             "Diamonds": 0,
+            "Best Coins": 0,
+            "Best Diamonds": 0
         }
     }
 

@@ -5,7 +5,7 @@ import os
 from jh_death_popup import DeathPopup
 
 
-def save_game2_data(username, coin, diamond, time_taken):
+def save_game2_data(username, coin, diamond):
     try:
         filename = f"{username}.txt"
         if os.path.exists(filename):
@@ -19,6 +19,12 @@ def save_game2_data(username, coin, diamond, time_taken):
 
         user_data["game2"]["Coins"] = coin
         user_data["game2"]["Diamonds"] = diamond
+
+        best_coin = user_data["game2"].get("Best Coins", 0)
+        best_diamond = user_data["game2"].get("Best Diamonds", 0)
+
+        user_data["game2"]["Best Coins"] = max(coin, best_coin)
+        user_data["game2"]["Best Diamonds"] = max(diamond, best_diamond)
 
         with open(filename, "w") as file:
             json.dump(user_data, file, indent=4)
@@ -416,7 +422,7 @@ class Game2:
                     username=self.username,
                     coin=self.coins_collected,
                     diamond=self.diamonds_collected,
-                    time_taken=self.time_used / 1000
+                    #time_taken=self.time_used / 1000
                 )
 
                 
