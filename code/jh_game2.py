@@ -19,7 +19,6 @@ def save_game2_data(username, coin, diamond, time_taken):
 
         user_data["game2"]["Coins"] = coin
         user_data["game2"]["Diamonds"] = diamond
-        user_data["game2"]["Time Taken"] = time_taken
 
         with open(filename, "w") as file:
             json.dump(user_data, file, indent=4)
