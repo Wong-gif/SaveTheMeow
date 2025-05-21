@@ -6,8 +6,8 @@
         "Time Taken": 13.193
     },
     "game2": {
-        "Coins": 0,
-        "Diamonds": 0,
+        "Coins": 60,
+        "Diamonds": 80,
         "Time Taken": 0.0
     }
 }
