@@ -7,36 +7,12 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 
 
-# Password strength detection
-def is_password_strong(password):
-    #this function is calculate the "password" got least than 8 alphabets or not
-    if len(password) < 8:
-        #this function is mean the computer giving your comment to correct your password.
-        return "Password length must be at least 8 alphabets."
-    #inside the () meaning is the password must got more than one uppercase letter in the password. 
-    if not any(char.isupper() for char in password):
-        return "Password must contain at least one capital letter." #this sentence is mean if the password inside didn't have more than one capital letter,it will print "password must contain at least one capital letter".  #inside the () meaning is the password must got more than one lowercase letter in the password. 
-    if not any(char.islower() for char in password):
-        return "Password must contain at least one small letter." #this sentence is mean if the password inside didn't have more than one small letter, it will print out "password must contain at least one  small letter". #inside the () meaning is the password must got more than one numbers in the password. 
-    if not any(char.isdigit() for char in password):
-        return "Password must contain at least one number." #this sentence is mean if the password inside didn't have more than one numbers, it will print "Password must contain at least one number.". #inside the () meaning is the password must got more than one numbers in the password.
-    if not any(char in "@#$%&*" for char in password):
-        return "Password must contain at least one special character (such as @, #, $, %)." #this sentence is mean if the password inside didn't have more than one symbol, it will print out "Password must contain at least one special character (such as @, #, $, %).". 
-    return None
-
 # Register function
 def register(): #here is the register part
     username = username_entry.get() # this is the input to our user (username)
-    password = password_entry.get() # this is the input to our user (password)
-
-    if not username or not password: #if user input the username and password are wrong....
-        messagebox.showwarning("Enter Error", "Please key in Username and Password!") #it will show out the warning using the tkinter function which is messagebox
-        return
-
-    # Password Strength Detection
-    password_error = is_password_strong(password)
-    if password_error: #if the password are not strong it will show out the error using the tkinter function which is message
-        messagebox.showerror("Password not strong enough", password_error)
+    
+    if not username:
+        messagebox.showwarning("Enter Error", "Please key in Username!") 
         return
     
         # Whether user exist or not
@@ -45,16 +21,13 @@ def register(): #here is the register part
         return #it meaning is finsh this knid of thing then can quit the function or stop the function.
     
     user_data = {
-        "password": password,
         "game1": {
             "Coins": 0,
             "Diamonds": 0,
-            "Time Taken": 0.0
         },
         "game2": {
             "Coins": 0,
             "Diamonds": 0,
-            "Time Taken": 0.0
         }
     }
 
@@ -69,32 +42,21 @@ def register(): #here is the register part
 def login(): # here is log in part
     global logged_in, username
     username = username_entry.get()
-    password = password_entry.get()
 
-    if not username or not password:
-        messagebox.showwarning("Error", "Please key in Username and Password!")
+    if not username:
+        messagebox.showwarning("Error", "Please key in Username!")
         return
 
-    # Checking Username and Password
     if os.path.exists(f"{username}.txt"):
-        with open(f"{username}.txt", "r") as file:
-            user_data = json.load(file)  
+        messagebox.showinfo("Success", "You have successfully logged in!")
+        app.withdraw()  # Hide the login window
 
-        stored_password = user_data["password"]
-
-        if password == stored_password:
-            messagebox.showinfo("Success", "You have successfully logged in!")
-            app.withdraw()  # Hide the login window
-
-            def start_game_thread():
-                import qx_test_main
-                qx_test_main.open_game(username)
+        def start_game_thread():
+            import qx_test_main
+            qx_test_main.open_game(username)
             
-            threading.Thread(target=start_game_thread).start()
+        threading.Thread(target=start_game_thread).start()
            
-        else:
-            messagebox.showerror("Error", "Wrong Password, Please try again!")
-            logged_in = False  # Log in failed, does not enter game
     else:
         messagebox.showerror("Error", "This user does not exist, Please register a new account.")
         logged_in = False  # Log in failed, does not enter game
@@ -105,13 +67,12 @@ def login(): # here is log in part
 def clear_entries():
     try: #try-except function is make sure our coding don't not have error 
         username_entry.delete(0, tk.END) #(username)this meaning when user are not input any thing  from 0 until tk.end
-        password_entry.delete(0, tk.END) #for this is same function, but this sentence is for password.
     except Exception as e:
         print(f"Error clearing entries: {e}")
 
 # Creating login page
 def create_login_window():
-    global app, username_entry, password_entry, logged_in
+    global app, username_entry, logged_in
 
     app = tk.Tk() #create a tkinter window
     app.title("Save The Meow") # the title for top of window 
@@ -133,35 +94,18 @@ def create_login_window():
     bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
     # Username label and input space
-    username_label = tk.Label(app, text="Username:", font=("Arial", 14))
-    username_label.place(x=300, y=100) 
-    username_entry = tk.Entry(app, font=("Arial", 14)) #create a space to input the username and when the user input the username
-    username_entry.place(x=430, y=101) 
-
-    # Password label and input space
-    password_label = tk.Label(app, text="Password:", font=("Arial", 14)) #text="Password:" the word inside text will show out on window, also inside the label
-    password_label.place(x=300, y=200)
-    password_entry = tk.Entry(app, show="*", font=("Arial", 14)) #create a space to input the password and when the user input the password, it will genarate to * this symbol
-    password_entry.place(x=430, y=201)
-
-    # Password rules
-    password_hint = tk.Label(
-        app, #The parent window where the label is placed 
-        text="Password requirements: At least 8 letters, including capital, small alphabets and special characters( @, #, $, % ).", # display the text at the window
-        fg="red", # color of the word is red
-        font=("Time New roman", 12), # font and size
-        wraplength=300,
-        justify="left", # allign the text to the left
-    )
-    password_hint.place(x=430, y=250)
+    username_label = tk.Label(app, text="Username:", font=("Arial", 24))
+    username_label.place(x=300, y=200) 
+    username_entry = tk.Entry(app, font=("Arial", 24)) #create a space to input the username and when the user input the username
+    username_entry.place(x=510, y=201) 
 
     # Register button
-    register_button = tk.Button(app, text="Register", command=register, font=("Arial", 20))
+    register_button = tk.Button(app, text="Register", command=register, font=("Arial", 23))
     register_button.place(x=150, y=550) 
 
     # Log in button
-    login_button = tk.Button(app, text="Log in", command=login, font=("Arial", 20))
-    login_button.place(x=950, y=550)
+    login_button = tk.Button(app, text="Log in", command=login, font=("Arial", 23))
+    login_button.place(x=900, y=550)
 
     # Initialize login status
     logged_in = False
