@@ -1,7 +1,7 @@
 {
     "game1": {
-        "Coins": 120,
-        "Diamonds": 30,
+        "Coins": 140,
+        "Diamonds": 40,
         "Best Coins": 140,
         "Best Diamonds": 50
     },
