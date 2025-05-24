@@ -3,7 +3,7 @@ from qx_farm_settings import *
 from qx_support import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups,obstacle_sprites,craete_attack,destroy_attack):
+    def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack):
         super().__init__(groups)
         self.image = pygame.image.load("graphics_qx/test/player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.obstacle_sprites = obstacle_sprites
 
         #weapons
-        self.create_attack = craete_attack
+        self.create_attack = create_attack
         self.destroy_attack = destroy_attack
         self.weapons_index = 0
         self.weapon = list(weapons_data.keys())[self.weapons_index]
@@ -84,7 +84,7 @@ class Player(pygame.sprite.Sprite):
                 self.attacking = True
                 print("aha")
 
-            if keys[pygame.K_q]:
+            if keys[pygame.K_q] and self.can_switch_weapon:
                 self.can_switch_weapon = False
                 self.weapon_switch_time = pygame.time.get_ticks()
 
