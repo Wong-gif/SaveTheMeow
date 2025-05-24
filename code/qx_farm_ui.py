@@ -28,15 +28,20 @@ class UI:
 
     def show_coins(self,coins):
         text_surf = self.font.render(str(int(coins)),False,TEXT_COLOUR)
-        x = self.display_surface.get_size()[0] - 20
-        y = self.display_surface.get_size()[1] - 20
+        x = self.display_surface.get_size()[0] - 1120
+        y = self.display_surface.get_size()[1] - 700
         text_rect = text_surf.get_rect(bottomright = (x,y))
 
         pygame.draw.rect(self.display_surface,UI_BG_COLOUR,text_rect.inflate(20,20))
         self.display_surface.blit(text_surf,text_rect)
         pygame.draw.rect(self.display_surface,UI_BORDER_COLOUR,text_rect.inflate(20,20),3)
 
+    def selection_box(self,left,top):
+        bg_rect = pygame.Rect(left,top,ITEM_BOX_SIZE,ITEM_BOX_SIZE)
+        pygame.draw.rect(self.display_surface,UI_BG_COLOUR,bg_rect)
+
     def display(self,player):
         self.show_bar(player.health,player.stats["health"],self.health_bar_rect,HEALTH_COLOUR)
         self.show_bar(player.energy,player.stats["energy"],self.energy_bar_rect,ENERGY_COLOUR)
         self.show_coins(player.coins)
+        self.selection_box(10,700)
