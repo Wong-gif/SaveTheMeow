@@ -12,6 +12,13 @@ class UI:
         self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
         self.energy_bar_rect = pygame.Rect(10,34,ENERGY_BAR_WIDTH,BAR_HEIGHT)
 
+        #convert weapon dictionary
+        self.weapon_graphics = []
+        for weapon in weapons_data.values():
+            path = weapon["graphic"]
+            weapon = pygame.image.load(path).convert_alpha()
+            self.weapon_graphics.append(weapon)
+
     def show_bar(self,current,max_amount,bg_rect,colour):
         #draw bg
         pygame.draw.rect(self.display_surface,UI_BG_COLOUR,bg_rect)
@@ -36,13 +43,24 @@ class UI:
         self.display_surface.blit(text_surf,text_rect)
         pygame.draw.rect(self.display_surface,UI_BORDER_COLOUR,text_rect.inflate(20,20),3)
 
-    def selection_box(self,left,top):
+    def selection_box(self,left,top,has_switched):
         bg_rect = pygame.Rect(left,top,ITEM_BOX_SIZE,ITEM_BOX_SIZE)
         pygame.draw.rect(self.display_surface,UI_BG_COLOUR,bg_rect)
-        pygame.draw.rect(self.display_surface,UI_BORDER_COLOUR,bg_rect,3)
+        if has_switched:
+            pygame.draw.rect(self.display_surface,UI_BORDER_COLOUR_ACTIVE,bg_rect,3)
+        else:
+            pygame.draw.rect(self.display_surface,UI_BORDER_COLOUR,bg_rect,3)
+        return bg_rect
+
+    def weapon_overlay(self,weapon_index,has_switched):
+        bg_rect = self.selection_box(10,700,has_switched)
+        weapon_surf = self.weapon_graphics[weapon_index]
+        weapon_rect = weapon_surf.get_rect(center = bg_rect.center)
+        self.display_surface.blit(weapon_surf,weapon_rect)
+
 
     def display(self,player):
         self.show_bar(player.health,player.stats["health"],self.health_bar_rect,HEALTH_COLOUR)
         self.show_bar(player.energy,player.stats["energy"],self.energy_bar_rect,ENERGY_COLOUR)
         self.show_coins(player.coins)
-        self.selection_box(10,700)
+        self.weapon_overlay(player.weapons_index,not player.can_switch_weapon)
