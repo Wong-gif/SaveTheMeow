@@ -29,3 +29,9 @@ weapons_data = {
     "axe" : {"cooldown" : 300, "damage" : 20, "graphic" : "graphics_qx/weapons_farming/axe/full.png"},
     "rapier" : {"cooldown" : 50, "damage" : 8, "graphic" : "graphics_qx/weapons_farming/rapier/full.png"}
 }
+
+#magic
+magic_data = {
+    "flame" : {"strength": 5, "cost": 20, "graphic": "graphics_qx/particles/flame/fire.png"},
+    "heal" : {"strength": 20, "cost": 10, "graphic": "graphics_qx/particles/heal/heal.png"}
+}
