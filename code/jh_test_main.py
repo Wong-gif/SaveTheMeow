@@ -1,10 +1,9 @@
 def platform_map(username):
     import pygame
-    import sys
+    '''import sys'''
     from jh_game1 import Game1
     from jh_game2 import Game2
     from jh_game_summary import GameSummary
-
 
     pygame.init()
     pygame.mixer.init()
@@ -28,11 +27,11 @@ def platform_map(username):
     background = pygame.image.load('assets/images/background.png').convert()
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))  
 
-    # ✅ 把 Game1 和 Game2 实例化放这里
+    # 把 Game1 和 Game2 实例化放这里
     game1 = Game1(screen, username)
     game2 = Game2(screen, username)
 
-    # ✅ 用来保存游戏数据
+    # 用来保存游戏数据
     levels_data = {}
 
     summary = None
@@ -89,7 +88,6 @@ def platform_map(username):
             game1.run(event)
             if game1.state == "next_level":
                 levels_data["level1"] = {
-                    "time_ms": game1.time_used,
                     "coins": game1.coins_collected,
                     "diamonds": game1.diamonds_collected,
                 }
@@ -99,7 +97,6 @@ def platform_map(username):
             game2.run(event)
             if game2.state == "next_level":
                 levels_data["level2"] = {
-                    "time_ms": game2.time_used,
                     "coins": game2.coins_collected,
                     "diamonds": game2.diamonds_collected,
                 }
