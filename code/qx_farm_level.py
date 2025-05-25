@@ -6,6 +6,7 @@ from qx_support import *
 from random import choice
 from qx_farm_weapons import Weapon
 from qx_farm_ui import UI
+from qx_farm_enemy import Enemy
 
 class Level:
     def __init__(self):
@@ -64,6 +65,12 @@ class Level:
                                     self.create_attack,
                                     self.destroy_attack,
                                     self.create_magic)
+                            else:
+                                if col == "390": monster_name = "bamboo"
+                                elif col == "391": monster_name = "spirit"
+                                elif col == "392": monster_name = "racoon"
+                                else: monster_name = "squid"
+                                Enemy(monster_name,(x,y),[self.visible_sprites])
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites])
