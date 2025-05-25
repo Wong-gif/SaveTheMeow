@@ -1,0 +1,13 @@
+{
+    "password": "Ken523$$$",
+    "game1": {
+        "Coins": 180,
+        "Diamonds": 50,
+        "Time Taken": 18.358
+    },
+    "game2": {
+        "Coins": 0,
+        "Diamonds": 0,
+        "Time Taken": 0.0
+    }
+}
