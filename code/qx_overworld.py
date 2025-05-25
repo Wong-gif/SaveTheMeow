@@ -118,7 +118,7 @@ class Overworld: #creates the overworld class
           
     def define_npc_action(self,character_id): #returns function to call based on character id
       if character_id == "o2":
-        return open_store
+        return lambda :  open_store(self.username)
       elif character_id == "o3":
         return lambda: platform_map(self.username)  # Pass username to platform_map
       elif character_id == "o4":

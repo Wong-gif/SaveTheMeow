@@ -34,27 +34,23 @@ class GameSummary:
                     level_text = self.font.render("Game 1", True, (255, 255, 0))
                     coin_text = self.small_font.render(f"Coins: {data['coins']}", True, (0, 0, 0))
                     diamond_text = self.small_font.render(f"Diamonds: {data['diamonds']}", True, (0, 0, 0))
-                    time_text = self.small_font.render(f"Time Taken: {data['time_ms'] // 1000}s", True, (0, 0, 0))
                     self.screen.blit(level_text, (800, 400))
                     self.screen.blit(coin_text, (800, 490))
                     self.screen.blit(diamond_text, (800, 580))
-                    self.screen.blit(time_text, (800, 670))
                 elif level_name == "level2":
                     level_text = self.font.render("Game 2", True, (255, 255, 0))
                     coin_text = self.small_font.render(f"Coins: {data['coins']}", True, (255, 255, 255))
                     diamond_text = self.small_font.render(f"Diamonds: {data['diamonds']}", True, (255, 255, 255))
-                    time_text = self.small_font.render(f"Time Taken: {data['time_ms'] // 1000}s", True, (255, 255, 255))
                     self.screen.blit(level_text, (240, 50))
                     self.screen.blit(coin_text, (240, 140))
                     self.screen.blit(diamond_text, (240, 230))
-                    self.screen.blit(time_text, (240, 320))
+
 
             pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+                    return "menu"
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.arrow_rect.collidepoint(event.pos):
                         return "menu"
