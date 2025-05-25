@@ -73,7 +73,7 @@ weapon_description = {
     "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
 }
     
-import json
+
 
 # 尝试从 jh.txt 中加载数据
 try:
@@ -108,7 +108,7 @@ market_item = [
     {"name": "Hawk's Eye", "price": 65, "currency": "gems", "bought": False},
     {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
     {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False},
-    {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False}
+    {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False}       
 ]
 
 # Gems and coins that on top
