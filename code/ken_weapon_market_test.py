@@ -74,7 +74,6 @@ def open_store(username):
         "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
     }
         
-    import json
 
     filename = f"{username}.txt"
 
@@ -83,8 +82,8 @@ def open_store(username):
         with open(filename, "r") as f:
             data = json.load(f)
     
-        total_coins = data["game1"]["Coins"] + data["game2"]["Coins"]
-        total_diamonds = data["game1"]["Diamonds"] + data["game2"]["Diamonds"]
+        total_coins = data["game1"]["Best Coins"] + data["game2"]["Best Coins"]
+        total_diamonds = data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"]
         
         player_coins = total_coins
         player_gems = total_diamonds
@@ -144,6 +143,33 @@ def open_store(username):
     while running:
         clock.tick(FPS)
         screen.blit(background, (0, 0))
+
+        # Save inventory back to the user's file
+        try:
+            with open(filename, "r") as f:
+                data = json.load(f)
+            # 自动补全缺失的 inventory 字段
+            if "inventory" not in data:
+                data["inventory"] = {
+                    "Weapon for Boss": [],
+                    "Weapon for Farm": []
+                }
+        except FileNotFoundError:
+            data = {
+                "game1": {"Coins": 0, "Diamonds": 0, "Best Coins": 0, "Best Diamonds": 0},
+                "game2": {"Coins": 0, "Diamonds": 0, "Best Coins": 0, "Best Diamonds": 0},
+                "inventory": {"Weapon for Boss": [], "Weapon for Farm": []}
+            }
+
+        # 更新 inventory 数据
+        data["inventory"]["Weapon for Boss"] = inventory_boss
+        data["inventory"]["Weapon for Farm"] = inventory_farm
+
+        # 写回文件
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=4)
+
+        print(f"Inventory saved for {username}")
         
         draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
