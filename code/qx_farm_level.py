@@ -30,7 +30,8 @@ class Level:
         layout = {
             "boundary" : import_csv_layout("farm_map/farming_map_FloorBlocks.csv"),
             "grass" : import_csv_layout("farm_map/farming_map_Grass.csv"),
-            "object" : import_csv_layout("farm_map/farming_map_Objects.csv")
+            "object" : import_csv_layout("farm_map/farming_map_Objects.csv"),
+            "entities" : import_csv_layout("farm_map/farming_map_Entities.csv")
         }
         
         graphics = {
@@ -54,13 +55,15 @@ class Level:
                             surf = graphics['objects'][int(col)]
                             Tile((x,y),[self.visible_sprites,self.obstacles_sprites],"object",surf)
 
-        self.player = Player(
-            (1800,1600),
-            [self.visible_sprites],
-            self.obstacles_sprites,
-            self.create_attack,
-            self.destroy_attack,
-            self.create_magic)
+                        if style == "entities":
+                            if col == "394":
+                                self.player = Player(
+                                    (x,y),
+                                    [self.visible_sprites],
+                                    self.obstacles_sprites,
+                                    self.create_attack,
+                                    self.destroy_attack,
+                                    self.create_magic)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites])
