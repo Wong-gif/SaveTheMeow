@@ -14,10 +14,10 @@
     "inventory": {
         "Weapon for Boss": [
             "Aegis Shield",
-            "Essence of Renewal"
+            "Phoenix Feather"
         ],
         "Weapon for Farm": [
-            "Thunder Axe"
+            "Shadow Saber"
         ]
     }
 }
