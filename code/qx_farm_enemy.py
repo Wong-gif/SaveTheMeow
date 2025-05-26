@@ -38,5 +38,30 @@ class Enemy(Entity):
         for animation in self.animations.keys():
             self.animations[animation] = import_folder_farm(main_path + animation)
 
+    def get_player_distance_direction(self,player):
+        enemy_vec = pygame.math.Vector2(self.rect.center)
+        player_vec = pygame.math.Vector2(player.rect.center)
+        distance = (player_vec - enemy_vec).magnitude()
+
+        if distance > 0:
+            direction = (player_vec - enemy_vec).normalize()
+        else:
+            direction = pygame.math.Vector2()
+
+        return (distance,direction)
+
+    def get_status(self,player):
+        distance = self.get_player_distance_direction(player)[0]
+
+        if distance <= self.attack_radius:
+            self.status = "attack"
+        elif distance <= self.notice_radius:
+            self.status = "move"
+        else:
+            self.status = "idle"
+
     def update(self):
         self.move(self.speed)
+
+    def enemy_update(self,player):
+        self.get_status(player)
