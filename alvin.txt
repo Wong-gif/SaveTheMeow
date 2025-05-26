@@ -1,8 +1,14 @@
 {
     "game1": {
+<<<<<<< HEAD
         "Coins": 200,
         "Diamonds": 50,
         "Best Coins": 200,
+=======
+        "Coins": 140,
+        "Diamonds": 40,
+        "Best Coins": 140,
+>>>>>>> main
         "Best Diamonds": 50
     },
     "game2": {

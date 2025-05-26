@@ -1,12 +1,14 @@
-def open_store():
+def open_store(username):
     import pygame
     import sys
     import os
+    import json 
 
     WIDTH, HEIGHT = 1200, 800
     FPS = 60
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
+    RED = (255, 0, 0)
     GREEN = (0, 200, 0)
     LIGHT_GREEN = (0, 255, 100)
     GREY = (200, 200, 200)
@@ -72,8 +74,33 @@ def open_store():
         "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
     }
         
-    player_coins = 700
-    player_gems = 500
+    import json
+
+    filename = f"{username}.txt"
+
+    # 尝试从 jh.txt 中加载数据
+    try:
+        with open(filename, "r") as f:
+            data = json.load(f)
+    
+        total_coins = data["game1"]["Coins"] + data["game2"]["Coins"]
+        total_diamonds = data["game1"]["Diamonds"] + data["game2"]["Diamonds"]
+        
+        player_coins = total_coins
+        player_gems = total_diamonds
+        
+    except FileNotFoundError:
+        print("警告：jh.txt 未找到，使用默认值")
+        player_coins = 700
+        player_gems = 500
+    except KeyError:
+        print("警告：jh.txt 格式错误或缺少必要字段，使用默认值")
+        player_coins = 700
+        player_gems = 500
+    except json.JSONDecodeError:
+        print("警告：jh.txt 不是有效的 JSON，使用默认值")
+        player_coins = 700
+        player_gems = 500
 
     market_item = [
         {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False},
@@ -156,19 +183,19 @@ def open_store():
         inventory_box_height = max(150, 40 + len(inventory_farm) * 40 + 20)
         inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
         pygame.draw.rect(inventory_box, (*BLACK, 100), inventory_box.get_rect() ,border_radius=12)
-        screen.blit(inventory_box, (10, 400))
+        screen.blit(inventory_box, (10, 550))
 
         #Inventory title
         inventory_title_text = font.render("Inventory for farm :", True, WHITE)
-        screen.blit(inventory_title_text, (20, 415))
+        screen.blit(inventory_title_text, (20, 565))
 
 
         for i, item_name in enumerate(inventory_farm):
             if item_name in weapon_images:
                 img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
-                screen.blit(img, (20, 460 + i * 40))  # Draw image
+                screen.blit(img, (20, 610 + i * 40))  # Draw image
                 name_text = font.render(item_name, True, WHITE)
-                screen.blit(name_text, (60, 465 + i * 40))  # Name next to image
+                screen.blit(name_text, (60, 615 + i * 40))  # Name next to image
 
         screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
 
@@ -209,7 +236,7 @@ def open_store():
             screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
 
             if item["bought"]:
-                sold_out_text = font.render("Sold out", True, WHITE)
+                sold_out_text = font.render("Sold out", True, RED)
                 text_x = x + box.get_width() // 2 - sold_out_text.get_width() // 2
                 text_y = y + box.get_height() // 2 - sold_out_text.get_height() // 2
                 screen.blit(sold_out_text, (text_x, text_y))
@@ -284,7 +311,7 @@ def open_store():
 
 
         if message and pygame.time.get_ticks() < message_timer:    # Message that show below   
-            msg_text = font.render(message, True, WHITE)
+            msg_text = font.render(message, True, RED)
             msg_x = WIDTH // 2 - msg_text.get_width() // 2
             msg_y = HEIGHT - 30
 
