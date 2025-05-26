@@ -1,0 +1,14 @@
+{
+    "game1": {
+        "Coins": 140,
+        "Diamonds": 50,
+        "Best Coins": 160,
+        "Best Diamonds": 50
+    },
+    "game2": {
+        "Coins": 100,
+        "Diamonds": 50,
+        "Best Coins": 100,
+        "Best Diamonds": 50
+    }
+}
