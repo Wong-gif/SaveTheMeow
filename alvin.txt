@@ -1,14 +1,14 @@
 {
     "game1": {
-        "Coins": 120,
-        "Diamonds": 30,
-        "Best Coins": 140,
+        "Coins": 200,
+        "Diamonds": 50,
+        "Best Coins": 200,
         "Best Diamonds": 50
     },
     "game2": {
-        "Coins": 60,
-        "Diamonds": 50,
-        "Best Coins": 60,
-        "Best Diamonds": 50
+        "Coins": 100,
+        "Diamonds": 60,
+        "Best Coins": 100,
+        "Best Diamonds": 60
     }
 }
