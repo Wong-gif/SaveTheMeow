@@ -62,7 +62,7 @@ weapon_images = {
 }
 
 weapon_description = {
-    "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."},
+    "Phoenix Feather": {"description": "Each arrow has 120% damage. Only for 10 seconds."},
     "Essence of Renewal": {"description": "Restore 50 health points for three times."},
     "Luna Bow": {"description": "Each arrow has 150 damage. Only for 10 seconds."},
     "Hydro Strike": {"description": "Each bullet has 200 points of attack. Only for 10 seconds"},
