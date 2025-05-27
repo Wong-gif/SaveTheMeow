@@ -91,7 +91,7 @@ class Game1:
         self.ground_split_flags = [False for _ in self.split_positions]
 
         self.coins = []
-        for _ in range(10):         
+        for _ in range(12):         
             x = random.randint(100, self.world_width - 100)
             y = random.randint(300, 495)
             coin_rect = pygame.Rect(x, y, 30, 30)
