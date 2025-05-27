@@ -1,7 +1,7 @@
 def boss_battle():
     import pygame
-    import sys
     import os
+    import json
     import random
     from ken_effect import WeaponEffects
 
@@ -9,6 +9,7 @@ def boss_battle():
     BLACK = (0, 0, 0)
     LIGHT_BLACK = (30, 30, 30)
     WHITE = (255, 255, 255) 
+
 
     pygame.init()
     pygame.mixer.init()
@@ -67,7 +68,7 @@ def boss_battle():
     )
 
     def boss_stage():
-
+        
         RED = (255, 0, 0)  
         GREEN = (0, 255, 0)
         GREY = (200, 200, 200) 
@@ -94,6 +95,8 @@ def boss_battle():
             "Aegis Shield": pygame.image.load(os.path.join("assets", "images", "Aegis_shield.png")).convert_alpha(),
             "Hawk's Eye": pygame.image.load(os.path.join("assets", "images", "Hawk_eye.png")).convert_alpha()
         }
+
+
 
         # Load animation frames
         fire_arrow_frames = []
@@ -142,8 +145,6 @@ def boss_battle():
         expl_sound = pygame.mixer.Sound(os.path.join("assets", "sounds", "expl.wav"))
         pygame.mixer.music.load(os.path.join("assets", "sounds", "bossback_music.wav"))
         pygame.mixer.music.set_volume(0.4)  
-
-
 
         class Mario(pygame.sprite.Sprite):
             def __init__(self):
@@ -448,8 +449,7 @@ def boss_battle():
 
                         
 
-        weapon_buttons = [] 
-
+        weapon_buttons = []
         all_sprites = pygame.sprite.Group()
         fireballs = pygame.sprite.Group()
         bullets =  pygame.sprite.Group()
@@ -495,7 +495,11 @@ def boss_battle():
             box.fill((0, 0, 0, 0))  # Fully transparent base
             pygame.draw.rect(box, (*BLACK, 100), box.get_rect(), border_radius=12)
             screen.blit(box, (x, y))
+ 
 
+        
+    
+            
             x_box = 300
             y_box = 15
             weapon_buttons.clear()
@@ -506,7 +510,7 @@ def boss_battle():
                 weapon_buttons.append((weapon_name, img_rect)) 
                 x_box += 100      # Spacing between images
 
-            
+
             # Mario 的命
             mario_bar_width = 250
             mario_bar_height = 15
