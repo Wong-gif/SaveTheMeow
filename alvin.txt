@@ -5,16 +5,37 @@
         "Diamonds": 50,
         "Best Coins": 200,
 =======
+<<<<<<< HEAD
+        "Coins": 200,
+        "Diamonds": 50,
+        "Best Coins": 200,
+=======
         "Coins": 140,
         "Diamonds": 40,
         "Best Coins": 140,
+>>>>>>> main
 >>>>>>> main
         "Best Diamonds": 50
     },
     "game2": {
         "Coins": 100,
+<<<<<<< HEAD
+        "Diamonds": 50,
+        "Best Coins": 100,
+        "Best Diamonds": 50
+    },
+    "inventory": {
+        "Weapon for Boss": [
+            "Essence of Renewal",
+            "Hawk's Eye"
+        ],
+        "Weapon for Farm": [
+            "Shadow Saber"
+        ]
+=======
         "Diamonds": 60,
         "Best Coins": 100,
         "Best Diamonds": 60
+>>>>>>> main
     }
 }

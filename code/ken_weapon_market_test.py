@@ -74,7 +74,6 @@ def open_store(username):
         "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
     }
         
-    import json
 
     filename = f"{username}.txt"
 
@@ -82,26 +81,37 @@ def open_store(username):
     try:
         with open(filename, "r") as f:
             data = json.load(f)
+
+        # 自动补全缺失字段
+        if "inventory" not in data:
+            data["inventory"] = {
+                "Weapon for Boss": [],
+                "Weapon for Farm": []
+            }
     
-        total_coins = data["game1"]["Coins"] + data["game2"]["Coins"]
-        total_diamonds = data["game1"]["Diamonds"] + data["game2"]["Diamonds"]
+        total_coins = data["game1"]["Best Coins"] + data["game2"]["Best Coins"]
+        total_diamonds = data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"]
         
         player_coins = total_coins
         player_gems = total_diamonds
-        
-    except FileNotFoundError:
-        print("警告：jh.txt 未找到，使用默认值")
-        player_coins = 700
-        player_gems = 500
-    except KeyError:
-        print("警告：jh.txt 格式错误或缺少必要字段，使用默认值")
-        player_coins = 700
-        player_gems = 500
-    except json.JSONDecodeError:
-        print("警告：jh.txt 不是有效的 JSON，使用默认值")
-        player_coins = 700
-        player_gems = 500
 
+         # 加载已购买的武器
+        inventory_boss = data["inventory"]["Weapon for Boss"]
+        inventory_farm = data["inventory"]["Weapon for Farm"]
+
+    except FileNotFoundError:
+        print("警告：用户文件未找到，使用默认值")
+        player_coins = 700
+        player_gems = 500
+        inventory_boss = []
+        inventory_farm = []
+    except KeyError as e:
+        print(f"警告：字段缺失 {e}，使用默认值")
+        player_coins = 700
+        player_gems = 500
+        inventory_boss = []
+        inventory_farm = []
+            
     market_item = [
         {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False},
         {"name": "Essence of Renewal", "price": 130, "currency": "coins", "bought": False},
@@ -134,8 +144,6 @@ def open_store(username):
     arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
     selected_item = None  # 选中的物品
     show_item_details = False  # 是否显示详情窗口
-    inventory_boss = []
-    inventory_farm = []
     message = ""
     message_timer = 0
     pygame.mixer.music.play(-1)
@@ -144,7 +152,7 @@ def open_store(username):
     while running:
         clock.tick(FPS)
         screen.blit(background, (0, 0))
-        
+
         draw_arrow(screen, arrow_image, arrow_rect)  # Draw the arrow
 
         title_text = font.render("Weapon Market", True, BLACK) # Draw weapon market text
@@ -380,5 +388,33 @@ def open_store(username):
 
         
         pygame.display.update()
+
+    # Save inventory back to the user's file
+    try:
+        with open(filename, "r") as f:
+            data = json.load(f)
+        # 自动补全缺失的 inventory 字段
+        if "inventory" not in data:
+            data["inventory"] = {
+                "Weapon for Boss": [],
+                "Weapon for Farm": []
+            }
+    except FileNotFoundError:
+        data = {
+            "game1": {"Coins": 0, "Diamonds": 0, "Best Coins": 0, "Best Diamonds": 0},
+            "game2": {"Coins": 0, "Diamonds": 0, "Best Coins": 0, "Best Diamonds": 0},
+            "inventory": {"Weapon for Boss": [], "Weapon for Farm": []}
+        }
+
+    # 更新 inventory 数据
+    data["inventory"]["Weapon for Boss"] = inventory_boss
+    data["inventory"]["Weapon for Farm"] = inventory_farm
+
+    # 写回文件
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=4)
+
+    print(f"Inventory saved for {username}")
+        
         
     return
