@@ -90,6 +90,8 @@ def boss_battle(username):
                 return False  # 返回 False 表示失败
         except:
             return False
+        
+
     
         font = pygame.font.SysFont("arial", 22)
 

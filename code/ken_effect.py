@@ -10,6 +10,11 @@ class WeaponEffects:
     num_of_usage = {}
 
     @staticmethod
+    def reset_usage():
+        WeaponEffects.num_of_usage = {}  # 清空使用记录
+
+
+    @staticmethod
     def apply(name, mario, boss):
 
         max_usage = {
