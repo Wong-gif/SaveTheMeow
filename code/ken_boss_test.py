@@ -88,12 +88,10 @@ def boss_battle(username):
                 pygame.display.flip()
                 pygame.time.delay(2000)
                 return False  # 返回 False 表示失败
-        except FileNotFoundError:
-            print(f"存档文件 {save_file} 不存在！")
+        except:
             return False
-        except Exception as e:
-            print(f"读取武器出错: {e}")
-            return False
+        
+
     
         font = pygame.font.SysFont("arial", 22)
 
