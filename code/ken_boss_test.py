@@ -1,4 +1,4 @@
-def boss_battle():
+def boss_battle(username):
     import pygame
     import os
     import json
@@ -13,6 +13,7 @@ def boss_battle():
 
     pygame.init()
     pygame.mixer.init()
+    
 
     # Screen
     screen = pygame.display.set_mode((WIDTH, HEIGHT)) 
@@ -68,11 +69,32 @@ def boss_battle():
     )
 
     def boss_stage():
-        
+
         RED = (255, 0, 0)  
         GREEN = (0, 255, 0)
         GREY = (200, 200, 200) 
 
+        try:
+            with open(f"{username}.txt", "r") as f:
+                data = json.load(f)
+            
+            # 提取适用于 Boss 的武器（假设存档里有 "Weapon for Boss" 分类）
+            available_weapons = data.get("inventory", {}).get("Weapon for Boss", [])
+            
+            if not available_weapons:  # 如果没有武器
+                font = pygame.font.SysFont("Arial", 36)
+                warning = font.render("No weapons! Returning to menu...", True, RED)
+                screen.blit(warning, (WIDTH//2-250, HEIGHT//2))
+                pygame.display.flip()
+                pygame.time.delay(2000)
+                return False  # 返回 False 表示失败
+        except FileNotFoundError:
+            print(f"存档文件 {save_file} 不存在！")
+            return False
+        except Exception as e:
+            print(f"读取武器出错: {e}")
+            return False
+    
         font = pygame.font.SysFont("arial", 22)
 
         fireball_img = pygame.image.load(os.path.join("assets", "images", "fireball.gif")).convert_alpha()
@@ -496,19 +518,16 @@ def boss_battle():
             pygame.draw.rect(box, (*BLACK, 100), box.get_rect(), border_radius=12)
             screen.blit(box, (x, y))
  
-
-        
-    
-            
             x_box = 300
             y_box = 15
-            weapon_buttons.clear()
-            for weapon_name, img in original_weapon_images.items():      # loop thought the weapon image
-                scaled_images = pygame.transform.smoothscale(img, (90, 90))
-                img_rect = pygame.Rect(x_box, y_box, 90, 90)
-                screen.blit(scaled_images, (x_box, y_box))
-                weapon_buttons.append((weapon_name, img_rect)) 
-                x_box += 100      # Spacing between images
+            for weapon_name in available_weapons:  # 只遍历玩家拥有的武器
+                if weapon_name in original_weapon_images:
+                    img = original_weapon_images[weapon_name]
+                    scaled_img = pygame.transform.smoothscale(img, (90, 90))
+                    img_rect = pygame.Rect(x_box, y_box, 90, 90)
+                    screen.blit(scaled_img, (x_box, y_box))
+                    weapon_buttons.append((weapon_name, img_rect))
+                    x_box += 100
 
 
             # Mario 的命
@@ -546,7 +565,8 @@ def boss_battle():
                         if rect.collidepoint(mouse_pos):
                             click_sound.play()
                             # Apply the effect to Mario or Boss here
-                            WeaponEffects.apply(weapon_name, mario, boss)
+                            if weapon_name in available_weapons:  # 二次验证
+                                WeaponEffects.apply(weapon_name, mario, boss)
 
                             if weapon_name == "Essence of Renewal":
                                 effect = AnimatedAddHealth(mario, add_health_frames)
@@ -645,7 +665,7 @@ def boss_battle():
                         pygame.mixer.music.load(os.path.join("assets", "sounds", "menu_music.wav"))
                         pygame.mixer.music.set_volume(0.8)
                         pygame.mixer.music.play(-1)
-                            
+                        
         pygame.display.update()
 
     return  # goes back to overworld
