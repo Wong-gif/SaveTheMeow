@@ -124,7 +124,7 @@ class Overworld: #creates the overworld class
       elif character_id == "o4":
         return farming_map
       elif character_id == "o5":
-        return boss_battle
+        return lambda: boss_battle(self.username)
       else :
         return None #return nothing fif it doesnt have an id
 
