@@ -1,4 +1,4 @@
-def boss_battle(username, inventory):
+def boss_battle():
     import pygame
     import os
     import json
@@ -497,19 +497,18 @@ def boss_battle(username, inventory):
             screen.blit(box, (x, y))
  
 
-            # 获取用户拥有的 Boss 武器列表
-            available_weapons = inventory["Weapon for Boss"]
+        
+    
             
             x_box = 300
             y_box = 15
             weapon_buttons.clear()
-            for weapon_name, img in original_weapon_images.items():
-                if weapon_name in available_weapons:     # loop thought the weapon image
-                    scaled_images = pygame.transform.smoothscale(img, (90, 90))
-                    img_rect = pygame.Rect(x_box, y_box, 90, 90)
-                    screen.blit(scaled_images, (x_box, y_box))
-                    weapon_buttons.append((weapon_name, img_rect)) 
-                    x_box += 100      # Spacing between images
+            for weapon_name, img in original_weapon_images.items():      # loop thought the weapon image
+                scaled_images = pygame.transform.smoothscale(img, (90, 90))
+                img_rect = pygame.Rect(x_box, y_box, 90, 90)
+                screen.blit(scaled_images, (x_box, y_box))
+                weapon_buttons.append((weapon_name, img_rect)) 
+                x_box += 100      # Spacing between images
 
 
             # Mario 的命
