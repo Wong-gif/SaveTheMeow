@@ -43,6 +43,11 @@ class Player(Entity):
         self.coins = 6969
         self.speed = self.stats["speed"]
 
+        # damage timer
+        self.vulnerable = True
+        self.hurt_time = None
+        self.invulnerability_duration = 500
+
     def import_player_assets(self):
         character_path = "graphics_qx/player/"
         self.animations = {"up":[], "down":[],"left":[],"right":[],
@@ -149,6 +154,10 @@ class Player(Entity):
         if not self.can_switch_magic:
             if current_time - self.magic_switch_time >= self.switch_duration_cooldown:
                 self.can_switch_magic = True
+
+        if not self.vulnerable:
+            if current_time - self.hurt_time >= self.invulnerability_duration:
+                self.vulnerable = True
 
     def animate(self):
         animation = self.animations[self.status]

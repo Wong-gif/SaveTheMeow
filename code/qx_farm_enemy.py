@@ -4,7 +4,7 @@ from qx_farm_entity import Entity
 from qx_support import *
 
 class Enemy(Entity):
-    def __init__(self,monster_name,pos,groups,obstacle_sprites):
+    def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player):
         #general setup
         super().__init__(groups)
         self.sprite_type = "enemy"
@@ -29,12 +29,13 @@ class Enemy(Entity):
         self.resistance = monster_info["resistance"]
         self.attack_radius = monster_info["attack_radius"]
         self.notice_radius = monster_info["notice_radius"]
-        self.atack_type = monster_info["attack_type"]
+        self.attack_type = monster_info["attack_type"]
 
         #player interaction
         self.can_attack = True
         self.attack_time = None
         self.attack_cooldown = 400
+        self.damage_player = damage_player
 
         #invinbility timer 
         self.vulnerable = True
@@ -75,7 +76,7 @@ class Enemy(Entity):
     def actions(self,player):
         if self.status == "attack":
             self.attack_time = pygame.time.get_ticks()
-            print("attack")
+            self.damage_player(self.attack_damage,self.attack_type)
         elif self.status == "move":
             self.direction = self.get_player_distance_direction(player)[1]
         else:
