@@ -3,7 +3,7 @@ from qx_farm_settings import *
 from qx_farm_player import Player
 from qx_farm_tile import Tile
 from qx_support import *
-from random import choice
+from random import choice, randint
 from qx_farm_weapons import Weapon
 from qx_farm_ui import UI
 from qx_farm_enemy import Enemy
@@ -99,7 +99,9 @@ class Level:
                     for target_sprite in collision_sprites:
                         if target_sprite.sprite_type == "grass":
                             pos = target_sprite.rect.center
-                            self.animation_player.create_grass_particles(pos,[self.visible_sprites])
+                            offset = pygame.math.Vector2(0,75)
+                            for leaf in range(randint(3,6)):
+                                self.animation_player.create_grass_particles(pos - offset,[self.visible_sprites])
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player,attack_sprite.sprite_type)
@@ -109,6 +111,7 @@ class Level:
             self.player.health -= amount
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
+            self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
 
     def run(self):
         #update and draw game
