@@ -76,7 +76,12 @@ class Level:
                                 elif col == "391": monster_name = "spirit"
                                 elif col == "392": monster_name = "raccoon"
                                 else: monster_name = "squid"
-                                Enemy(monster_name,(x,y),[self.visible_sprites,self.attackable_sprites],self.obstacles_sprites,self.damage_player)
+                                Enemy(monster_name,
+                                      (x,y),
+                                      [self.visible_sprites,self.attackable_sprites],
+                                      self.obstacles_sprites,
+                                      self.damage_player,
+                                      self.trigger_death_particles)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
@@ -112,6 +117,9 @@ class Level:
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
             self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
+
+    def trigger_death_particles(self,pos,particle_type):
+        self.animation_player.create_particles(particle_type,pos,self.visible_sprites)
 
     def run(self):
         #update and draw game
