@@ -37,14 +37,16 @@ class WeaponEffects:
             if WeaponEffects.num_of_usage[name] >= max_usage[name]:
                 mario.activate_message = f"{name} has reached its usage limit. You can't use it anymore!"
                 mario.activate_message_timer = pygame.time.get_ticks() + 2000
-                return
+                return False
             WeaponEffects.num_of_usage[name] += 1
 
         if name in effects:
             effects[name](mario, boss)
+            return True
         else:
             mario.activate_message = f"No effect function for: {name}"
             mario.activate_message_timer = pygame.time.get_ticks() + 2000
+            return False
 
     @staticmethod
     def phoenix_feather(mario, boss):
