@@ -1,0 +1,23 @@
+{
+    "game1": {
+        "Coins": 220,
+        "Diamonds": 50,
+        "Best Coins": 220,
+        "Best Diamonds": 50
+    },
+    "game2": {
+        "Coins": 140,
+        "Diamonds": 60,
+        "Best Coins": 140,
+        "Best Diamonds": 60
+    },
+    "inventory": {
+        "Weapon for Boss": [
+            "Aegis Shield",
+            "Luna Bow"
+        ],
+        "Weapon for Farm": [
+            "Shadow Saber"
+        ]
+    }
+}
