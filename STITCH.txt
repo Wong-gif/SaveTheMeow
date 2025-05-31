@@ -1,20 +1,23 @@
 {
     "game1": {
-        "Coins": 140,
+        "Coins": 200,
         "Diamonds": 50,
-        "Best Coins": 160,
+        "Best Coins": 200,
         "Best Diamonds": 50
     },
     "game2": {
         "Coins": 100,
-        "Diamonds": 50,
+        "Diamonds": 60,
         "Best Coins": 100,
-        "Best Diamonds": 50
+        "Best Diamonds": 60
     },
     "inventory": {
         "Weapon for Boss": [
+            "Hydro Strike",
             "Phoenix Feather"
         ],
-        "Weapon for Farm": []
+        "Weapon for Farm": [
+            "Lion Sword"
+        ]
     }
 }
