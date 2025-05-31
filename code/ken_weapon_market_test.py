@@ -63,12 +63,21 @@ def open_store(username):
     }
 
     weapon_description = {
+<<<<<<< HEAD
         "Phoenix Feather": {"description": "Each arrow increase 50% attacks. Only for 7 seconds."},
         "Essence of Renewal": {"description": "Restore 50 health points. (3 times)"},
         "Luna Bow": {"description": "Each arrow increase 50% attacks. Only for 12 seconds."},
         "Hydro Strike": {"description": "Each bullet increase 150% attacks. Only for 7 seconds"},
         "Aegis Shield": {"description": "Block all attack from enemy for 8 seconds. (5 times)"},
         "Hawk's Eye": {"description": "Each arrow increase 80% attacks. Only for 10 seconds."},
+=======
+        "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."},
+        "Essence of Renewal": {"description": "Restore 50 health points for three times."},
+        "Luna Bow": {"description": "Each arrow has 150 damage. Only for 10 seconds."},
+        "Hydro Strike": {"description": "Each bullet has 200 points of attack. Only for 10 seconds"},
+        "Aegis Shield": {"description": "30% probability to block attack."},
+        "Hawk's Eye": {"description": "Each arrow has 130 damage. Only for 10 seconds."},
+>>>>>>> 28b5745aa100c8c10a05f086ff6ede4eb3dc2798
         "Lion Sword": {"description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
         "Shadow Saber": {"description": "30% probability to block attack."}, 
         "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
@@ -101,20 +110,31 @@ def open_store(username):
 
     except FileNotFoundError:
         print("警告：用户文件未找到，使用默认值")
+<<<<<<< HEAD
         player_coins = 0
         player_gems = 0
+=======
+        player_coins = 700
+        player_gems = 500
+>>>>>>> 28b5745aa100c8c10a05f086ff6ede4eb3dc2798
         inventory_boss = []
         inventory_farm = []
     except KeyError as e:
         print(f"警告：字段缺失 {e}，使用默认值")
+<<<<<<< HEAD
         player_coins = 0
         player_gems = 0
+=======
+        player_coins = 700
+        player_gems = 500
+>>>>>>> 28b5745aa100c8c10a05f086ff6ede4eb3dc2798
         inventory_boss = []
         inventory_farm = []
             
     market_item = [
         {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False},
         {"name": "Essence of Renewal", "price": 130, "currency": "coins", "bought": False},
+<<<<<<< HEAD
         {"name": "Luna Bow", "price": 218, "currency": "coins", "bought": False},
         {"name": "Hydro Strike", "price": 108, "currency": "gems", "bought": False},
         {"name": "Aegis Shield", "price": 35, "currency": "gems", "bought": False},
@@ -122,6 +142,15 @@ def open_store(username):
         {"name": "Lion Sword", "price": 50, "currency": "coins", "bought": False},
         {"name": "Shadow Saber", "price": 75, "currency": "coins", "bought": False},
         {"name": "Thunder Axe", "price": 88, "currency": "coins", "bought": False}
+=======
+        {"name": "Luna Bow", "price": 228, "currency": "coins", "bought": False},
+        {"name": "Hydro Strike", "price": 108, "currency": "gems", "bought": False},
+        {"name": "Aegis Shield", "price": 45, "currency": "gems", "bought": False},
+        {"name": "Hawk's Eye", "price": 65, "currency": "gems", "bought": False},
+        {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
+        {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False},
+        {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False}
+>>>>>>> 28b5745aa100c8c10a05f086ff6ede4eb3dc2798
     ]
 
     # Gems and coins that on top
