@@ -565,8 +565,7 @@ def boss_battle(username):
                         if rect.collidepoint(mouse_pos):
                             click_sound.play()
                             # Apply the effect to Mario or Boss here
-                            if weapon_name in available_weapons:  # 二次验证
-                                WeaponEffects.apply(weapon_name, mario, boss)
+                            WeaponEffects.apply(weapon_name, mario, boss)
 
                             if weapon_name == "Essence of Renewal":
                                 effect = AnimatedAddHealth(mario, add_health_frames)
