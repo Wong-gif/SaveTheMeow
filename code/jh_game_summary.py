@@ -54,3 +54,4 @@ class GameSummary:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.arrow_rect.collidepoint(event.pos):
                         return "menu"
+                    
