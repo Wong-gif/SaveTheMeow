@@ -389,7 +389,41 @@ class Game1:
         self.draw()
 
 
-#
+import pygame
+import random
+import json
+import os
+from jh_death_popup import DeathPopup
+
+
+def save_game2_data(username, coin, diamond):
+    try:
+        filename = f"{username}.txt"
+        if os.path.exists(filename):
+            with open(filename, "r") as file:
+                user_data = json.load(file)
+        else:
+            user_data = {
+                "game1": {},
+                "game2": {}
+            }
+
+        user_data["game2"]["Coins"] = coin
+        user_data["game2"]["Diamonds"] = diamond
+
+        best_coin = user_data["game2"].get("Best Coins", 0)
+        best_diamond = user_data["game2"].get("Best Diamonds", 0)
+
+        user_data["game2"]["Best Coins"] = max(coin, best_coin)
+        user_data["game2"]["Best Diamonds"] = max(diamond, best_diamond)
+
+        with open(filename, "w") as file:
+            json.dump(user_data, file, indent=4)
+
+        print("Game 2 data saved successfully!")
+    except Exception as e:
+        print("Failed to save Game 2 data:", e)
+
 
 import pygame
 import random
@@ -938,4 +972,6 @@ class Game2:
             self.update_camera()
 
         self.draw()
+
+
 
