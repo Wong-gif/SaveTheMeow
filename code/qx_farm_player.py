@@ -8,7 +8,7 @@ class Player(Entity):
         super().__init__(groups)
         self.image = pygame.image.load("graphics_qx/test/player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(-25,-26)
+        self.hitbox = self.rect.inflate(-25,HITBOX_OFFSET["player"])
 
         #graphics
         self.import_player_assets()
@@ -57,7 +57,6 @@ class Player(Entity):
         for animation in self.animations.keys():
             full_path = character_path + animation
             self.animations[animation] = import_folder_farm(full_path)
-        print(self.animations)
 
     def input(self):
         if not self.attacking:
@@ -87,7 +86,6 @@ class Player(Entity):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
-                print('yes')
 
             #special powers input
             if keys[pygame.K_LCTRL]:
