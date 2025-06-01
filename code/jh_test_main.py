@@ -1,6 +1,5 @@
 def platform_map(username):
     import pygame
-    '''import sys'''
     from jh_game1 import Game1
     from jh_game2 import Game2
     from jh_game_summary import GameSummary
