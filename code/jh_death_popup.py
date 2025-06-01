@@ -52,3 +52,42 @@ class DeathPopup:
             if self.restart_button.collidepoint(event.pos):
                 return True
         return False
+    
+
+
+#
+
+import pygame
+import random
+import os
+import json
+from jh_death_popup import DeathPopup
+
+
+def save_game1_data(username, coin, diamond):
+    try:
+        filename = f"{username}.txt"
+        if os.path.exists(filename):
+            with open(filename, "r") as file:
+                user_data = json.load(file)
+        else:
+            user_data = {
+                "game1": {},
+                "game2": {}
+            }
+            
+        user_data["game1"]["Coins"] = coin
+        user_data["game1"]["Diamonds"] = diamond
+
+        best_coin = user_data["game1"].get("Best Coins", 0)
+        best_diamond = user_data["game1"].get("Best Diamonds", 0)
+
+        user_data["game1"]["Best Coins"] = max(coin, best_coin)
+        user_data["game1"]["Best Diamonds"] = max(diamond, best_diamond)
+
+        with open(filename, "w") as file:
+            json.dump(user_data, file, indent=4)
+
+        print("Game 1 data saved successfully!")
+    except Exception as e:
+        print("Failed to save Game 1 data:", e)
