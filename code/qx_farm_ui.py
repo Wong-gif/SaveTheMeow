@@ -40,9 +40,19 @@ class UI:
         pygame.draw.rect(self.display_surface,UI_BORDER_COLOUR,bg_rect,3)
 
     def show_coins(self,coins):
-        text_surf = self.font.render(str(int(coins)),False,TEXT_COLOUR)
-        x = self.display_surface.get_size()[0] - 1120
+        text_surf = self.font.render(f"Coins: {int(coins)}",False,TEXT_COLOUR)
+        x = self.display_surface.get_size()[0] - 1020
         y = self.display_surface.get_size()[1] - 700
+        text_rect = text_surf.get_rect(bottomright = (x,y))
+
+        pygame.draw.rect(self.display_surface,UI_BG_COLOUR,text_rect.inflate(20,20))
+        self.display_surface.blit(text_surf,text_rect)
+        pygame.draw.rect(self.display_surface,UI_BORDER_COLOUR,text_rect.inflate(20,20),3)
+
+    def show_diamonds(self,diamonds):
+        text_surf = self.font.render(f"Diamonds: {int(diamonds)}",False,TEXT_COLOUR)
+        x = self.display_surface.get_size()[0] - 978
+        y = self.display_surface.get_size()[1] - 650
         text_rect = text_surf.get_rect(bottomright = (x,y))
 
         pygame.draw.rect(self.display_surface,UI_BG_COLOUR,text_rect.inflate(20,20))
@@ -75,5 +85,6 @@ class UI:
         self.show_bar(player.health,player.stats["health"],self.health_bar_rect,HEALTH_COLOUR)
         self.show_bar(player.energy,player.stats["energy"],self.energy_bar_rect,ENERGY_COLOUR)
         self.show_coins(player.coins)
+        self.show_diamonds(player.diamonds)
         self.weapon_overlay(player.weapons_index,not player.can_switch_weapon)
         self.magic_overlay(player.magic_index, not player.can_switch_magic)

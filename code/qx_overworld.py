@@ -122,7 +122,7 @@ class Overworld: #creates the overworld class
       elif character_id == "o3":
         return lambda: platform_map(self.username)  # Pass username to platform_map
       elif character_id == "o4":
-        return farming_map
+        return lambda: farming_map(self.username)
       elif character_id == "o5":
         return lambda: boss_battle(self.username)
       else :
