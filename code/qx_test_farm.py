@@ -15,9 +15,11 @@ def farming_map(username):
         if "inventory" not in data:
             data["inventory"] = {"Weapon for Boss": [], "Weapon for Farm": []}
         total_coins = data["game1"]["Best Coins"] + data["game2"]["Best Coins"]
+        total_diamonds = data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"]
     except (FileNotFoundError, KeyError):
         print("Using default coin value.")
         total_coins = 700
+        total_diamonds = 500
     
     class Game:
         def __init__(self):
@@ -28,7 +30,7 @@ def farming_map(username):
             pygame.display.set_caption("Farming Map")
             self.clock = pygame.time.Clock()
 
-            self.level = Level(player_coins=total_coins)
+            self.level = Level(player_coins=total_coins,player_diamonds=total_diamonds)
 
         def run(self):
             while True:

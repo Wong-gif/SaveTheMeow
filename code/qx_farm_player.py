@@ -4,7 +4,7 @@ from qx_support import *
 from qx_farm_entity import Entity
 
 class Player(Entity):
-    def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic,coins=0):
+    def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic,coins=0,diamonds=0):
         super().__init__(groups)
         self.image = pygame.image.load("graphics_qx/test/player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
@@ -41,6 +41,7 @@ class Player(Entity):
         self.health = self.stats["health"]
         self.energy = self.stats["energy"]
         self.coins = coins
+        self.diamonds = diamonds
 
         self.speed = self.stats["speed"]
 

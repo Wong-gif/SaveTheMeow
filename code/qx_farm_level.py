@@ -11,7 +11,7 @@ from qx_farm_particles import AnimationPlayer
 from qx_farm_magic import MagicPlayer
 
 class Level:
-    def __init__(self,player_coins):
+    def __init__(self,player_coins,player_diamonds):
 
         #get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -27,6 +27,7 @@ class Level:
 
         #coins
         self.player_coins = player_coins
+        self.player_diamonds = player_diamonds
 
         #sprite
         self.create_map()
@@ -76,7 +77,8 @@ class Level:
                                     self.create_attack,
                                     self.destroy_attack,
                                     self.create_magic,
-                                    coins=self.player_coins)
+                                    coins=self.player_coins,
+                                    diamonds=self.player_diamonds)
                             else:
                                 if col == "390": monster_name = "bamboo"
                                 elif col == "391": monster_name = "spirit"
