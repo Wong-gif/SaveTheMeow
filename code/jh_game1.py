@@ -1,4 +1,4 @@
-'''import pygame
+import pygame
 import random
 import os
 import json
@@ -386,7 +386,10 @@ class Game1:
             self.handle_input()
             self.update_physics()
        
-        self.draw()'''
+        self.draw()
+
+
+#
 
 import pygame
 import random
@@ -935,3 +938,4 @@ class Game2:
             self.update_camera()
 
         self.draw()
+
