@@ -8,6 +8,7 @@ from qx_farm_weapons import Weapon
 from qx_farm_ui import UI
 from qx_farm_enemy import Enemy
 from qx_farm_particles import AnimationPlayer
+from qx_farm_magic import MagicPlayer
 
 class Level:
     def __init__(self):
@@ -32,6 +33,7 @@ class Level:
 
         #particles
         self.animation_player = AnimationPlayer()
+        self.magic_player = MagicPlayer(self.animation_player)
 
     def create_map(self):
         layout = {
@@ -87,9 +89,11 @@ class Level:
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
     def create_magic(self,style,strength,cost):
-        print(style)
-        print(strength)
-        print(cost)
+        if style == "heal":
+            self.magic_player.heal(self.player,strength,cost,[self.visible_sprites])
+
+        if style == "flame":
+            self.magic_player.flame()
 
     def destroy_attack(self):
         if self.current_attack:
