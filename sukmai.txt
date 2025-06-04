@@ -1,0 +1,22 @@
+{
+    "game1": {
+        "Coins": 180,
+        "Diamonds": 40,
+        "Best Coins": 200,
+        "Best Diamonds": 50
+    },
+    "game2": {
+        "Coins": 140,
+        "Diamonds": 50,
+        "Best Coins": 140,
+        "Best Diamonds": 50
+    },
+    "inventory": {
+        "Weapon for Boss": [
+            "Phoenix Feather",
+            "Essence of Renewal",
+            "Aegis Shield"
+        ],
+        "Weapon for Farm": []
+    }
+}

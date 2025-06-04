@@ -1,7 +1,7 @@
 {
     "game1": {
-        "Coins": 220,
-        "Diamonds": 50,
+        "Coins": 200,
+        "Diamonds": 40,
         "Best Coins": 240,
         "Best Diamonds": 50
     },
@@ -19,7 +19,8 @@
             "Aegis Shield",
             "Hawk's Eye",
             "Phoenix Feather",
-            "Essence of Renewal"
+            "Essence of Renewal",
+            "Phoenix Feather"
         ],
         "Weapon for Farm": [
             "Shadow Saber",
