@@ -8,9 +8,10 @@ from qx_farm_weapons import Weapon
 from qx_farm_ui import UI
 from qx_farm_enemy import Enemy
 from qx_farm_particles import AnimationPlayer
+from qx_farm_magic import MagicPlayer
 
 class Level:
-    def __init__(self):
+    def __init__(self,player_coins,player_diamonds):
 
         #get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -24,6 +25,10 @@ class Level:
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
 
+        #coins
+        self.player_coins = player_coins
+        self.player_diamonds = player_diamonds
+
         #sprite
         self.create_map()
 
@@ -32,6 +37,7 @@ class Level:
 
         #particles
         self.animation_player = AnimationPlayer()
+        self.magic_player = MagicPlayer(self.animation_player)
 
     def create_map(self):
         layout = {
@@ -70,7 +76,9 @@ class Level:
                                     self.obstacles_sprites,
                                     self.create_attack,
                                     self.destroy_attack,
-                                    self.create_magic)
+                                    self.create_magic,
+                                    coins=self.player_coins,
+                                    diamonds=self.player_diamonds)
                             else:
                                 if col == "390": monster_name = "bamboo"
                                 elif col == "391": monster_name = "spirit"
@@ -87,9 +95,11 @@ class Level:
         self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
     def create_magic(self,style,strength,cost):
-        print(style)
-        print(strength)
-        print(cost)
+        if style == "heal":
+            self.magic_player.heal(self.player,strength,cost,[self.visible_sprites])
+
+        if style == "flame":
+            self.magic_player.flame()
 
     def destroy_attack(self):
         if self.current_attack:
