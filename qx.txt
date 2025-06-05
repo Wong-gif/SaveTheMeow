@@ -10,5 +10,9 @@
         "Diamonds": 50,
         "Best Coins": 100,
         "Best Diamonds": 50
+    },
+    "inventory": {
+        "Weapon for Boss": [],
+        "Weapon for Farm": []
     }
 }

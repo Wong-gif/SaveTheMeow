@@ -13,6 +13,8 @@ from qx_farm_magic import MagicPlayer
 class Level:
     def __init__(self,player_coins,player_diamonds):
 
+        self.game_over = False
+
         #get the display surface
         self.display_surface = pygame.display.get_surface()
 
@@ -127,6 +129,10 @@ class Level:
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
             self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
+
+        if self.player.health <= 0:
+            return True  # Signal that player died
+        return False
 
     def trigger_death_particles(self,pos,particle_type):
         self.animation_player.create_particles(particle_type,pos,self.visible_sprites)

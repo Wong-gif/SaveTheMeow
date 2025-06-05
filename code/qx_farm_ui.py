@@ -83,7 +83,6 @@ class UI:
 
     def display(self,player):
         self.show_bar(player.health,player.stats["health"],self.health_bar_rect,HEALTH_COLOUR)
-        self.show_bar(player.energy,player.stats["energy"],self.energy_bar_rect,ENERGY_COLOUR)
         self.show_coins(player.coins)
         self.show_diamonds(player.diamonds)
         self.weapon_overlay(player.weapons_index,not player.can_switch_weapon)

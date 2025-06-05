@@ -182,6 +182,12 @@ class Player(Entity):
         base_damage = self.stats["attack"]
         weapon_damage = weapons_data[self.weapon]["damage"]
         return base_damage + weapon_damage
+    
+    def check_death(self):
+        if self.health <= 0:
+            self.energy = self.stats["energy"]
+            return True
+        return False
 
     def update(self):
         self.input()
@@ -189,3 +195,4 @@ class Player(Entity):
         self.get_status()
         self.animate()
         self.move(self.speed)
+        self.check_death()

@@ -37,6 +37,9 @@ def farming_map(username):
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         return
+                    
+                    if self.level.player.health <= 0:
+                        return
 
                 self.screen.fill("#71ddee")
                 self.level.run()
