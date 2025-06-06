@@ -6,7 +6,6 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 
-
 # Register function
 def register(): #here is the register part
     username = username_entry.get() # this is the input to our user (username)
