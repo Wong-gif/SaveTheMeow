@@ -112,7 +112,7 @@ def create_login_window():
 
     # Log in button
     login_button = tk.Button(app, text="Play This Profile", command=login, font=("Arial", 23))
-    login_button.place(x=900, y=550)
+    login_button.place(x=850, y=550)
 
     # Initialize login status
     logged_in = False
