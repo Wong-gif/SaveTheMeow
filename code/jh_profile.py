@@ -101,17 +101,17 @@ def create_login_window():
     bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
     # Username label and input space
-    username_label = tk.Label(app, text="Username:", font=("Arial", 24))
+    username_label = tk.Label(app, text="Player Profile:", font=("Arial", 24))
     username_label.place(x=300, y=200) 
     username_entry = tk.Entry(app, font=("Arial", 24)) #create a space to input the username and when the user input the username
     username_entry.place(x=510, y=201) 
 
     # Register button
-    register_button = tk.Button(app, text="Register", command=register, font=("Arial", 23))
+    register_button = tk.Button(app, text="Create Profile", command=register, font=("Arial", 23))
     register_button.place(x=150, y=550) 
 
     # Log in button
-    login_button = tk.Button(app, text="Log in", command=login, font=("Arial", 23))
+    login_button = tk.Button(app, text="", command=login, font=("Arial", 23))
     login_button.place(x=900, y=550)
 
     # Initialize login status
