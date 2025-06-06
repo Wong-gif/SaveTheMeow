@@ -102,7 +102,7 @@ def create_login_window():
 
     # Username label and input space
     username_label = tk.Label(app, text="Player Profile:", font=("Arial", 24))
-    username_label.place(x=300, y=200) 
+    username_label.place(x=280, y=200) 
     username_entry = tk.Entry(app, font=("Arial", 24)) #create a space to input the username and when the user input the username
     username_entry.place(x=510, y=201) 
 
