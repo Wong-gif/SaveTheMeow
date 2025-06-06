@@ -10,7 +10,6 @@ class UI:
 
         #bar setup
         self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
-        self.energy_bar_rect = pygame.Rect(10,34,ENERGY_BAR_WIDTH,BAR_HEIGHT)
 
         #convert weapon dictionary
         self.weapon_graphics = []

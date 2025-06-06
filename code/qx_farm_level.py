@@ -107,9 +107,9 @@ class Level:
         if self.player.weapon:
             self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
-    def create_magic(self,style,strength,cost):
+    def create_magic(self,style,strength):
         if style == "Essence of Renewal":
-            self.magic_player.heal(self.player,strength,cost,[self.visible_sprites])
+            self.magic_player.heal(self.player,strength,[self.visible_sprites])
 
     def destroy_attack(self):
         if self.current_attack:

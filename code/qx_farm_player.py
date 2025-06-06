@@ -44,9 +44,8 @@ class Player(Entity):
         self.magic_switch_time = None
 
         #stats
-        self.stats = {"health":100, "energy":60, "attack":10, "magic":4, "speed":5}
+        self.stats = {"health":100, "attack":10, "magic":4, "speed":5}
         self.health = self.stats["health"]
-        self.energy = self.stats["energy"]
         self.coins = coins
         self.diamonds = diamonds
 
@@ -103,8 +102,7 @@ class Player(Entity):
                 magic_info = magic_data[self.magic]
                 style = self.magic
                 strength = magic_info["strength"] + self.stats["magic"]
-                cost = magic_info["cost"]
-                self.create_magic(style, strength, cost)
+                self.create_magic(style, strength)
 
             if keys[pygame.K_q] and self.can_switch_weapon:
                 if len(self.available_weapons) > 1:

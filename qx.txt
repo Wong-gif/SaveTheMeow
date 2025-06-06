@@ -14,10 +14,14 @@
     "inventory": {
         "Weapon for Boss": [
             "Essence of Renewal",
+            "Essence of Renewal",
             "Essence of Renewal"
         ],
-        "Weapon for Farm": [],
+        "Weapon for Farm": [
+            "Lion Sword"
+        ],
         "Magic for Farm": [
+            "Essence of Renewal"
         ]
     }
 }

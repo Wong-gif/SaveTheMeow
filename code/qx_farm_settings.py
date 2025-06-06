@@ -26,7 +26,6 @@ TEXT_COLOUR = "#EEEEEE"
 
 #ui colours 
 HEALTH_COLOUR = "red"
-ENERGY_COLOUR = "blue"
 UI_BORDER_COLOUR_ACTIVE = "gold"
 
 #weapons
