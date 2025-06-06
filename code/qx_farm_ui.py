@@ -2,7 +2,7 @@ import pygame
 from qx_farm_settings import *
 
 class UI:
-    def __init__(self):
+    def __init__(self,available_weapons,available_magic):
 
         #general
         self.display_surface = pygame.display.get_surface()
@@ -14,16 +14,19 @@ class UI:
 
         #convert weapon dictionary
         self.weapon_graphics = []
-        for weapon in weapons_data.values():
-            path = weapon["graphic"]
-            weapon = pygame.image.load(path).convert_alpha()
-            self.weapon_graphics.append(weapon)
+        for weapon_name in available_weapons:
+            if weapon_name in weapons_data:
+                path = weapons_data[weapon_name]["graphic"]
+                weapon = pygame.image.load(path).convert_alpha()
+                self.weapon_graphics.append(weapon)
 
         #convert magic dictionary
         self.magic_graphics = []
-        for magic in magic_data.values():
-            magic = pygame.image.load(magic["graphic"]).convert_alpha()
-            self.magic_graphics.append(magic)
+        for magic_name in available_magic:
+            if magic_name in magic_data:
+                path = magic_data[magic_name]["graphic"]
+                magic = pygame.image.load(path).convert_alpha()
+                self.magic_graphics.append(magic)
 
     def show_bar(self,current,max_amount,bg_rect,colour):
         #draw bg
@@ -69,16 +72,22 @@ class UI:
         return bg_rect
 
     def weapon_overlay(self,weapon_index,has_switched):
-        bg_rect = self.selection_box(10,700,has_switched)
-        weapon_surf = self.weapon_graphics[weapon_index]
-        weapon_rect = weapon_surf.get_rect(center = bg_rect.center)
-        self.display_surface.blit(weapon_surf,weapon_rect)
+        bg_rect = self.selection_box(10, 700, has_switched)
+    
+    # Only show weapon if there are weapons available and the index is valid
+        if len(self.weapon_graphics) > 0 and 0 <= weapon_index < len(self.weapon_graphics):
+            weapon_surf = self.weapon_graphics[weapon_index]
+            weapon_rect = weapon_surf.get_rect(center=bg_rect.center)
+            self.display_surface.blit(weapon_surf, weapon_rect)
 
     def magic_overlay(self,magic_index,has_switched):
-        bg_rect = self.selection_box(100,700,has_switched)
-        magic_surf = self.magic_graphics[magic_index]
-        magic_rect = magic_surf.get_rect(center = bg_rect.center)
-        self.display_surface.blit(magic_surf,magic_rect)
+        bg_rect = self.selection_box(110, 700, has_switched)
+    
+    # Only show weapon if there are weapons available and the index is valid
+        if len(self.magic_graphics) > 0 and 0 <= magic_index < len(self.magic_graphics):
+            magic_surf = self.magic_graphics[magic_index]
+            magic_rect = magic_surf.get_rect(center=bg_rect.center)
+            self.display_surface.blit(magic_surf, magic_rect)
 
 
     def display(self,player):

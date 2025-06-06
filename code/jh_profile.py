@@ -35,7 +35,8 @@ def register(): #here is the register part
         },
         "inventory":{
             "Weapon for Boss": [],
-            "Weapon for Farm": []
+            "Weapon for Farm": [],
+            "Magic for Farm": []
         }
     }
 

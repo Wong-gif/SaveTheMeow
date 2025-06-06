@@ -30,21 +30,20 @@ ENERGY_COLOUR = "blue"
 UI_BORDER_COLOUR_ACTIVE = "gold"
 
 #weapons
-weapons_data = {
-    "lance" : {"cooldown" : 400, "damage" : 30, "graphic" : "graphics_qx/weapons_farming/lance/full.png"},
-    "axe" : {"cooldown" : 300, "damage" : 20, "graphic" : "graphics_qx/weapons_farming/axe/full.png"},
-    "rapier" : {"cooldown" : 50, "damage" : 8, "graphic" : "graphics_qx/weapons_farming/rapier/full.png"}
+weapons_data = {    
+    "Shadow Saber" : {"cooldown" : 400, "damage" : 30, "graphic" : "graphics_qx/weapons_farming/Shadow_Saber/full.png"},
+    "Thunder Axe" : {"cooldown" : 300, "damage" : 20, "graphic" : "graphics_qx/weapons_farming/Thunder_Axe/full.png"},
+    "Lion Sword" : {"cooldown" : 50, "damage" : 8, "graphic" : "graphics_qx/weapons_farming/Lion_Sword/full.png"}
 }
 
 #magic
 magic_data = {
-    "flame" : {"strength": 5, "cost": 20, "graphic": "graphics_qx/special_effects_farming/flame/fire.png"},
-    "heal" : {"strength": 20, "cost": 10, "graphic": "graphics_qx/special_effects_farming/heal/heal.png"}
+    "Essence of Renewal" : {"strength": 20, "cost": 10, "graphic": "graphics_qx/special_effects_farming/heal/heal.png"}
 }
 
 #enemy
 monster_data = {
-    "squid":{'health':100,"exp":100,"damage":20,"attack_type":"slash","attack_sound":"audio_qx/attack/slash.wav","speed":3,"resistance":3,"attack_radius":80,"notice_radius":360},
+    "squid":{'health':100,"exp":100,"damage":10,"attack_type":"slash","attack_sound":"audio_qx/attack/slash.wav","speed":3,"resistance":3,"attack_radius":80,"notice_radius":360},
     "raccoon":{'health':300,"exp":250,"damage":40,"attack_type":"slash","attack_sound":"audio_qx/attack/claw.wav","speed":2,"resistance":3,"attack_radius":120,"notice_radius":400},
     "spirit":{'health':100,"exp":110,"damage":8,"attack_type":"slash","attack_sound":"audio_qx/attack/fireball.wav","speed":4,"resistance":3,"attack_radius":60,"notice_radius":350},
     "bamboo":{'health':70,"exp":120,"damage":6,"attack_type":"slash","attack_sound":"audio_qx/attack/slash.wav","speed":3,"resistance":3,"attack_radius":50,"notice_radius":300}

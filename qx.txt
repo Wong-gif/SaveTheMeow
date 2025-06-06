@@ -12,7 +12,12 @@
         "Best Diamonds": 50
     },
     "inventory": {
-        "Weapon for Boss": [],
-        "Weapon for Farm": []
+        "Weapon for Boss": [
+            "Essence of Renewal",
+            "Essence of Renewal"
+        ],
+        "Weapon for Farm": [],
+        "Magic for Farm": [
+        ]
     }
 }
