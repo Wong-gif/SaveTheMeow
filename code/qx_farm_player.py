@@ -2,19 +2,23 @@ import pygame
 from qx_farm_settings import *
 from qx_support import *
 from qx_farm_entity import Entity
+import json
 
 class Player(Entity):
-    def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic,coins=0,diamonds=0):
+    def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic,coins=0,diamonds=0,available_magic=None, available_weapons=None, username=None):
         super().__init__(groups)
         self.image = pygame.image.load("graphics_qx/test/player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-25,HITBOX_OFFSET["player"])
+
+        self.username = username
 
         #graphics
         self.import_player_assets()
         self.status = "down"
 
         #movement
+        self.direction = pygame.math.Vector2()
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
@@ -23,23 +27,25 @@ class Player(Entity):
         #weapons
         self.create_attack = create_attack
         self.destroy_attack = destroy_attack
+        self.available_weapons = available_weapons if available_weapons else []
         self.weapons_index = 0
-        self.weapon = list(weapons_data.keys())[self.weapons_index]
+        self.weapon = self.available_weapons[self.weapons_index] if self.available_weapons else None
+
         self.can_switch_weapon = True
         self.weapon_switch_time = None
         self.switch_duration_cooldown = 200
 
         #magic
         self.create_magic = create_magic
+        self.available_magic = available_magic if available_magic else []
         self.magic_index = 0
-        self.magic = list(magic_data.keys())[self.magic_index]
+        self.magic = self.available_magic[self.magic_index] if self.available_magic else None
         self.can_switch_magic = True
         self.magic_switch_time = None
 
         #stats
-        self.stats = {"health":100, "energy":60, "attack":10, "magic":4, "speed":5}
+        self.stats = {"health":100, "attack":10, "magic":4, "speed":5}
         self.health = self.stats["health"]
-        self.energy = self.stats["energy"]
         self.coins = coins
         self.diamonds = diamonds
 
@@ -84,41 +90,34 @@ class Player(Entity):
                 self.direction.x = 0
 
             #attack input
-            if keys[pygame.K_SPACE]:
+            if keys[pygame.K_SPACE] and self.weapon is not None:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
 
             #special powers input
-            if keys[pygame.K_LCTRL]:
+            if keys[pygame.K_LCTRL] and self.magic is not None:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
-                style = list(magic_data.keys())[self.magic_index]
-                strength = list(magic_data.values())[self.magic_index]["strength"] + self.stats["magic"]
-                cost = list(magic_data.values())[self.magic_index]["cost"]
-                self.create_magic(style,strength,cost)
+                magic_info = magic_data[self.magic]
+                style = self.magic
+                strength = magic_info["strength"] + self.stats["magic"]
+                self.create_magic(style, strength)
 
             if keys[pygame.K_q] and self.can_switch_weapon:
-                self.can_switch_weapon = False
-                self.weapon_switch_time = pygame.time.get_ticks()
+                if len(self.available_weapons) > 1:
+                    self.can_switch_weapon = False
+                    self.weapon_switch_time = pygame.time.get_ticks()
 
-                if self.weapons_index < len(list(weapons_data.keys())) - 1:
-                    self.weapons_index += 1
-                else:
-                    self.weapons_index = 0
-
-                self.weapon = list(weapons_data.keys())[self.weapons_index]
+                    self.weapons_index = (self.weapons_index + 1) % len(self.available_weapons)
+                    self.weapon = self.available_weapons[self.weapons_index]
 
             if keys[pygame.K_e] and self.can_switch_magic:
-                self.can_switch_magic = False
-                self.magic_switch_time = pygame.time.get_ticks()
-
-                if self.magic_index < len(list(magic_data.keys())) - 1:
-                    self.magic_index += 1
-                else:
-                    self.magic_index = 0
-
-                self.magic = list(magic_data.keys())[self.magic_index]
+                if len(self.available_magic) > 1:
+                    self.can_switch_magic = False
+                    self.magic_switch_time = pygame.time.get_ticks()
+                    self.magic_index = (self.magic_index + 1) % len(self.available_magic)
+                    self.magic = self.available_magic[self.magic_index]
 
     def get_status(self):
         #idle status
@@ -143,7 +142,7 @@ class Player(Entity):
         current_time = pygame.time.get_ticks()
 
         if self.attacking:
-            if current_time - self.attack_time >= self.attack_cooldown + weapons_data[self.weapon]["cooldown"]:
+            if current_time - self.attack_time >= self.attack_cooldown:
                 self.attacking = False
                 self.destroy_attack()
 
@@ -179,9 +178,17 @@ class Player(Entity):
             self.image.set_alpha(255)
 
     def get_full_weapon_damage(self):
+        if self.weapon is None:
+            return self.stats["attack"]
         base_damage = self.stats["attack"]
         weapon_damage = weapons_data[self.weapon]["damage"]
         return base_damage + weapon_damage
+    
+    def check_death(self):
+        if self.health <= 0:
+            self.energy = self.stats["energy"]
+            return True
+        return False
 
     def update(self):
         self.input()
@@ -189,3 +196,4 @@ class Player(Entity):
         self.get_status()
         self.animate()
         self.move(self.speed)
+        self.check_death()

@@ -86,7 +86,8 @@ def open_store(username):
         if "inventory" not in data:
             data["inventory"] = {
                 "Weapon for Boss": [],
-                "Weapon for Farm": []
+                "Weapon for Farm": [],
+                "Magic for Farm": []
             }
     
         total_coins = data["game1"]["Best Coins"] + data["game2"]["Best Coins"]
@@ -98,6 +99,7 @@ def open_store(username):
          # 加载已购买的武器
         inventory_boss = data["inventory"]["Weapon for Boss"]
         inventory_farm = data["inventory"]["Weapon for Farm"]
+        magic_farm = data["inventory"]["Magic for Farm"]
 
     except FileNotFoundError:
         print("警告：用户文件未找到，使用默认值")
@@ -105,12 +107,14 @@ def open_store(username):
         player_gems = 500
         inventory_boss = []
         inventory_farm = []
+        magic_farm = []
     except KeyError as e:
         print(f"警告：字段缺失 {e}，使用默认值")
         player_coins = 700
         player_gems = 500
         inventory_boss = []
         inventory_farm = []
+        magic_farm = []
             
     market_item = [
         {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False},
@@ -278,11 +282,14 @@ def open_store(username):
                         if currency == "coins" and player_coins >= price:
                             player_coins -= price
                             item["bought"] = True
-                            if item["name"] in ["Phoenix Feather", "Essence of Renewal", "Luna Bow", 
-                            "Hydro Strike", "Aegis Shield", "Hawk's Eye"]:
-                                inventory_boss.append(item["name"])  # 前6个进上面
+                            if item["name"] == "Essence of Renewal":
+                                inventory_boss.append(item["name"])
+                                magic_farm.append(item["name"])
+                            elif item["name"] in ["Phoenix Feather", "Luna Bow", 
+                                                    "Hydro Strike", "Aegis Shield", "Hawk's Eye"]:
+                                inventory_boss.append(item["name"])
                             else:
-                                inventory_farm.append(item["name"])  # 后3个进下面
+                                inventory_farm.append(item["name"])
                             buying_sound.play()
                             message = f"Bought {item['name']} for {price} coins!"
                             show_item_details = False
@@ -397,7 +404,8 @@ def open_store(username):
         if "inventory" not in data:
             data["inventory"] = {
                 "Weapon for Boss": [],
-                "Weapon for Farm": []
+                "Weapon for Farm": [],
+                "Magic for Farm": []
             }
     except FileNotFoundError:
         data = {
@@ -409,6 +417,7 @@ def open_store(username):
     # 更新 inventory 数据
     data["inventory"]["Weapon for Boss"] = inventory_boss
     data["inventory"]["Weapon for Farm"] = inventory_farm
+    data["inventory"]["Magic for Farm"] = magic_farm
 
     # 写回文件
     with open(filename, "w") as f:

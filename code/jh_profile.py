@@ -18,7 +18,7 @@ def register(): #here is the register part
     if os.path.exists(f"{username}.txt"): # this whole thing is a function in python to help us to check whether got a file or not #os this is a module and path is a connection between code and file, however, you can say path like a road or highway between a plece to place.
         messagebox.showerror("Error", "User already exists. Please log in directly.") #if error it will print out "Error", "User already exists. Please log in directly." by using a function in tkinter which is messagebox.
         return #it meaning is finsh this knid of thing then can quit the function or stop the function.
-    
+      
     user_data = {
         "game1": {
             "Coins": 0,
@@ -34,7 +34,8 @@ def register(): #here is the register part
         },
         "inventory":{
             "Weapon for Boss": [],
-            "Weapon for Farm": []
+            "Weapon for Farm": [],
+            "Magic for Farm": []
         }
     }
 

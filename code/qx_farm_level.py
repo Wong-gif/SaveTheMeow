@@ -11,7 +11,10 @@ from qx_farm_particles import AnimationPlayer
 from qx_farm_magic import MagicPlayer
 
 class Level:
-    def __init__(self,player_coins,player_diamonds):
+    def __init__(self,player_coins,player_diamonds,available_weapons,available_magic,username):
+
+        self.game_over = False
+        self.username = username
 
         #get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -28,12 +31,18 @@ class Level:
         #coins
         self.player_coins = player_coins
         self.player_diamonds = player_diamonds
+        self.available_weapons = available_weapons
+        self.weapons_index = 0
+        self.weapon = self.available_weapons[self.weapons_index] if self.available_weapons else None
+        self.available_magic = available_magic
+        self.magic_index = 0
+        self.magic = self.available_magic[self.magic_index] if self.available_magic else None
 
         #sprite
         self.create_map()
 
         #ui
-        self.ui = UI()
+        self.ui = UI(available_weapons,available_magic)
 
         #particles
         self.animation_player = AnimationPlayer()
@@ -78,7 +87,10 @@ class Level:
                                     self.destroy_attack,
                                     self.create_magic,
                                     coins=self.player_coins,
-                                    diamonds=self.player_diamonds)
+                                    diamonds=self.player_diamonds,
+                                    available_weapons=self.available_weapons,
+                                    available_magic=self.available_magic,
+                                    username = self.username)
                             else:
                                 if col == "390": monster_name = "bamboo"
                                 elif col == "391": monster_name = "spirit"
@@ -92,14 +104,12 @@ class Level:
                                       self.trigger_death_particles)
 
     def create_attack(self):
-        self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
+        if self.player.weapon:
+            self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
-    def create_magic(self,style,strength,cost):
-        if style == "heal":
-            self.magic_player.heal(self.player,strength,cost,[self.visible_sprites])
-
-        if style == "flame":
-            self.magic_player.flame()
+    def create_magic(self,style,strength):
+        if style == "Essence of Renewal":
+            self.magic_player.heal(self.player,strength,[self.visible_sprites])
 
     def destroy_attack(self):
         if self.current_attack:
@@ -127,6 +137,10 @@ class Level:
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
             self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
+
+        if self.player.health <= 0:
+            return True  # Signal that player died
+        return False
 
     def trigger_death_particles(self,pos,particle_type):
         self.animation_player.create_particles(particle_type,pos,self.visible_sprites)
