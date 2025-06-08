@@ -32,6 +32,10 @@ def register(): #here is the register part
             "Best Coins": 0,
             "Best Diamonds": 0
         },
+        "game3":{
+            "Coins":0,
+            "Diamonds":0
+        },
         "inventory":{
             "Weapon for Boss": [],
             "Weapon for Farm": [],

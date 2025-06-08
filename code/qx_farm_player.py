@@ -56,6 +56,48 @@ class Player(Entity):
         self.hurt_time = None
         self.invulnerability_duration = 500
 
+        self.game3_coins = 0
+        self.game3_diamonds = 0
+        self.load_game3_data()
+
+    def load_game3_data(self):
+        """Load ONLY game3 coins and diamonds (separate from main currency)"""
+        try:
+            with open(f"{self.username}.txt", "r") as f:
+                data = json.load(f)
+            if "game3" in data:
+                self.game3_coins = data["game3"].get("Coins", 0)
+                self.game3_diamonds = data["game3"].get("Diamonds", 0)
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+
+    def add_coins(self, amount):
+        """Add coins to Game 3 only (doesn't affect main coins)"""
+        self.game3_coins += amount
+        self.save_game3_data()
+        
+    def add_diamonds(self, amount):
+        """Add diamonds to Game 3 only (doesn't affect main diamonds)"""
+        self.game3_diamonds += amount
+        self.save_game3_data()
+        
+    def save_game3_data(self):
+        """Save current Game 3 coins and diamonds (separate from main currency)"""
+        try:
+            with open(f"{self.username}.txt", "r") as f:
+                data = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {}
+            
+        if "game3" not in data:
+            data["game3"] = {"Coins": 0, "Diamonds": 0}
+            
+        data["game3"]["Coins"] = self.game3_coins
+        data["game3"]["Diamonds"] = self.game3_diamonds
+        
+        with open(f"{self.username}.txt", "w") as f:
+            json.dump(data, f)
+
     def import_player_assets(self):
         character_path = "graphics_qx/player/"
         self.animations = {"up":[], "down":[],"left":[],"right":[],

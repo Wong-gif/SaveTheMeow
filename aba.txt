@@ -1,0 +1,1 @@
+{"game1": {"Coins": 220, "Diamonds": 50, "Best Coins": 220, "Best Diamonds": 50}, "game2": {"Coins": 120, "Diamonds": 30, "Best Coins": 120, "Best Diamonds": 30}, "game3": {"Coins": 365, "Diamonds": 80}, "inventory": {"Weapon for Boss": [], "Weapon for Farm": ["Lion Sword"], "Magic for Farm": []}}
