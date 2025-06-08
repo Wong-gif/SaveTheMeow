@@ -126,11 +126,12 @@ class Enemy(Entity):
 
     def check_death(self):
         if self.health <= 0:
-            if hasattr(self, 'player_reference'):  # Make sure player reference exists
+            if hasattr(self, 'player_reference'):
                 if self.monster_name == "raccoon":
                     self.player_reference.add_diamonds(5)
                 else:  # squid, bamboo, spirit
                     self.player_reference.add_coins(5)
+                self.player_reference.save_game3_data()  # Save immediately after adding
             self.kill()
             self.trigger_death_particles(self.rect.center, self.monster_name)
 

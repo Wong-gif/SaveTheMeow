@@ -74,12 +74,14 @@ class Player(Entity):
     def add_coins(self, amount):
         """Add coins to Game 3 only (doesn't affect main coins)"""
         self.game3_coins += amount
-        self.save_game3_data()
+        print(f"Added {amount} coins. Total: {self.game3_coins}")  # Debug print
+        self.save_game3_data()  # Save immediately
         
     def add_diamonds(self, amount):
         """Add diamonds to Game 3 only (doesn't affect main diamonds)"""
         self.game3_diamonds += amount
-        self.save_game3_data()
+        print(f"Added {amount} diamonds. Total: {self.game3_diamonds}")  # Debug print
+        self.save_game3_data()  # Save immediately
         
     def save_game3_data(self):
         """Save current Game 3 coins and diamonds (separate from main currency)"""
@@ -97,6 +99,7 @@ class Player(Entity):
         
         with open(f"{self.username}.txt", "w") as f:
             json.dump(data, f)
+        print("Game3 data saved!")  # Debug print
 
     def import_player_assets(self):
         character_path = "graphics_qx/player/"
@@ -228,7 +231,6 @@ class Player(Entity):
     
     def check_death(self):
         if self.health <= 0:
-            self.energy = self.stats["energy"]
             return True
         return False
 
