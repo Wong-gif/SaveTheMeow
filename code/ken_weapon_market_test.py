@@ -425,5 +425,5 @@ def open_store(username):
 
     print(f"Inventory saved for {username}")
         
-        
+    pygame.mixer.music.stop()    
     return
