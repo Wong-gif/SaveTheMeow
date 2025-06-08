@@ -36,25 +36,26 @@ class WeaponEffects:
             """从存档加载使用次数"""
             try:
                 with open(f"{username}_weapons.json", "r") as f:
-                    WeaponEffects.num_of_usage = json.load(f)
+                    WeaponEffects.num_of_usage = {}
             except:
                 WeaponEffects.num_of_usage = {}
 
-        @staticmethod
-        def save_usage(username):
-            """保存使用次数到存档"""
-            with open(f"{username}_weapons.json", "w") as f:
-                json.dump(WeaponEffects.num_of_usage, f)
+        #@staticmethod
+        #def save_usage(username):
+            #"""保存使用次数到存档"""
+            #with open(f"{username}_weapons.json", "w") as f:
+                #json.dump(WeaponEffects.num_of_usage, f)
 
         @staticmethod
         def apply(name, mario, boss):
-            """应用武器效果"""
             # 检查冷却
             now = pygame.time.get_ticks()
             if name in WeaponEffects.cooldowns and now < WeaponEffects.cooldowns[name]:
-                mario.activate_message = f"{name} is cooling down!"
+                remaining = (WeaponEffects.cooldowns[name] - now) // 1000
+                mario.activate_message = f"{name} is cooling down! Ready in {remaining}s."
                 mario.activate_message_timer = now + 2000
                 return False
+
 
             if name in WeaponEffects.max_usage:
                 WeaponEffects.num_of_usage.setdefault(name, 0)
