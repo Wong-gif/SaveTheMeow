@@ -68,6 +68,7 @@ def platform_map(username):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
                 running = False
 
             if current_state == MENU and start_button.is_clicked(event):
@@ -105,8 +106,10 @@ def platform_map(username):
         elif current_state == SUMMARY:
             result = summary.run()
             if result == "menu":
+                   pygame.mixer.music.stop()
                    current_state = MENU
 
         pygame.display.update()
 
-    return
+    pygame.mixer.music.stop()
+    return  

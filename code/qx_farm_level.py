@@ -50,58 +50,64 @@ class Level:
 
     def create_map(self):
         layout = {
-            "boundary" : import_csv_layout("farm_map/farming_map_FloorBlocks.csv"),
-            "grass" : import_csv_layout("farm_map/farming_map_Grass.csv"),
-            "object" : import_csv_layout("farm_map/farming_map_Objects.csv"),
-            "entities" : import_csv_layout("farm_map/farming_map_Entities.csv")
+            "boundary": import_csv_layout("farm_map/farming_map_FloorBlocks.csv"),
+            "grass": import_csv_layout("farm_map/farming_map_Grass.csv"),
+            "object": import_csv_layout("farm_map/farming_map_Objects.csv"),
+            "entities": import_csv_layout("farm_map/farming_map_Entities.csv")
         }
         
         graphics = {
-            "grass" : import_folder_farm("graphics_qx/grass"),
-            "objects" : import_folder_farm("graphics_qx/objects")
+            "grass": import_folder_farm("graphics_qx/grass"),
+            "objects": import_folder_farm("graphics_qx/objects")
         }
 
-        for style,layout in layout.items():
-            for row_index,row in enumerate(layout):
+        # Create player first if found in entities
+        for row_index, row in enumerate(layout["entities"]):
+            for col_index, col in enumerate(row):
+                if col == "394":  # Player entity ID
+                    x = col_index * TILESIZE
+                    y = row_index * TILESIZE
+                    self.player = Player(
+                        (x, y),
+                        [self.visible_sprites],
+                        self.obstacles_sprites,
+                        self.create_attack,
+                        self.destroy_attack,
+                        self.create_magic,
+                        coins=self.player_coins,
+                        diamonds=self.player_diamonds,
+                        available_weapons=self.available_weapons,
+                        available_magic=self.available_magic,
+                        username=self.username)
+                    break
+
+        # Then create other entities
+        for style, layout in layout.items():
+            for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
                     if col != "-1":
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == "boundary":
-                            Tile((x,y),[self.obstacles_sprites],"invisible")
-                        if style == "grass":
+                            Tile((x, y), [self.obstacles_sprites], "invisible")
+                        elif style == "grass":
                             random_grass_image = choice(graphics["grass"])
-                            Tile((x,y),[self.visible_sprites,self.obstacles_sprites,self.attackable_sprites],"grass",random_grass_image)
-                        
-                        if style == "object":
+                            Tile((x, y), [self.visible_sprites, self.obstacles_sprites, self.attackable_sprites], "grass", random_grass_image)
+                        elif style == "object":
                             surf = graphics['objects'][int(col)]
-                            Tile((x,y),[self.visible_sprites,self.obstacles_sprites],"object",surf)
-
-                        if style == "entities":
-                            if col == "394":
-                                self.player = Player(
-                                    (x,y),
-                                    [self.visible_sprites],
-                                    self.obstacles_sprites,
-                                    self.create_attack,
-                                    self.destroy_attack,
-                                    self.create_magic,
-                                    coins=self.player_coins,
-                                    diamonds=self.player_diamonds,
-                                    available_weapons=self.available_weapons,
-                                    available_magic=self.available_magic,
-                                    username = self.username)
-                            else:
-                                if col == "390": monster_name = "bamboo"
-                                elif col == "391": monster_name = "spirit"
-                                elif col == "392": monster_name = "raccoon"
-                                else: monster_name = "squid"
-                                Enemy(monster_name,
-                                      (x,y),
-                                      [self.visible_sprites,self.attackable_sprites],
-                                      self.obstacles_sprites,
-                                      self.damage_player,
-                                      self.trigger_death_particles)
+                            Tile((x, y), [self.visible_sprites, self.obstacles_sprites], "object", surf)
+                        elif style == "entities" and col != "394":  # Skip player since we already created it
+                            if col == "390": monster_name = "bamboo"
+                            elif col == "391": monster_name = "spirit"
+                            elif col == "392": monster_name = "raccoon"
+                            else: monster_name = "squid"
+                            Enemy(monster_name,
+                                (x, y),
+                                [self.visible_sprites, self.attackable_sprites],
+                                self.obstacles_sprites,
+                                self.damage_player,
+                                self.trigger_death_particles,
+                                player_reference=self.player)  # Now self.player exists
 
     def create_attack(self):
         if self.player.weapon:
