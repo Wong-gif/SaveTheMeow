@@ -4,10 +4,11 @@ from qx_farm_entity import Entity
 from qx_support import *
 
 class Enemy(Entity):
-    def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles):
+    def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles,player_reference=None):
         #general setup
         super().__init__(groups)
         self.sprite_type = "enemy"
+        self.player_reference=player_reference
 
         #graphics 
         self.import_graphics(monster_name)
@@ -125,8 +126,14 @@ class Enemy(Entity):
 
     def check_death(self):
         if self.health <= 0:
+            if hasattr(self, 'player_reference'):
+                if self.monster_name == "raccoon":
+                    self.player_reference.add_diamonds(5)
+                else:  # squid, bamboo, spirit
+                    self.player_reference.add_coins(5)
+                self.player_reference.save_game3_data()  # Save immediately after adding
             self.kill()
-            self.trigger_death_particles(self.rect.center,self.monster_name)
+            self.trigger_death_particles(self.rect.center, self.monster_name)
 
     def hit_reaction(self):
         if not self.vulnerable:
