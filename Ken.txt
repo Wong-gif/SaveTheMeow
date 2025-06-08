@@ -13,9 +13,14 @@
     },
     "inventory": {
         "Weapon for Boss": [
-            "Phoenix Feather"
+            "Phoenix Feather",
+            "Aegis Shield",
+            "Essence of Renewal"
         ],
-        "Weapon for Farm": [],
+        "Weapon for Farm": [
+            "Thunder Axe",
+            "Lion Sword"
+        ],
         "Magic for Farm": []
     }
 }

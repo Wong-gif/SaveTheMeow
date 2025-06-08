@@ -5,6 +5,13 @@ def boss_battle(username):
     import random
     from ken_effect import WeaponEffects
 
+    try:
+        with open(f"{username}.txt", "r") as f:
+            data = json.load(f)
+        WeaponEffects.num_of_usage = data.get("weapon_usage", {})
+    except:
+        WeaponEffects.num_of_usage = {}
+
     WIDTH, HEIGHT = 1200, 800
     BLACK = (0, 0, 0)
     LIGHT_BLACK = (30, 30, 30)
@@ -561,14 +568,18 @@ def boss_battle(username):
                     mouse_pos = pygame.mouse.get_pos()
                     for weapon_name, rect in weapon_buttons:
                         if rect.collidepoint(mouse_pos):
-                            click_sound.play()
-                            # Apply the effect to Mario or Boss here
-                            WeaponEffects.apply(weapon_name, mario, boss)
+                            success = WeaponEffects.apply(weapon_name, mario, boss)
+                            if not success:
+                                click_sound.play() 
 
                             if weapon_name == "Essence of Renewal":
                                 effect = AnimatedAddHealth(mario, add_health_frames)
                                 all_sprites.add(effect)
                                 add_health_sound.play()
+                                
+            data["weapon_usage"] = WeaponEffects.num_of_usage
+            with open(f"{username}.txt", "w") as f:
+                json.dump(data, f)
 
             if not game_over:        
                 all_sprites.update()
