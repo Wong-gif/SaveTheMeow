@@ -90,8 +90,8 @@ def open_store(username):
                 "Magic for Farm": []
             }
     
-        total_coins = data["game1"]["Best Coins"] + data["game2"]["Best Coins"]
-        total_diamonds = data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"]
+        total_coins = data["game1"]["Best Coins"] + data["game2"]["Best Coins"] + data["game3"]["Coins"]
+        total_diamonds = data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"] + data["game3"]["Diamonds"]
         
         player_coins = total_coins
         player_gems = total_diamonds
