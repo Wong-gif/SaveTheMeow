@@ -1,5 +1,7 @@
 import pygame
 import random
+import json
+import os
 
 class WeaponEffects:
 
@@ -19,10 +21,11 @@ class WeaponEffects:
             "Aegis Shield": 8000,
             "Hawk's Eye": 10000
         }
-
+        # 类变量
         num_of_usage = {}
         cooldowns = {}
-
+        
+        
         @staticmethod
         def apply(name, mario, boss):
             # 检查冷却
@@ -31,8 +34,6 @@ class WeaponEffects:
                 mario.activate_message = f"{name} is activated!"
                 mario.activate_message_timer = now + 2000
                 return False
-
-
             if name in WeaponEffects.max_usage:
                 WeaponEffects.num_of_usage.setdefault(name, 0)
                 if WeaponEffects.num_of_usage[name] >= WeaponEffects.max_usage[name]:
@@ -44,21 +45,20 @@ class WeaponEffects:
             effect_method = getattr(WeaponEffects, name.lower().replace(" ", "_"), None)
             if effect_method:
                 effect_method(mario, boss)
+                WeaponEffects.cooldowns[name] = now + 3000  # 3秒冷却
                 return True
             
             mario.activate_message = f"Invalid weapon: {name}"
             mario.activate_message_timer = now + 2000
             return False
-
+        
         @staticmethod
         def phoenix_feather(mario, boss):
             if 80 <= mario.attack_power <= 100:  # only apply if attack power is normal
                 mario.attack_power = random.randint(120, 140)  # Boost Mario's attack power
                 mario.power_timer = pygame.time.get_ticks() + WeaponEffects.duration["Phoenix Feather"]
                 mario.active_weapon = "Phoenix Feather"
-                mario.activate_message = "Phoenix Feather activated! Mario's attack power boosted for 7 seconds."
-                mario.activate_message_timer = pygame.time.get_ticks() + 2000
-
+                
         @staticmethod
         def essence_of_renewal(mario, boss):
             restore_health = 50
@@ -66,45 +66,31 @@ class WeaponEffects:
             if mario.health > 100:
                 mario.health = 100  # 不超过最大生命
             mario.active_weapon = "Essence of Renewal"
-            mario.activate_message = f"Essence of Renewal activated! Mario restored {restore_health} HP."
-            mario.activate_message_timer = pygame.time.get_ticks() + 2000
-
-
+            
         @staticmethod
         def luna_bow(mario, boss):
             if 80 <= mario.attack_power <= 100:
                 mario.attack_power = random.randint(120, 145)  
                 mario.power_timer = pygame.time.get_ticks() +  WeaponEffects.duration["Luna Bow"]
                 mario.active_weapon = "Luna Bow"
-                mario.activate_message = "Luna Bow activated! Mario's attack power boosted for 12 seconds."
-                mario.activate_message_timer = pygame.time.get_ticks() + 2000
-
+                
         @staticmethod
         def hydro_strike(mario, boss):
             if 80 <= mario.attack_power <= 100:
                 mario.attack_power = random.randint(200, 220)
                 mario.power_timer = pygame.time.get_ticks() +  WeaponEffects.duration["Hydro Strike"]
                 mario.active_weapon = "Hydro Strike"
-                mario.activate_message = "Hydro Strike activated! Mario's attack power boosted for 7 seconds."
-                mario.activate_message_timer = pygame.time.get_ticks() + 2000
-
-        
+                
         @staticmethod
         def aegis_shield(mario, boss):
             mario.shield = True
             mario.shield_timer = pygame.time.get_ticks() +  WeaponEffects.duration["Aegis Shield"]
             mario.active_weapon = "Aegis Shield"
-            mario.activate_message = "Aegis Shield activated! Mario's defense is enhanced for 8 seconds."
-            mario.activate_message_timer = pygame.time.get_ticks() + 2000
-
-        
+           
         @staticmethod
         def hawk_eye(mario, boss):
             if 80 <= mario.attack_power <= 100:
                 mario.attack_power = random.randint(145, 165)
                 mario.power_timer = pygame.time.get_ticks() +  WeaponEffects.duration["Hawk's Eye"]
                 mario.active_weapon = "Hawk's Eye"
-                mario.activate_message = "Hawk's Eye activated! Mario's attack power boosted for 10 seconds."
-                mario.activate_message_timer = pygame.time.get_ticks() + 2000
-
-
+                
