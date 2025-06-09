@@ -1,6 +1,5 @@
 import pygame
 import random
-import json
 
 class WeaponEffects:
 
@@ -21,31 +20,15 @@ class WeaponEffects:
             "Hawk's Eye": 10000
         }
 
-        # 类变量
         num_of_usage = {}
         cooldowns = {}
-
-        #@staticmethod
-        #def load_usage(username):
-            ##try:
-                #with open(f"{username}_weapons.json", "r") as f:
-                    #WeaponEffects.num_of_usage = json.load(f)
-            #except:
-                #WeaponEffects.num_of_usage = {}
-
-        #@staticmethod
-        #def save_usage(username):
-            #"""保存使用次数到存档"""
-            #with open(f"{username}_weapons.json", "w") as f:
-                #json.dump(WeaponEffects.num_of_usage, f)
 
         @staticmethod
         def apply(name, mario, boss):
             # 检查冷却
             now = pygame.time.get_ticks()
             if name in WeaponEffects.cooldowns and now < WeaponEffects.cooldowns[name]:
-                remaining = (WeaponEffects.cooldowns[name] - now) // 1000
-                mario.activate_message = f"{name} is cooling down! Ready in {remaining}s."
+                mario.activate_message = f"{name} is activated!"
                 mario.activate_message_timer = now + 2000
                 return False
 
@@ -61,7 +44,6 @@ class WeaponEffects:
             effect_method = getattr(WeaponEffects, name.lower().replace(" ", "_"), None)
             if effect_method:
                 effect_method(mario, boss)
-                WeaponEffects.cooldowns[name] = now + 3000  # 3秒冷却
                 return True
             
             mario.activate_message = f"Invalid weapon: {name}"

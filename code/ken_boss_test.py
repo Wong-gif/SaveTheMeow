@@ -6,7 +6,7 @@ def boss_battle(username):
     from ken_effect import WeaponEffects
 
     WeaponEffects.num_of_usage = {}
-
+    
     WIDTH, HEIGHT = 1200, 800
     BLACK = (0, 0, 0)
     LIGHT_BLACK = (30, 30, 30)
@@ -572,10 +572,7 @@ def boss_battle(username):
                                 all_sprites.add(effect)
                                 add_health_sound.play()
                                 
-            data["weapon_usage"] = WeaponEffects.num_of_usage
-            with open(f"{username}.txt", "w") as f:
-                json.dump(data, f)
-
+        
             if not game_over:        
                 all_sprites.update()
                 for bullet in bullets:
@@ -671,5 +668,4 @@ def boss_battle(username):
                         
         pygame.display.update()
 
-    pygame.mixer.music.stop()
     return  # goes back to overworld
