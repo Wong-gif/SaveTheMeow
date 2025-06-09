@@ -4,7 +4,15 @@ def boss_battle(username):
     import json
     import random
     from ken_effect import WeaponEffects
+    
 
+    #try:
+        #with open(f"{username}.txt", "r") as f:
+            #data = json.load(f)
+        #WeaponEffects.num_of_usage = data.get("weapon_usage", {})
+    #except:
+        #WeaponEffects.num_of_usage = {}
+    
     WeaponEffects.num_of_usage = {}
 
     WIDTH, HEIGHT = 1200, 800
@@ -671,5 +679,4 @@ def boss_battle(username):
                         
         pygame.display.update()
 
-    pygame.mixer.music.stop()
     return  # goes back to overworld

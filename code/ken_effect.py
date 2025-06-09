@@ -43,13 +43,7 @@ class WeaponEffects:
         def apply(name, mario, boss):
             # 检查冷却
             now = pygame.time.get_ticks()
-            if name in WeaponEffects.cooldowns and now < WeaponEffects.cooldowns[name]:
-                remaining = (WeaponEffects.cooldowns[name] - now) // 1000
-                mario.activate_message = f"{name} is cooling down! Ready in {remaining}s."
-                mario.activate_message_timer = now + 2000
-                return False
-
-
+            
             if name in WeaponEffects.max_usage:
                 WeaponEffects.num_of_usage.setdefault(name, 0)
                 if WeaponEffects.num_of_usage[name] >= WeaponEffects.max_usage[name]:
@@ -61,7 +55,6 @@ class WeaponEffects:
             effect_method = getattr(WeaponEffects, name.lower().replace(" ", "_"), None)
             if effect_method:
                 effect_method(mario, boss)
-                WeaponEffects.cooldowns[name] = now + 3000  # 3秒冷却
                 return True
             
             mario.activate_message = f"Invalid weapon: {name}"
