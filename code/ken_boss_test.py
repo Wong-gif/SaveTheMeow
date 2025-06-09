@@ -5,6 +5,8 @@ def boss_battle(username):
     import random
     from ken_effect import WeaponEffects
 
+    WeaponEffects.num_of_usage = {}
+
     WIDTH, HEIGHT = 1200, 800
     BLACK = (0, 0, 0)
     LIGHT_BLACK = (30, 30, 30)
@@ -88,12 +90,10 @@ def boss_battle(username):
                 pygame.display.flip()
                 pygame.time.delay(2000)
                 return False  # 返回 False 表示失败
-        except FileNotFoundError:
-            print(f"存档文件 {save_file} 不存在！")
+
+        except:
             return False
-        except Exception as e:
-            print(f"读取武器出错: {e}")
-            return False
+        
     
         font = pygame.font.SysFont("arial", 22)
 
@@ -481,7 +481,7 @@ def boss_battle(username):
         all_sprites.add(boss)
         game_over = False
         start_time = pygame.time.get_ticks()  # Get initial time in milliseconds
-        time_limit = 121000
+        time_limit = 180000
         pygame.mixer.music.play(-1)
 
         # Game loop
@@ -563,14 +563,18 @@ def boss_battle(username):
                     mouse_pos = pygame.mouse.get_pos()
                     for weapon_name, rect in weapon_buttons:
                         if rect.collidepoint(mouse_pos):
-                            click_sound.play()
-                            # Apply the effect to Mario or Boss here
-                            WeaponEffects.apply(weapon_name, mario, boss)
+                            success = WeaponEffects.apply(weapon_name, mario, boss)
+                            if not success:
+                                click_sound.play() 
 
                             if weapon_name == "Essence of Renewal":
                                 effect = AnimatedAddHealth(mario, add_health_frames)
                                 all_sprites.add(effect)
                                 add_health_sound.play()
+                                
+            data["weapon_usage"] = WeaponEffects.num_of_usage
+            with open(f"{username}.txt", "w") as f:
+                json.dump(data, f)
 
             if not game_over:        
                 all_sprites.update()
