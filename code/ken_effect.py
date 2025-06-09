@@ -1,12 +1,6 @@
 import pygame
 import random
 import json
-import os
-
-YELLOW = (255, 255, 0)
-LIGHT_GREEN = (144, 238, 144)
-LIGHT_BLUE = (135, 206, 250)
-LIGHT_PURPLE = (216, 191, 216)
 
 class WeaponEffects:
 
@@ -31,14 +25,13 @@ class WeaponEffects:
         num_of_usage = {}
         cooldowns = {}
 
-        @staticmethod
-        def load_usage(username):
-            """从存档加载使用次数"""
-            try:
-                with open(f"{username}_weapons.json", "r") as f:
-                    WeaponEffects.num_of_usage = {}
-            except:
-                WeaponEffects.num_of_usage = {}
+        #@staticmethod
+        #def load_usage(username):
+            ##try:
+                #with open(f"{username}_weapons.json", "r") as f:
+                    #WeaponEffects.num_of_usage = json.load(f)
+            #except:
+                #WeaponEffects.num_of_usage = {}
 
         #@staticmethod
         #def save_usage(username):

@@ -5,12 +5,7 @@ def boss_battle(username):
     import random
     from ken_effect import WeaponEffects
 
-    try:
-        with open(f"{username}.txt", "r") as f:
-            data = json.load(f)
-        WeaponEffects.num_of_usage = data.get("weapon_usage", {})
-    except:
-        WeaponEffects.num_of_usage = {}
+    WeaponEffects.num_of_usage = {}
 
     WIDTH, HEIGHT = 1200, 800
     BLACK = (0, 0, 0)
