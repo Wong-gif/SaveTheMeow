@@ -1,6 +1,5 @@
 import pygame
 import random
-import json
 
 class WeaponEffects:
 
@@ -21,29 +20,19 @@ class WeaponEffects:
             "Hawk's Eye": 10000
         }
 
-        # 类变量
         num_of_usage = {}
         cooldowns = {}
-
-        #@staticmethod
-        #def load_usage(username):
-            ##try:
-                #with open(f"{username}_weapons.json", "r") as f:
-                    #WeaponEffects.num_of_usage = json.load(f)
-            #except:
-                #WeaponEffects.num_of_usage = {}
-
-        #@staticmethod
-        #def save_usage(username):
-            #"""保存使用次数到存档"""
-            #with open(f"{username}_weapons.json", "w") as f:
-                #json.dump(WeaponEffects.num_of_usage, f)
 
         @staticmethod
         def apply(name, mario, boss):
             # 检查冷却
             now = pygame.time.get_ticks()
-            
+            if name in WeaponEffects.cooldowns and now < WeaponEffects.cooldowns[name]:
+                mario.activate_message = f"{name} is activated!"
+                mario.activate_message_timer = now + 2000
+                return False
+
+
             if name in WeaponEffects.max_usage:
                 WeaponEffects.num_of_usage.setdefault(name, 0)
                 if WeaponEffects.num_of_usage[name] >= WeaponEffects.max_usage[name]:

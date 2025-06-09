@@ -4,17 +4,9 @@ def boss_battle(username):
     import json
     import random
     from ken_effect import WeaponEffects
-    
 
-    #try:
-        #with open(f"{username}.txt", "r") as f:
-            #data = json.load(f)
-        #WeaponEffects.num_of_usage = data.get("weapon_usage", {})
-    #except:
-        #WeaponEffects.num_of_usage = {}
-    
     WeaponEffects.num_of_usage = {}
-
+    
     WIDTH, HEIGHT = 1200, 800
     BLACK = (0, 0, 0)
     LIGHT_BLACK = (30, 30, 30)
@@ -580,10 +572,7 @@ def boss_battle(username):
                                 all_sprites.add(effect)
                                 add_health_sound.play()
                                 
-            data["weapon_usage"] = WeaponEffects.num_of_usage
-            with open(f"{username}.txt", "w") as f:
-                json.dump(data, f)
-
+        
             if not game_over:        
                 all_sprites.update()
                 for bullet in bullets:
