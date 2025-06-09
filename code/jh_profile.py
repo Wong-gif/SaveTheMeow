@@ -32,6 +32,10 @@ def register(): #here is the register part
             "Best Coins": 0,
             "Best Diamonds": 0
         },
+        "game3":{
+            "Coins":0,
+            "Diamonds":0
+        },
         "inventory":{
             "Weapon for Boss": [],
             "Weapon for Farm": [],
@@ -60,8 +64,12 @@ def login(): # here is log in part
         app.withdraw()  # Hide the login window
 
         def start_game_thread():
-            import qx_test_main
-            qx_test_main.open_game(username)
+            try:
+                import qx_test_main
+                qx_test_main.open_game(username)
+            finally:
+                # When game exits, show login window again
+                app.deiconify()
             
         threading.Thread(target=start_game_thread).start()
            
@@ -89,8 +97,11 @@ def create_login_window():
     def on_close():
         global logged_in
         logged_in = False
-        pygame.quit() #Closes the Pygame (if it's running), stopping any sounds and function. but our login are not added any BGM.
-        exit()
+        try:
+            pygame.quit()
+        except:
+            pass  # In case pygame wasn't initialized
+        app.destroy()  # Properly destroy the Tkinter window
 
     app.protocol("WM_DELETE_WINDOW", on_close) #"WM_DELETE_WINDOW" this sentence is represents the window close event #i use this is prevent accidental closure and ensures cleanup
 
