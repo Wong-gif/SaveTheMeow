@@ -1,6 +1,5 @@
 def open_store(username):
     import pygame
-    import sys
     import os
     import json 
 
@@ -19,9 +18,11 @@ def open_store(username):
     pygame.mixer.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Weapon Market")
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock()     # Game clock to control FPS
 
-    #background
+    font = pygame.font.SysFont("arial", 20)
+
+    # background
     background = pygame.image.load(os.path.join("assets", "images", "weapon_background.jpg")).convert_alpha()
     # coin icon
     coin_icon = pygame.image.load(os.path.join("assets", "images", "dollar.png")).convert_alpha()
@@ -29,7 +30,7 @@ def open_store(username):
     # gem icon
     gem_icon = pygame.image.load(os.path.join("assets", "images", "gem.png")).convert_alpha()
     gem_icon = pygame.transform.scale(gem_icon, (25, 25))
-    #girl image
+    # girl image
     girl_image = pygame.image.load(os.path.join("assets", "images", "girl.png")).convert_alpha()
     girl_image = pygame.transform.scale(girl_image, (450, 700))
     # Go out arrow
@@ -42,8 +43,6 @@ def open_store(username):
     pygame.mixer.music.load(os.path.join("assets", "sounds", "weaponback_music.wav"))
     pygame.mixer.music.set_volume(0.5)  # Adjust volume
 
-
-    font = pygame.font.SysFont("arial", 20)
 
     original_weapon_images = {
         "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),
@@ -127,15 +126,10 @@ def open_store(username):
         {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False},
         {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False}
     ]
-
-    # Gems and coins that on top
-    def draw_stat_box(surface, x, y, width, height, color, alpha):
-        s = pygame.Surface((width, height), pygame.SRCALPHA)  # Transparent surface
-        pygame.draw.rect(s, (*color, alpha), s.get_rect(), border_radius=12)  # Rounded rectangle
-        surface.blit(s, (x, y))  # Draw it on your screen
+    
 
     # Arrow (hover or actual)
-    def draw_arrow(surface, arrow_image, arrow_rect):
+    def draw_arrow(screen, arrow_image, arrow_rect):
         mx, my = pygame.mouse.get_pos()
         if arrow_rect.collidepoint(mx, my):
             actual_arrow = arrow_image.copy()
@@ -143,6 +137,13 @@ def open_store(username):
             screen.blit(actual_arrow, arrow_rect)
         else:
             screen.blit(arrow_image, arrow_rect) # make the image follow the rect
+
+
+    # Gems and coins that on top
+    def draw_top_box(screen, x, y, width, height, color, alpha):
+        top_box = pygame.Surface((width, height), pygame.SRCALPHA)  # Transparent surface
+        pygame.draw.rect(top_box, (*color, alpha), top_box.get_rect(), border_radius=12)  # Rounded rectangle
+        screen.blit(top_box, (x, y))  # Draw it on your screen
 
 
     arrow_rect = pygame.Rect(10, 5, 50, 60)  # Set position
@@ -162,7 +163,7 @@ def open_store(username):
         title_text = font.render("Weapon Market", True, BLACK) # Draw weapon market text
         screen.blit(title_text, (70, 20))
 
-        draw_stat_box(screen, 250, 15, 225, 35, GREY, 100)  # Background
+        draw_top_box(screen, 250, 15, 225, 35, GREY, 100)  # Background
         
         screen.blit(coin_icon, (270, 20))  # Draw coin icon
         coins_text = font.render(f"{player_coins}", True, WHITE)
@@ -185,12 +186,12 @@ def open_store(username):
 
         for i, item_name in enumerate(inventory_boss):  # Only show first 6 items
             if item_name in weapon_images:
-                img = pygame.transform.scale(weapon_images[item_name], (30, 30))
-                screen.blit(img, (20, 150 + i * 40))
+                img = pygame.transform.scale(weapon_images[item_name], (30, 30))   # Small icon
+                screen.blit(img, (20, 150 + i * 40))    # Draw image
                 name_text = font.render(item_name, True, WHITE)
                 screen.blit(name_text, (60, 155 + i * 40))
 
-        # Inventory background box （Bottom)
+        # Inventory background box （farm)
         inventory_box_width = 215
         inventory_box_height = max(150, 40 + len(inventory_farm) * 40 + 20)
         inventory_box = pygame.Surface((inventory_box_width, inventory_box_height), pygame.SRCALPHA)
@@ -201,14 +202,14 @@ def open_store(username):
         inventory_title_text = font.render("Inventory for farm :", True, WHITE)
         screen.blit(inventory_title_text, (20, 565))
 
-
         for i, item_name in enumerate(inventory_farm):
             if item_name in weapon_images:
                 img = pygame.transform.scale(weapon_images[item_name], (30, 30))  # Small icon
                 screen.blit(img, (20, 610 + i * 40))  # Draw image
                 name_text = font.render(item_name, True, WHITE)
                 screen.blit(name_text, (60, 615 + i * 40))  # Name next to image
-
+        
+        # Girl image on right side
         screen.blit(girl_image, (WIDTH - 340, HEIGHT - 700))
 
         for i, item in enumerate(market_item):    # 9 Boxes 
@@ -341,7 +342,7 @@ def open_store(username):
 
     
 
-        # 弹出物品详情窗口
+        # Pop-up item details window
         if show_item_details and selected_item:
         # 半透明遮罩
             overlay = pygame.Surface((WIDTH, HEIGHT))
@@ -355,18 +356,18 @@ def open_store(username):
             popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
             pygame.draw.rect(screen, WHITE, popup_rect, border_radius=15)
 
-            # 标题
+            # Ttile
             title_font = pygame.font.SysFont("arial", 30)
             title_text = title_font.render(selected_item["name"], True, BLACK)
             screen.blit(title_text, (popup_x + popup_width // 2 - title_text.get_width() // 2, popup_y + 15))
 
-            # 武器图片
+            # Weapon image
             img = original_weapon_images.get(selected_item["name"])
             if img:
                 img = pygame.transform.smoothscale(img, (190, 190))
                 screen.blit(img, (popup_x + popup_width // 2 - img.get_width() // 2, popup_y + 70))
 
-            # 描述
+            # description
             desc_font = pygame.font.SysFont("arial", 22)
             description = weapon_description[selected_item["name"]]["description"]
             desc_text = desc_font.render(description, True, BLACK)
@@ -374,7 +375,7 @@ def open_store(username):
             desc_y = popup_y + popup_height // 2 - desc_text.get_height() // 2 + 90 
             screen.blit(desc_text, (desc_x, desc_y))
 
-            # 按钮
+            # Buttton for cancel and buy
             cancel_button = pygame.Rect(popup_x + 50, popup_y + popup_height - 60, 100, 40)
             buy_button = pygame.Rect(popup_x + popup_width - 150, popup_y + popup_height - 60, 100, 40)
             
