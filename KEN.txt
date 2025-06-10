@@ -1,0 +1,1 @@
+{"game1": {"Coins": 220, "Diamonds": 50, "Best Coins": 220, "Best Diamonds": 50}, "game2": {"Coins": 140, "Diamonds": 60, "Best Coins": 140, "Best Diamonds": 60}, "game3": {"Coins": 15, "Diamonds": 0}, "inventory": {"Weapon for Boss": ["Essence of Renewal", "Aegis Shield", "Hawk's Eye"], "Weapon for Farm": ["Thunder Axe"], "Magic for Farm": ["Essence of Renewal"]}}
