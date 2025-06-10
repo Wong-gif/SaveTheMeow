@@ -6,21 +6,21 @@
         "Best Diamonds": 50
     },
     "game2": {
-        "Coins": 120,
-        "Diamonds": 30,
-        "Best Coins": 120,
-        "Best Diamonds": 30
+        "Coins": 100,
+        "Diamonds": 40,
+        "Best Coins": 100,
+        "Best Diamonds": 40
     },
     "game3": {
-        "Coins": 10,
-        "Diamonds": 10
+        "Coins": 20,
+        "Diamonds": 0
     },
     "inventory": {
         "Weapon for Boss": [
             "Essence of Renewal"
         ],
         "Weapon for Farm": [
-            "Lion Sword"
+            "Shadow Saber"
         ],
         "Magic for Farm": [
             "Essence of Renewal"

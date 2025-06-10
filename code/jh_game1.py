@@ -167,8 +167,8 @@ class Game1:
 
 
     def _load_single_image(self, path):
-        image = pygame.image.load(path).convert_alpha()  # 使用透明通道加载图片
-        image.set_colorkey((0, 255, 255))  # 设置青色为透明（0, 255, 255）
+        image = pygame.image.load(path).convert_alpha() 
+        image.set_colorkey((0, 255, 255))  #set green 
         return image
     
     def update_camera(self):
@@ -302,13 +302,13 @@ class Game1:
             gap_start = pos - progress // 2
             gap_end = pos + progress // 2
 
-        # 左边的地面段
+        # left ground
             if gap_start > last_x:
-                ground_segments.append((last_x, gap_start - last_x))  # (起点x, 宽度)
+                ground_segments.append((last_x, gap_start - last_x))
 
             last_x = gap_end
 
-    # 最后一段地面
+    # last ground
         if last_x < self.world_width:
             ground_segments.append((last_x, self.world_width - last_x))
 
