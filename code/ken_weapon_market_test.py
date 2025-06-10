@@ -122,9 +122,9 @@ def open_store(username):
         {"name": "Hydro Strike", "price": 108, "currency": "gems", "bought": False},
         {"name": "Aegis Shield", "price": 45, "currency": "gems", "bought": False},
         {"name": "Hawk's Eye", "price": 65, "currency": "gems", "bought": False},
-        {"name": "Lion Sword", "price": 50, "currency": "coins", "bought": False},
-        {"name": "Shadow Saber", "price": 70, "currency": "coins", "bought": False},
-        {"name": "Thunder Axe", "price": 88, "currency": "coins", "bought": False}
+        {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
+        {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False},
+        {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False}
     ]
     
 
