@@ -1,0 +1,19 @@
+{
+    "game1": {
+        "Coins": 220,
+        "Diamonds": 50,
+        "Best Coins": 220,
+        "Best Diamonds": 50
+    },
+    "game2": {
+        "Coins": 120,
+        "Diamonds": 40,
+        "Best Coins": 120,
+        "Best Diamonds": 40
+    },
+    "inventory": {
+        "Weapon for Boss": [],
+        "Weapon for Farm": [],
+        "Magic for Farm": []
+    }
+}
