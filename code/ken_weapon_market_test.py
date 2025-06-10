@@ -1,6 +1,5 @@
 def open_store(username):
     import pygame
-    import sys
     import os
     import json 
 
@@ -20,6 +19,8 @@ def open_store(username):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Weapon Market")
     clock = pygame.time.Clock()
+
+    font = pygame.font.SysFont("arial", 20)
 
     #background
     background = pygame.image.load(os.path.join("assets", "images", "weapon_background.jpg")).convert_alpha()
@@ -42,8 +43,6 @@ def open_store(username):
     pygame.mixer.music.load(os.path.join("assets", "sounds", "weaponback_music.wav"))
     pygame.mixer.music.set_volume(0.5)  # Adjust volume
 
-
-    font = pygame.font.SysFont("arial", 20)
 
     original_weapon_images = {
         "Phoenix Feather": pygame.image.load(os.path.join("assets", "images", "Phoenix_feather.png")).convert_alpha(),

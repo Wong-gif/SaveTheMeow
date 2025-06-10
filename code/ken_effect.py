@@ -1,7 +1,5 @@
 import pygame
 import random
-import json
-import os
 
 class WeaponEffects:
 
