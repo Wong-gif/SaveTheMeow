@@ -344,7 +344,7 @@ def open_store(username):
 
 
         if message and pygame.time.get_ticks() < message_timer:    # Message that show below   
-            msg_text = font.render(message, True, RED)
+            msg_text = font.render(message, True, WHITE)
             msg_x = WIDTH // 2 - msg_text.get_width() // 2
             msg_y = HEIGHT - 30
 
@@ -429,7 +429,8 @@ def open_store(username):
         data = {
             "game1": {"Coins": 0, "Diamonds": 0, "Best Coins": 0, "Best Diamonds": 0},
             "game2": {"Coins": 0, "Diamonds": 0, "Best Coins": 0, "Best Diamonds": 0},
-            "inventory": {"Weapon for Boss": [], "Weapon for Farm": []}
+            "game3": {"Coins": 0, "Diamonds": 0},
+            "inventory": {"Weapon for Boss": [], "Weapon for Farm": [], "Magic for Farm": []}
         }
 
     # 更新 inventory 数据

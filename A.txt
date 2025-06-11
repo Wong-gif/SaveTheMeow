@@ -1,15 +1,15 @@
 {
     "game1": {
-        "Coins": 200,
-        "Diamonds": 40,
-        "Best Coins": 200,
-        "Best Diamonds": 40
+        "Coins": 180,
+        "Diamonds": 50,
+        "Best Coins": 180,
+        "Best Diamonds": 50
     },
     "game2": {
         "Coins": 140,
-        "Diamonds": 50,
+        "Diamonds": 40,
         "Best Coins": 140,
-        "Best Diamonds": 50
+        "Best Diamonds": 40
     },
     "game3": {
         "Coins": 0,
@@ -17,9 +17,9 @@
     },
     "inventory": {
         "Weapon for Boss": [
-            "Phoenix Feather",
+            "Aegis Shield",
             "Essence of Renewal",
-            "Hawk's Eye"
+            "Phoenix Feather"
         ],
         "Weapon for Farm": [],
         "Magic for Farm": [
