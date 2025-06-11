@@ -61,6 +61,19 @@ def open_store(username):
         for name, img in original_weapon_images.items()
     }
 
+
+    market_item = [
+        {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False, "permanent_bought": False},
+        {"name": "Essence of Renewal", "price": 130, "currency": "coins", "bought": False, "permanent_bought": False},
+        {"name": "Luna Bow", "price": 228, "currency": "coins", "bought": False, "permanent_bought": False},
+        {"name": "Hydro Strike", "price": 108, "currency": "gems", "bought": False, "permanent_bought": False},
+        {"name": "Aegis Shield", "price": 45, "currency": "gems", "bought": False, "permanent_bought": False},
+        {"name": "Hawk's Eye", "price": 65, "currency": "gems", "bought": False, "permanent_bought": False},
+        {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False, "permanent_bought": False},
+        {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False, "permanent_bought": False},
+        {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False, "permanent_bought": False}
+    ]
+
     weapon_description = {
         "Phoenix Feather": {"description": "Each arrow has 120 damage. Only for 10 seconds."},
         "Essence of Renewal": {"description": "Restore 50 health points for three times."},
@@ -72,6 +85,8 @@ def open_store(username):
         "Shadow Saber": {"description": "30% probability to block attack."}, 
         "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
     }
+
+
         
 
     filename = f"{username}.txt"
@@ -100,33 +115,27 @@ def open_store(username):
         inventory_farm = data["inventory"]["Weapon for Farm"]
         magic_farm = data["inventory"]["Magic for Farm"]
 
+        # Mark weapons as permanently bought
+        for item in market_item:
+            if item["name"] in inventory_boss or item["name"] in inventory_farm or item["name"] in magic_farm:
+                item["bought"] = True
+                item["permanent_bought"] = True
+
     except FileNotFoundError:
         print("警告：用户文件未找到，使用默认值")
-        player_coins = 700
-        player_gems = 500
+        player_coins = 0
+        player_gems = 0
         inventory_boss = []
         inventory_farm = []
         magic_farm = []
     except KeyError as e:
         print(f"警告：字段缺失 {e}，使用默认值")
-        player_coins = 700
-        player_gems = 500
+        player_coins = 0
+        player_gems = 0
         inventory_boss = []
         inventory_farm = []
         magic_farm = []
-            
-    market_item = [
-        {"name": "Phoenix Feather", "price": 160, "currency": "coins", "bought": False},
-        {"name": "Essence of Renewal", "price": 130, "currency": "coins", "bought": False},
-        {"name": "Luna Bow", "price": 228, "currency": "coins", "bought": False},
-        {"name": "Hydro Strike", "price": 108, "currency": "gems", "bought": False},
-        {"name": "Aegis Shield", "price": 45, "currency": "gems", "bought": False},
-        {"name": "Hawk's Eye", "price": 65, "currency": "gems", "bought": False},
-        {"name": "Lion Sword", "price": 100, "currency": "coins", "bought": False},
-        {"name": "Shadow Saber", "price": 100, "currency": "coins", "bought": False},
-        {"name": "Thunder Axe", "price": 150, "currency": "coins", "bought": False}
-    ]
-    
+        
 
     # Arrow (hover or actual)
     def draw_arrow(screen, arrow_image, arrow_rect):
@@ -249,7 +258,7 @@ def open_store(username):
             screen.blit(price_text, (center_iconprice_x + icon_width + 5, iconprice_y))
 
             if item["bought"]:
-                sold_out_text = font.render("Sold out", True, RED)
+                sold_out_text = font.render("Owned", True, RED)
                 text_x = x + box.get_width() // 2 - sold_out_text.get_width() // 2
                 text_y = y + box.get_height() // 2 - sold_out_text.get_height() // 2
                 screen.blit(sold_out_text, (text_x, text_y))
@@ -276,6 +285,12 @@ def open_store(username):
                         click_sound.play()
                         show_item_details = False
                     elif buy_button.collidepoint(mx, my): 
+                        if selected_item["permanent_bought"]:
+                            message = "Already purchased!"
+                            message_timer = pygame.time.get_ticks() + 2000
+                            show_item_details = False
+                            continue
+
                         item = selected_item
                         currency = item["currency"]
                         price = item["price"]
@@ -283,6 +298,7 @@ def open_store(username):
                         if currency == "coins" and player_coins >= price:
                             player_coins -= price
                             item["bought"] = True
+                            item["permanent_bought"] = True
                             if item["name"] == "Essence of Renewal":
                                 inventory_boss.append(item["name"])
                                 magic_farm.append(item["name"])
@@ -298,6 +314,7 @@ def open_store(username):
                         elif currency == "gems" and player_gems >= price:
                             player_gems -= price
                             item["bought"] = True
+                            item["permanent_bought"] = True 
                             if item["name"] in ["Phoenix Feather", "Essence of Renewal", "Luna Bow", 
                             "Hydro Strike", "Aegis Shield", "Hawk's Eye"]:
                                 inventory_boss.append(item["name"])  # 前6个进上面
@@ -318,7 +335,7 @@ def open_store(username):
                         x = 230 + (i % col) * 230
                         y = 80 + (i // col) * 230
                         box = pygame.Rect(x, y, 200, 160)
-                        if box.collidepoint(mx, my) and not item["bought"]:  # Only if the mouse clicked the box and the item is NOT bought yet
+                        if box.collidepoint(mx, my):  # Only if the mouse clicked the box and the item is NOT bought yet
                             click_sound.play()
                             selected_item = item
                             show_item_details = True
