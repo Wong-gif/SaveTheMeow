@@ -355,10 +355,6 @@ def open_store(username):
             screen.blit(msg_bg, (msg_x - 10, msg_y - 5))  # Draw background
             screen.blit(msg_text, (msg_x, msg_y))         # Draw message
 
-
-
-    
-
         # Pop-up item details window
         if show_item_details and selected_item:
         # 半透明遮罩
