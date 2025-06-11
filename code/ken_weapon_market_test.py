@@ -81,9 +81,9 @@ def open_store(username):
         "Hydro Strike": {"description": "Each bullet has 200 points of attack. Only for 10 seconds"},
         "Aegis Shield": {"description": "30% probability to block attack."},
         "Hawk's Eye": {"description": "Each arrow has 130 damage. Only for 10 seconds."},
-        "Lion Sword": {"description": "Each swing of the sword has 150 points of attack. Only 5 chances."},
-        "Shadow Saber": {"description": "30% probability to block attack."}, 
-        "Thunder Axe": {"description": "30% probability to stun the enemy for 3 seconds within 20 seconds."}
+        "Lion Sword": {"description": "Has a cooldown of 0.5s, but deals 8 damage only."},
+        "Shadow Saber": {"description": "Has a longer attack range, deals 30 damage but has a cooldown of 4 seconds."}, 
+        "Thunder Axe": {"description": "Deals a damage of 20, but has a cooldown of 3 seconds."}
     }
 
 
