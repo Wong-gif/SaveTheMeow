@@ -171,24 +171,28 @@ class Game1:
         image.set_colorkey((0, 255, 255))  #set green 
         return image
     
-    def update_camera(self):
+    def update_camera(self): # This line of code allows the camera (screen) to follow the player, but will not go beyond the map range
         target_x = self.player_rect.centerx - self.screen_width // 2
         self.camera_x = max(0, min(target_x, self.world_width - self.screen_width))
 
-    def world_to_screen(self, rect):
-        return rect.move(-self.camera_x, 0)
+    def world_to_screen(self, rect): 
+        return rect.move(-self.camera_x, 0) # Because the camera moves, camera_x is subtracted from the position of everything on the screen
+                                            # (-self.camera_x) Make the object shift to the left (just like the camera is moving to the right and the object is running to the left) 
+                                            # (0) The up and down positions remain unchanged
 
     def handle_input(self):
-        keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed() # Get which keys the player is currently pressing (such as left, right, space)
         if keys[pygame.K_LEFT]:
             self.player_rect.x -= self.player_speed
-            self.facing_right = False
+            self.facing_right = False # The character is facing left
+
         if keys[pygame.K_RIGHT]:
             self.player_rect.x += self.player_speed
-            self.facing_right = True
+            self.facing_right = True # The character is facing right
+
         if keys[pygame.K_SPACE] and self.on_ground:
             self.velocity_y = self.jump_power
-            self.on_ground = False
+            self.on_ground = False # Not on the ground
             self.jump_sound.play()
 
     # time setting
@@ -206,12 +210,12 @@ class Game1:
         self.player_rect.y += self.velocity_y
         self.portal_frame_index += self.portal_animation_speed
         if self.portal_frame_index >= len(self.portal_frames):
-           self.portal_frame_index = 0
+           self.portal_frame_index = 0 # loop the portal
 
         for coin in self.coins:
             coin["frame"] += coin["animation_speed"]
             if coin["frame"] >= len(self.coin_frames):
-                coin["frame"] = 0 
+                coin["frame"] = 0 # Make the animation loop from the beginning
 
         for coin in self.coins[:]: 
             if self.player_rect.colliderect(coin["rect"]):
