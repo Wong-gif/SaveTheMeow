@@ -21,7 +21,9 @@
             "Essence of Renewal",
             "Phoenix Feather"
         ],
-        "Weapon for Farm": [],
+        "Weapon for Farm": [
+            "Lion Sword"
+        ],
         "Magic for Farm": [
             "Essence of Renewal"
         ]

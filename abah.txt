@@ -20,7 +20,8 @@
             "Essence of Renewal"
         ],
         "Weapon for Farm": [
-            "Shadow Saber"
+            "Shadow Saber",
+            "Lion Sword"
         ],
         "Magic for Farm": [
             "Essence of Renewal"
