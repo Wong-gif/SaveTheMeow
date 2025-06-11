@@ -6,9 +6,9 @@ class DeathPopup:
         self.WIDTH = width
         self.HEIGHT = height
         self.active = False
-        self.reason = ""
+        self.reason = "" # word about the die
         self.restart_button = pygame.Rect(0, 0, 160, 50)
-        self.font = pygame.font.SysFont("arial", 28)
+        self.font = pygame.font.SysFont("arial", 28) # put the word big or small
 
     def show(self, reason_text):
         self.active = True
@@ -22,19 +22,19 @@ class DeathPopup:
             return
 
         overlay = pygame.Surface((self.WIDTH, self.HEIGHT))
-        overlay.set_alpha(150)
+        overlay.set_alpha(150) # Set transparency
         overlay.fill((0, 0, 0))
         self.screen.blit(overlay, (0, 0))
 
         popup_width, popup_height = 500, 300
         popup_x = self.WIDTH // 2 - popup_width // 2
         popup_y = self.HEIGHT // 2 - popup_height // 2
-        popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
+        popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height) # Draw a white box with rounded corners as the pop-up window body
         pygame.draw.rect(self.screen, (255, 255, 255), popup_rect, border_radius=15)
 
         reason_text = self.font.render(self.reason, True, (0, 0, 0))
         self.screen.blit(reason_text, (
-            popup_x + popup_width // 2 - reason_text.get_width() // 2,
+            popup_x + popup_width // 2 - reason_text.get_width() // 2, # Draw the cause of death text in the middle and upper part of the pop-up window
             popup_y + 80
         ))
 
@@ -50,6 +50,6 @@ class DeathPopup:
     def handle_event(self, event):
         if self.active and event.type == pygame.MOUSEBUTTONDOWN:
             if self.restart_button.collidepoint(event.pos):
-                return True
-        return False
+                return True # if true , restart
+        return False # if no , remain
     
