@@ -63,7 +63,7 @@ class Game1:
 
         self.jump_sound = pygame.mixer.Sound('assets/sounds/player_jump.wav')
         self.jump_sound.set_volume(0.2)
-        self.dian_sound = pygame.mixer.Sound("assets/sounds/dian.wav") 
+        self.dian_sound = pygame.mixer.Sound("assets/sounds/dian.wav")
         self.dian_sound.set_volume(2.0)
         self.diamond_sound = pygame.mixer.Sound("assets/sounds/diamond.wav")
         self.diamond_sound.set_volume(4.0)
