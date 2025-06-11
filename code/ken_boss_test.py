@@ -442,6 +442,7 @@ def boss_battle(username):
 
         # Game loop
         running = True
+        result = None
         while running:
             clock.tick(60)
             screen.blit(background_img, (0, 0))
@@ -551,6 +552,15 @@ def boss_battle(username):
                     if mario.health <= 0:
                         mario.lives -= 1
                         running = False
+
+                if boss.health <= 0:
+                    result = "win"
+                    running = False
+                
+                # Check lose condition
+                if mario.health <= 0:
+                    result = "lose"
+                    running = False
                 
             
             all_sprites.draw(screen)
@@ -581,7 +591,57 @@ def boss_battle(username):
             pygame.display.flip()
         
         pygame.mixer.music.stop()
+
+        #Screen result
+        if result == "win":
+            # Victory message
+            font_large = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 48)
+            font_small = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 24)
+            
+            congrats_text = font_large.render("CONGRATULATIONS!", True, GREEN)
+            save_text = font_small.render("You saved the Meow!", True, WHITE)
+            continue_text = font_small.render("Press any key to continue", True, WHITE)
+            
+            screen.blit(congrats_text, (WIDTH//2 - congrats_text.get_width()//2, HEIGHT//2 - 100))
+            screen.blit(save_text, (WIDTH//2 - save_text.get_width()//2, HEIGHT//2))
+            screen.blit(continue_text, (WIDTH//2 - continue_text.get_width()//2, HEIGHT//2 + 100))
+            
+            pygame.display.flip()
+            waiting = True
+            while waiting:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        return False
+                    if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                        waiting = False
+            return True
+    
+        elif result == "lose":
+            # Defeat message
+            font_large = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 48)
+            font_small = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 24)
+            
+            defeat_text = font_large.render("DEFEATED!", True, RED)
+            retry_text = font_small.render("Press R to retry or Q to quit", True, WHITE)
+            
+            screen.blit(defeat_text, (WIDTH//2 - defeat_text.get_width()//2, HEIGHT//2 - 50))
+            screen.blit(retry_text, (WIDTH//2 - retry_text.get_width()//2, HEIGHT//2 + 50))
+            
+            pygame.display.flip()
+            waiting = True
+            while waiting:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        return False
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_r:
+                            return boss_stage()  # Restart the boss battle
+                        elif event.key == pygame.K_q:
+                            return False
+            return False
+        
         return True
+    
     # Main game loop
     running = True
     while running:
