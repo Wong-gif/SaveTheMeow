@@ -456,14 +456,6 @@ def boss_battle(username):
             timer_color = RED if remaining_time <= 10000 else WHITE
             timer_text = font.render(f"Time: {minutes:02}:{seconds:02}", True, timer_color)
             screen.blit(timer_text, (WIDTH // 2 - 50, 120))
-            if remaining_time <= 0 and not game_over:
-                game_over = True
-                time_up_text = font.render("TIME'S UP! GAME OVER.", True, RED)
-                screen.blit(time_up_text, (WIDTH // 2 - 100, HEIGHT // 2))
-                pygame.display.flip()
-                pygame.time.delay(3000)  # Show message for 3 seconds
-                running = False
-                continue
 
             # Top box for weapon
             x = 290
