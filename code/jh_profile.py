@@ -11,7 +11,7 @@ def register(): #here is the register part
     username = username_entry.get() # this is the input to our user (username)
     
     if not username:
-        messagebox.showwarning("Enter Error", "Please key in Username!") 
+        messagebox.showwarning("Enter Error", "Please key in Player Profile!") 
         return
     
         # Whether user exist or not
@@ -56,7 +56,7 @@ def login(): # here is log in part
     username = username_entry.get()
 
     if not username:
-        messagebox.showwarning("Error", "Please key in Username!")
+        messagebox.showwarning("Error", "Please key in Player Profile!")
         return
 
     if os.path.exists(f"{username}.txt"):
@@ -74,10 +74,10 @@ def login(): # here is log in part
         threading.Thread(target=start_game_thread).start()
            
     else:
-        messagebox.showerror("Error", "This user does not exist, Please register a new account.")
+        messagebox.showerror("Error", "This user does not exist, Please register a new Player Profile.")
         logged_in = False  # Log in failed, does not enter game
 
-    clear_entries()
+    clear_entries() # when click the button the word will miss
 
 # Empty input
 def clear_entries():

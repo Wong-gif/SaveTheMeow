@@ -26,11 +26,11 @@ def platform_map(username):
     background = pygame.image.load('assets/images/background.png').convert()
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))  
 
-    # 把 Game1 和 Game2 实例化放这里
+    # let Game1 and Game2
     game1 = Game1(screen, username)
     game2 = Game2(screen, username)
 
-    # 用来保存游戏数据
+    # save data 
     levels_data = {}
 
     summary = None
@@ -112,4 +112,4 @@ def platform_map(username):
         pygame.display.update()
 
     pygame.mixer.music.stop()
-    return  
+    return  # Start the game → Show menu Click → the button → First level (Game1) → Next level → Second level (Game2) → End the game → Results summary page → Click the button to return to the main menu
