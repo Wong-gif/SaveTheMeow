@@ -381,12 +381,12 @@ class Game1:
         pygame.display.update()
 
     def run(self, event=None):
-        if event:
+        if event: # if enter event 
             if self.death_popup.handle_event(event):
                 self.__init__(self.screen, self.username)
                 return
             
-        if not self.death_popup.active:
+        if not self.death_popup.active: # If the death popup is not showing (meaning the player is still alive)
             self.handle_input()
             self.update_physics()
        
