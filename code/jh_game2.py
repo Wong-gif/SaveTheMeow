@@ -106,7 +106,7 @@ class Game2:
 
         self.death_popup = DeathPopup(screen, self.screen_width, self.screen_height)
         
-        self.portal_rect = pygame.Rect(3100, 221, 80, 100)  # 位置自己调  
+        self.portal_rect = pygame.Rect(3100, 221, 80, 100)  # position of portal  
         self.portal_frames = []
         for i in range(16):
             frame = pygame.image.load(f"assets/images/portal/portal_{i}.png").convert_alpha()
@@ -116,7 +116,7 @@ class Game2:
         self.portal_frame_timer = 0
         self.level_start_time = pygame.time.get_ticks()     
 
-        self.fireballs = []  # 火球列表
+        self.fireballs = []  
         self.fireball_image = pygame.image.load("assets/images/fireball.png").convert_alpha()
 
         for i in range(5):
@@ -262,8 +262,8 @@ class Game2:
 
 
     def _load_single_image(self, path):
-        image = pygame.image.load(path).convert_alpha()  # 使用透明通道加载图片
-        image.set_colorkey((0, 255, 255))  # 设置青色为透明（0, 255, 255）
+        image = pygame.image.load(path).convert_alpha()  
+        image.set_colorkey((0, 255, 255)) 
         return image
     
     def update_camera(self):
@@ -278,7 +278,7 @@ class Game2:
         keys = pygame.key.get_pressed()
         
         if keys[pygame.K_LEFT]:
-            self.player_rect.x = max(0, self.player_rect.x - self.player_speed)  # 限制最小x为0，防止超出屏幕左侧
+            self.player_rect.x = max(0, self.player_rect.x - self.player_speed)  
             self.facing_right = False
 
         if keys[pygame.K_RIGHT]:
@@ -318,7 +318,7 @@ class Game2:
                 self.score += 10
                 self.diamond_sound.play()
                 
-        self.on_ground = False  # 先假设不在地上
+        self.on_ground = False 
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
 
@@ -330,9 +330,9 @@ class Game2:
             ]:
                 if visible and self.player_rect.colliderect(platform):
                     if self.velocity_y >= 0:
-                        self.player_rect.bottom = platform.top                
-                        self.velocity_y = 0
-                        self.on_ground = True
+                        self.player_rect.bottom = platform.top # let the player can stand on the platform               
+                        self.velocity_y = 0 # stop to fell down
+                        self.on_ground = True # can stand and can jump
 
 
         if self.player_rect.colliderect(self.spring.rect):
