@@ -463,11 +463,11 @@ class Game2:
             self.screen.blit(self.diamond_icon, self.world_to_screen(diamond["rect"]))
     
         # draw the ground        
-        for start_x, width, y in self.generate_ground_segments():
+        for start_x, width, y in self.generate_ground_segments(): # this game 2 got many position of ground > ============ > =====      ======
             if width > 0:
                 ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100))
                 ground_rect = pygame.Rect(start_x, y, width, 100)
-                screen_pos = self.world_to_screen(ground_rect)
+                screen_pos = self.world_to_screen(ground_rect) # camera move , player also move
                 self.screen.blit(ground_surface, screen_pos)
 
         for fireball in self.fireballs:
