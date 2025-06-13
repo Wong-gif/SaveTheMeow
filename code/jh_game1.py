@@ -307,13 +307,13 @@ class Game1:
             gap_end = pos + progress // 2
 
         # left ground
-            if gap_start > last_x:
+            if gap_start > last_x: # The first section of ground (before the last crack) should also be added
                 ground_segments.append((last_x, gap_start - last_x))
 
             last_x = gap_end
 
     # last ground
-        if last_x < self.world_width:
+        if last_x < self.world_width: # The last section of ground (after the last crack) should also be added
             ground_segments.append((last_x, self.world_width - last_x))
 
         return ground_segments
