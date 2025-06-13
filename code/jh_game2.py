@@ -462,7 +462,7 @@ class Game2:
         for diamond in self.diamond:
             self.screen.blit(self.diamond_icon, self.world_to_screen(diamond["rect"]))
     
-        # draw the ground
+        # draw the ground        
         for start_x, width, y in self.generate_ground_segments():
             if width > 0:
                 ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100))
