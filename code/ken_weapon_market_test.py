@@ -1,4 +1,5 @@
 def open_store(username):
+    global data
     import pygame
     import os
     import json 
@@ -103,9 +104,13 @@ def open_store(username):
                 "Weapon for Farm": [],
                 "Magic for Farm": []
             }
+        if "money_spent" not in data:
+            data["money_spent"] = 0  # Initialize if missing
+        if "diamonds_spent" not in data:
+            data["diamonds_spent"] = 0
     
-        total_coins = data["game1"]["Best Coins"] + data["game2"]["Best Coins"] + data["game3"]["Coins"]
-        total_diamonds = data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"] + data["game3"]["Diamonds"]
+        total_coins = max(0, data["game1"]["Best Coins"] + data["game2"]["Best Coins"] + data["game3"]["Coins"] - data["coins_spent"])
+        total_diamonds = max(0, data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"] + data["game3"]["Diamonds"] - data["diamonds_spent"])
         
         player_coins = total_coins
         player_gems = total_diamonds
@@ -265,9 +270,11 @@ def open_store(username):
 
         for event in pygame.event.get():      # Mouse click
             if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = pygame.mouse.get_pos()
+                pygame.mixer.music.stop()
                 if arrow_rect.collidepoint(mx, my):
                     click_sound.play()
                     for alpha in range(0, 300, 15):    # Fade out function
@@ -297,6 +304,7 @@ def open_store(username):
 
                         if currency == "coins" and player_coins >= price:
                             player_coins -= price
+                            data["coins_spent"] += price  # Track coins spent
                             item["bought"] = True
                             item["permanent_bought"] = True
                             if item["name"] == "Essence of Renewal":
@@ -313,6 +321,7 @@ def open_store(username):
                             message_timer = pygame.time.get_ticks() + 2000
                         elif currency == "gems" and player_gems >= price:
                             player_gems -= price
+                            data["diamonds_spent"] += price  # Track diamonds spent
                             item["bought"] = True
                             item["permanent_bought"] = True 
                             if item["name"] in ["Phoenix Feather", "Essence of Renewal", "Luna Bow", 
@@ -414,31 +423,27 @@ def open_store(username):
     try:
         with open(filename, "r") as f:
             data = json.load(f)
-        # 自动补全缺失的 inventory 字段
-        if "inventory" not in data:
-            data["inventory"] = {
-                "Weapon for Boss": [],
-                "Weapon for Farm": [],
-                "Magic for Farm": []
-            }
     except FileNotFoundError:
         data = {
             "game1": {"Coins": 0, "Diamonds": 0, "Best Coins": 0, "Best Diamonds": 0},
             "game2": {"Coins": 0, "Diamonds": 0, "Best Coins": 0, "Best Diamonds": 0},
             "game3": {"Coins": 0, "Diamonds": 0},
-            "inventory": {"Weapon for Boss": [], "Weapon for Farm": [], "Magic for Farm": []}
+            "inventory": {
+                "Weapon for Boss": [],
+                "Weapon for Farm": [],
+                "Magic for Farm": []
+            },
+            "coins_spent": 0,
+            "diamonds_spent": 0
         }
 
-    # 更新 inventory 数据
+    # Update all fields
     data["inventory"]["Weapon for Boss"] = inventory_boss
     data["inventory"]["Weapon for Farm"] = inventory_farm
     data["inventory"]["Magic for Farm"] = magic_farm
+    data["coins_spent"] = data.get("coins_spent", 0) + (total_coins - player_coins)  # Calculate spent coins
+    data["diamonds_spent"] = data.get("diamonds_spent", 0) + (total_diamonds - player_gems)  # Calculate spent gems
 
-    # 写回文件
+    # Write back to file
     with open(filename, "w") as f:
         json.dump(data, f, indent=4)
-
-    print(f"Inventory saved for {username}")
-        
-    pygame.mixer.music.stop()    
-    return

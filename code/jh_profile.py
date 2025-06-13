@@ -40,7 +40,9 @@ def register(): #here is the register part
             "Weapon for Boss": [],
             "Weapon for Farm": [],
             "Magic for Farm": []
-        }
+        },
+        "coins_spent": 0,
+        "diamonds_spent": 0  # Track diamonds spent
     }
 
     # Store username and password into textfile
