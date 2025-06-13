@@ -5,6 +5,7 @@ class Weapon(pygame.sprite.Sprite):
         super().__init__(groups)
         self.sprite_type = "weapon"
         direction = player.status.split("_")[0]
+        self.hit_enemies = []  # Track which enemies we've hit in this attack
 
         #graphics
         full_path = f"graphics_qx/weapons_farming/{player.weapon}/{direction}.png"

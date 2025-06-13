@@ -20,7 +20,7 @@ class Player(Entity):
         #movement
         self.direction = pygame.math.Vector2()
         self.attacking = False
-        self.attack_cooldown = 400
+        self.attack_cooldown = None
         self.attack_time = None
         self.obstacle_sprites = obstacle_sprites
 
@@ -138,6 +138,7 @@ class Player(Entity):
             if keys[pygame.K_SPACE] and self.weapon is not None:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
+                self.attack_cooldown = weapons_data[self.weapon]["cooldown"]
                 self.create_attack()
 
             #special powers input
@@ -156,6 +157,9 @@ class Player(Entity):
 
                     self.weapons_index = (self.weapons_index + 1) % len(self.available_weapons)
                     self.weapon = self.available_weapons[self.weapons_index]
+                    if self.attacking:
+                        self.destroy_attack()
+                        self.attacking = False
 
             if keys[pygame.K_e] and self.can_switch_magic:
                 if len(self.available_magic) > 1:
