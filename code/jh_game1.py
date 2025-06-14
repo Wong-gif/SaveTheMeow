@@ -75,7 +75,7 @@ class Game1:
         self._load_game_assets()
 
         self.player_rect = self.player_images['idle'].get_rect()
-        self.player_rect.midbottom = (140, 70)
+        self.player_rect.midbottom = (140, 50)
         self.player_speed = 5
         self.velocity_y = 0
         self.jump_power = -20
@@ -307,13 +307,13 @@ class Game1:
             gap_end = pos + progress // 2
 
         # left ground
-            if gap_start > last_x:
+            if gap_start > last_x: # The first section of ground (before the last crack) should also be added
                 ground_segments.append((last_x, gap_start - last_x))
 
             last_x = gap_end
 
     # last ground
-        if last_x < self.world_width:
+        if last_x < self.world_width: # The last section of ground (after the last crack) should also be added
             ground_segments.append((last_x, self.world_width - last_x))
 
         return ground_segments
@@ -381,12 +381,12 @@ class Game1:
         pygame.display.update()
 
     def run(self, event=None):
-        if event:
+        if event: # if enter event 
             if self.death_popup.handle_event(event):
                 self.__init__(self.screen, self.username)
                 return
             
-        if not self.death_popup.active:
+        if not self.death_popup.active: # If the death popup is not showing (meaning the player is still alive)
             self.handle_input()
             self.update_physics()
        

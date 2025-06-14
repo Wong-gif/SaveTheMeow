@@ -119,6 +119,7 @@ class Level:
 
     def destroy_attack(self):
         if self.current_attack:
+            self.current_attack.hit_enemies = []  # Clear the hit list
             self.current_attack.kill()
         self.current_attack = None
 
@@ -128,6 +129,9 @@ class Level:
                 collision_sprites = pygame.sprite.spritecollide(attack_sprite,self.attackable_sprites,False)
                 if collision_sprites:
                     for target_sprite in collision_sprites:
+                        if target_sprite in attack_sprite.hit_enemies:
+                            continue
+
                         if target_sprite.sprite_type == "grass":
                             pos = target_sprite.rect.center
                             offset = pygame.math.Vector2(0,75)
@@ -136,6 +140,7 @@ class Level:
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player,attack_sprite.sprite_type)
+                            attack_sprite.hit_enemies.append(target_sprite)  # Mark as hit
 
     def damage_player(self,amount,attack_type):
         if self.player.vulnerable:

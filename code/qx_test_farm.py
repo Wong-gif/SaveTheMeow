@@ -16,15 +16,15 @@ def farming_map(username):
             data["inventory"] = {"Weapon for Boss": [], "Weapon for Farm": []}
         if "game3" not in data:  # Initialize game3 if missing
             data["game3"] = {"Coins": 0, "Diamonds": 0}
-        total_coins = data["game1"]["Best Coins"] + data["game2"]["Best Coins"] + data["game3"]["Coins"]
-        total_diamonds = data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"] + data["game3"]["Diamonds"]
+        total_coins = max(0, data["game1"]["Best Coins"] + data["game2"]["Best Coins"] + data["game3"]["Coins"] - data["coins_spent"])
+        total_diamonds = max(0, data["game1"]["Best Diamonds"] + data["game2"]["Best Diamonds"] + data["game3"]["Diamonds"] - data["diamonds_spent"])
         available_weapons = data.get("inventory", {}).get("Weapon for Farm", [])
         available_magic = data.get("inventory", {}).get("Magic for Farm", [])
 
     except (FileNotFoundError, KeyError, json.JSONDecodeError):
         print("Using default coin and weapon values.")
-        total_coins = 700
-        total_diamonds = 500
+        total_coins = 0
+        total_diamonds = 0
         available_weapons = []
         available_magic = []
     

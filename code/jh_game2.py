@@ -106,7 +106,7 @@ class Game2:
 
         self.death_popup = DeathPopup(screen, self.screen_width, self.screen_height)
         
-        self.portal_rect = pygame.Rect(3100, 221, 80, 100)  # 位置自己调  
+        self.portal_rect = pygame.Rect(3100, 221, 80, 100)  # position of portal  
         self.portal_frames = []
         for i in range(16):
             frame = pygame.image.load(f"assets/images/portal/portal_{i}.png").convert_alpha()
@@ -116,7 +116,7 @@ class Game2:
         self.portal_frame_timer = 0
         self.level_start_time = pygame.time.get_ticks()     
 
-        self.fireballs = []  # 火球列表
+        self.fireballs = []  
         self.fireball_image = pygame.image.load("assets/images/fireball.png").convert_alpha()
 
         for i in range(5):
@@ -262,8 +262,8 @@ class Game2:
 
 
     def _load_single_image(self, path):
-        image = pygame.image.load(path).convert_alpha()  # 使用透明通道加载图片
-        image.set_colorkey((0, 255, 255))  # 设置青色为透明（0, 255, 255）
+        image = pygame.image.load(path).convert_alpha()  
+        image.set_colorkey((0, 255, 255)) 
         return image
     
     def update_camera(self):
@@ -278,7 +278,7 @@ class Game2:
         keys = pygame.key.get_pressed()
         
         if keys[pygame.K_LEFT]:
-            self.player_rect.x = max(0, self.player_rect.x - self.player_speed)  # 限制最小x为0，防止超出屏幕左侧
+            self.player_rect.x = max(0, self.player_rect.x - self.player_speed)  
             self.facing_right = False
 
         if keys[pygame.K_RIGHT]:
@@ -318,7 +318,7 @@ class Game2:
                 self.score += 10
                 self.diamond_sound.play()
                 
-        self.on_ground = False  # 先假设不在地上
+        self.on_ground = False 
         self.velocity_y += self.gravity
         self.player_rect.y += self.velocity_y
 
@@ -330,18 +330,18 @@ class Game2:
             ]:
                 if visible and self.player_rect.colliderect(platform):
                     if self.velocity_y >= 0:
-                        self.player_rect.bottom = platform.top                
-                        self.velocity_y = 0
-                        self.on_ground = True
+                        self.player_rect.bottom = platform.top # let the player can stand on the platform               
+                        self.velocity_y = 0 # stop to fell down
+                        self.on_ground = True # can stand and can jump
 
 
         if self.player_rect.colliderect(self.spring.rect):
-            if self.player_rect.bottom <= self.spring.rect.top + 20:
+            if self.player_rect.bottom <= self.spring.rect.top + 20: # make sure is jump, not besides jump
                 if not self.spring.pressed:
                     self.spring.pressed = True
                     self.spring.image = self.spring_pressed
-                    self.velocity_y = -20
-                    self.jump_sound.play()
+                    self.velocity_y = -20 # negative means player jump up
+                    self.jump_sound.play() # play the sound
         else:
             self.spring.pressed = False
             self.spring.image = self.spring_normal
@@ -363,9 +363,9 @@ class Game2:
                 self.velocity_y = 0
                 break
 
-        # 检查按钮点击
+        # check the button
         if self.button.check_player_collision(self.player_rect):
-            self.platform_visible = True  # 按钮被点击后，显示平台
+            self.platform_visible = True  # button click, platform out 
 
         if self.button2.check_player_collision(self.player_rect):
             self.platform2_visible = True
@@ -376,27 +376,26 @@ class Game2:
             self.death_popup.show("Caution! You have been slain by deadly spikes!")
             return
             
-        if not self.spike_visible:  # 如果还没出现
+        if not self.spike_visible:  # if haven not come out 
            distance_to_spike = abs(self.player_rect.centerx - self.spike_rect.centerx)
            if distance_to_spike < 150:
                self.spike_visible = True
 
-        # 玩家是否跌落，重置
+        # player fell down , restart the game 
         if self.player_rect.bottom > self.screen_height:
             self.death_popup.show("You fell down!")
             return
             
 
         for fireball in self.fireballs:
-            fireball["rect"].x -= fireball["speed"]  # 火球往左飞
+            fireball["rect"].x -= fireball["speed"]  # fire will fly to the left
    
-            # 如果火球飞出画面左侧，就重新生成它（无限循环）
+            # if fire fly out the left screen, it will loop again
             if fireball["rect"].right < 0:
                 fireball["rect"].x = random.randint(1000, 3000)
                 fireball["rect"].y = random.randint(200, 400)
                 fireball["speed"] = random.randint(3, 6)
        
-    # 玩家被火球碰到就重新开始
             if self.player_rect.colliderect(fireball["rect"]):
                 self.death_popup.show("Boom! A fireball hits you with searing heat!")
                 return
@@ -406,7 +405,7 @@ class Game2:
         self.animation_frame += self.animation_speed
 
 
-    def update(self, dt):
+    def update(self, dt): # delta time = dt
         # Update portal animation
         self.portal_frame_timer += dt
         if self.portal_frame_timer > 100:
@@ -435,7 +434,6 @@ class Game2:
         self.camera_x = max(0, min(self.world_width - screen_width, player_center_x - screen_width // 2))
 
     def generate_ground_segments(self):
-        # 地面区段，返回多个地面段的位置和宽度
         return [
             (0,300,600),    # 1st ground
             (700, 500,600),  # 2nd ground
@@ -444,7 +442,7 @@ class Game2:
         ]
 
     def get_player_image(self):
-        if not self.on_ground:  # 如果不在地面上，显示跳跃动画
+        if not self.on_ground: 
             return self.player_images['jump']
         elif pygame.key.get_pressed()[pygame.K_LEFT] or pygame.key.get_pressed()[pygame.K_RIGHT]:
             frame_index = int(self.animation_frame) % len(self.player_images['walk'])
@@ -464,18 +462,18 @@ class Game2:
         for diamond in self.diamond:
             self.screen.blit(self.diamond_icon, self.world_to_screen(diamond["rect"]))
     
-        # 绘制每个地面区段
-        for start_x, width, y in self.generate_ground_segments():
+        # draw the ground        
+        for start_x, width, y in self.generate_ground_segments(): # this game 2 got many position of ground > ============ > =====      ======
             if width > 0:
                 ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100))
                 ground_rect = pygame.Rect(start_x, y, width, 100)
-                screen_pos = self.world_to_screen(ground_rect)
+                screen_pos = self.world_to_screen(ground_rect) # camera move , player also move
                 self.screen.blit(ground_surface, screen_pos)
 
         for fireball in self.fireballs:
             self.screen.blit(self.fireball_image, self.world_to_screen(fireball["rect"]))
 
-        # 绘制按钮
+        
         self.button.draw(self.screen, self.camera_x)
         self.button2.draw(self.screen, self.camera_x)
 
@@ -491,7 +489,7 @@ class Game2:
             self.screen.blit(self.spike_image, self.world_to_screen(self.spike8_rect))
             self.screen.blit(self.spike_image, self.world_to_screen(self.spike9_rect))
 
-        # 只有按钮被点击后才绘制平台
+        # only button click out , platform will come out 
         if self.platform_visible:
             self.screen.blit(self.platform_image, self.world_to_screen(self.platform_rect))
         if self.platform2_visible:
@@ -505,8 +503,8 @@ class Game2:
         self.screen.blit(portal_frame, self.world_to_screen(self.portal_rect))
 
 
-        # 绘制玩家
-        current_image = self.get_player_image()  # 处理玩家面向方向
+        
+        current_image = self.get_player_image()  # about face of the player ( left or right )
         if not self.facing_right:
             current_image = pygame.transform.flip(current_image, True, False)
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
