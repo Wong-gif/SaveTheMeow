@@ -662,4 +662,5 @@ def boss_battle(username):
                         pygame.mixer.music.play(-1)
                         
         pygame.display.update()
+    pygame.mixer.music.stop()
     return  # goes back to overworld
