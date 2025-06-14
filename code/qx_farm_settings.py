@@ -30,9 +30,9 @@ UI_BORDER_COLOUR_ACTIVE = "gold"
 
 #weapons
 weapons_data = {    
-    "Shadow Saber" : {"cooldown" : 1500, "damage" : 30, "graphic" : "graphics_qx/weapons_farming/Shadow_Saber/full.png"},
-    "Thunder Axe" : {"cooldown" : 300, "damage" : 20, "graphic" : "graphics_qx/weapons_farming/Thunder_Axe/full.png"},
-    "Lion Sword" : {"cooldown" : 50, "damage" : 8, "graphic" : "graphics_qx/weapons_farming/Lion_Sword/full.png"}
+    "Shadow Saber" : {"cooldown" : 1000, "damage" : 30, "graphic" : "graphics_qx/weapons_farming/Shadow_Saber/full.png"},
+    "Thunder Axe" : {"cooldown" : 750, "damage" : 20, "graphic" : "graphics_qx/weapons_farming/Thunder_Axe/full.png"},
+    "Lion Sword" : {"cooldown" : 500, "damage" : 8, "graphic" : "graphics_qx/weapons_farming/Lion_Sword/full.png"}
 }
 
 #magic
