@@ -116,9 +116,9 @@ class Game1:
             self.portal_frames.append(frame)
 
         self.dians = [
-            {"rect": pygame.Rect(450, 500, 40, 40), "collected": False},   
-            {"rect": pygame.Rect(620, 500, 40, 40), "collected": False},  
-            {"rect": pygame.Rect(790, 500, 40, 40), "collected": False},  
+            {"rect": pygame.Rect(450, 510, 40, 40), "collected": False},   
+            {"rect": pygame.Rect(620, 510, 40, 40), "collected": False},  
+            {"rect": pygame.Rect(790, 510, 40, 40), "collected": False},  
         ]
 
         self.bricks = [
