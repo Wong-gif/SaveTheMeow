@@ -1,29 +1,32 @@
 {
     "game1": {
-        "Coins": 160,
+        "Coins": 240,
         "Diamonds": 50,
-        "Best Coins": 160,
+        "Best Coins": 240,
         "Best Diamonds": 50
     },
     "game2": {
-        "Coins": 120,
-        "Diamonds": 40,
+        "Coins": 100,
+        "Diamonds": 50,
         "Best Coins": 120,
-        "Best Diamonds": 40
+        "Best Diamonds": 50
     },
     "game3": {
-        "Coins": 0,
+        "Coins": 60,
         "Diamonds": 0
     },
     "inventory": {
         "Weapon for Boss": [
-            "Phoenix Feather"
+            "Phoenix Feather",
+            "Essence of Renewal"
         ],
         "Weapon for Farm": [
             "Lion Sword"
         ],
-        "Magic for Farm": []
+        "Magic for Farm": [
+            "Essence of Renewal"
+        ]
     },
-    "coins_spent": 260,
+    "coins_spent": 390,
     "diamonds_spent": 0
 }

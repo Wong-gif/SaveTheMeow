@@ -43,6 +43,10 @@ class Player(Entity):
         self.can_switch_magic = True
         self.magic_switch_time = None
 
+        self.can_use_magic = True
+        self.magic_use_time = None
+        self.magic_use_cooldown = 5000  # 1000 ms = 1 second
+
         #stats
         self.stats = {"health":100, "attack":10, "magic":4, "speed":5}
         self.health = self.stats["health"]
@@ -142,9 +146,13 @@ class Player(Entity):
                 self.create_attack()
 
             #special powers input
-            if keys[pygame.K_LCTRL] and self.magic is not None:
+            if keys[pygame.K_LCTRL] and self.magic is not None and self.can_use_magic:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
+                self.magic_use_time = pygame.time.get_ticks()  # set magic use timer
+                self.can_use_magic = False  # lock until cooldown ends
+                self.attack_cooldown = 400 #Set cooldown for magic animations
+
                 magic_info = magic_data[self.magic]
                 style = self.magic
                 strength = magic_info["strength"] + self.stats["magic"]
@@ -198,6 +206,10 @@ class Player(Entity):
         if not self.can_switch_weapon:
             if current_time - self.weapon_switch_time >= self.switch_duration_cooldown:
                 self.can_switch_weapon = True
+
+        if not self.can_use_magic:
+            if current_time - self.magic_use_time >= self.magic_use_cooldown:
+                self.can_use_magic = True
 
         if not self.can_switch_magic:
             if current_time - self.magic_switch_time >= self.switch_duration_cooldown:
