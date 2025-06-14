@@ -437,7 +437,7 @@ def boss_battle(username):
         all_sprites.add(boss)
         game_over = False
         start_time = pygame.time.get_ticks()  # Get initial time in milliseconds
-        time_limit = 180000
+        time_limit = 120000
         pygame.mixer.music.play(-1)
 
         # Game loop
