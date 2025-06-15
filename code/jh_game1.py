@@ -332,12 +332,12 @@ class Game1:
         # ground crack
         for start_x, width in self.generate_ground_segments():
             if width > 0:
-                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100))
-                self.screen.blit(ground_surface, (start_x - self.camera_x, 600))
+                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100)) # cut the ground form full ground
+                self.screen.blit(ground_surface, (start_x - self.camera_x, 600)) # put the cut's ground
 
         for coin in self.coins:
             frame_index = int(coin["frame"]) % len(self.coin_frames)
-            image = self.coin_frames[frame_index]
+            image = self.coin_frames[frame_index] # walk 1 walk 2 walk 3
             self.screen.blit(image, self.world_to_screen(coin["rect"]))
 
         for diamond in self.diamond:
@@ -359,7 +359,7 @@ class Game1:
                 
         current_image = self.get_player_image()# talking about the player face, when the player turn right face follow right.
         if not self.facing_right:
-            current_image = pygame.transform.flip(current_image, True, False)
+            current_image = pygame.transform.flip(current_image, True, False) # true = right , false = left
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
        
         ui_bar = pygame.Surface((380, 50), pygame.SRCALPHA)
@@ -383,7 +383,7 @@ class Game1:
     def run(self, event=None):
         if event: # if enter event 
             if self.death_popup.handle_event(event):
-                self.__init__(self.screen, self.username)
+                self.__init__(self.screen, self.username) # restart the game
                 return
             
         if not self.death_popup.active: # If the death popup is not showing (meaning the player is still alive)
