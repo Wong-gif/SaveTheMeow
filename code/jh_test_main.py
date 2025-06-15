@@ -52,9 +52,9 @@ def platform_map(username):
             pygame.draw.rect(surface, color, self.rect, border_radius=10)
             pygame.draw.rect(surface, BLACK, self.rect, 2, border_radius=10)
                 
-            text_surf = self.font.render(self.text, True, BLACK)
-            text_rect = text_surf.get_rect(center=self.rect.center)
-            surface.blit(text_surf, text_rect)
+            text_surf = self.font.render(self.text, True, BLACK) # print word
+            text_rect = text_surf.get_rect(center=self.rect.center) # centre
+            surface.blit(text_surf, text_rect) # got word
             
         def is_clicked(self, event):
             return event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.rect.collidepoint(event.pos)
@@ -76,7 +76,7 @@ def platform_map(username):
                 try:
                     pygame.mixer.music.load("assets/sounds/background_music.mp3")
                     pygame.mixer.music.set_volume(0.5)
-                    pygame.mixer.music.play(-1)
+                    pygame.mixer.music.play(-1) # loop the music
                 except:
                     print("Failed to load music")
 
@@ -109,7 +109,7 @@ def platform_map(username):
                    pygame.mixer.music.stop()
                    current_state = MENU
 
-        pygame.display.update()
+        pygame.display.update() # actually same with pygame.display.flip() function
 
     pygame.mixer.music.stop()
     return  # Start the game → Show menu Click → the button → First level (Game1) → Next level → Second level (Game2) → End the game → Results summary page → Click the button to return to the main menu

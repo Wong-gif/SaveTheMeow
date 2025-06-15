@@ -1,10 +1,10 @@
 import pygame
-import os
-import threading
+import os # help to upload folder 
+import threading # help can play video and play game , play together
 import json
 import tkinter as tk
 from tkinter import messagebox
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk # because got image , put image in tkinter
 
 # Register function
 def register(): #here is the register part
@@ -17,7 +17,7 @@ def register(): #here is the register part
         # Whether user exist or not
     if os.path.exists(f"{username}.txt"): # this whole thing is a function in python to help us to check whether got a file or not #os this is a module and path is a connection between code and file, however, you can say path like a road or highway between a plece to place.
         messagebox.showerror("Error", "User already exists. Please log in directly.") #if error it will print out "Error", "User already exists. Please log in directly." by using a function in tkinter which is messagebox.
-        return #it meaning is finsh this knid of thing then can quit the function or stop the function.
+        return 
       
     user_data = {
         "game1": {
@@ -135,4 +135,4 @@ def create_login_window():
     app.mainloop()
 
 create_login_window()
-######
+
