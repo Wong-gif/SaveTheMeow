@@ -13,7 +13,7 @@ class GameSummary:
         self.game1_diamonds = game1_diamonds
         self.game2_diamonds = game2_diamonds
         self.font = pygame.font.SysFont(None, 60)
-        self.small_font = pygame.font.SysFont(None, 40)
+        self.small_font = pygame.font.SysFont(None, 40) # put the score
 
         self.arrow_img = pygame.image.load("assets/images/arrow1/arrow.png").convert_alpha()
         self.arrow_rect = self.arrow_img.get_rect(topleft=(20, 20))  
@@ -46,7 +46,7 @@ class GameSummary:
                     self.screen.blit(diamond_text, (240, 230))
 
 
-            pygame.display.flip()
+            pygame.display.flip() # Let the screen really show the image
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

@@ -206,8 +206,8 @@ class Game1:
                 self.death_popup.show("Time's up! Game over!")
                 return
         
-        self.velocity_y += self.gravity
-        self.player_rect.y += self.velocity_y
+        self.velocity_y += self.gravity # put the player down fast
+        self.player_rect.y += self.velocity_y # put the player moving
         self.portal_frame_index += self.portal_animation_speed
         if self.portal_frame_index >= len(self.portal_frames):
            self.portal_frame_index = 0 # loop the portal
@@ -241,7 +241,7 @@ class Game1:
         self.on_ground = False
         for start_x, width in self.generate_ground_segments():
             ground_rect = pygame.Rect(start_x, 605, width, 100)
-            if self.player_rect.colliderect(ground_rect):
+            if self.player_rect.colliderect(ground_rect): # stand on the ground
                 self.on_ground = True
                 self.player_rect.bottom = ground_rect.top
                 self.velocity_y = 0
@@ -265,7 +265,7 @@ class Game1:
                 if not brick.get("visible", False):
                     if abs(self.player_rect.centerx - brick["rect"].centerx) < 80:
                         brick["visible"] = True
-                        brick["rect"].y -= 30
+                        brick["rect"].y -= 30 # speed of brike up
 
         for brick in self.bricks:
             if brick["type"] == "spike" and brick["active"]:
@@ -296,7 +296,7 @@ class Game1:
         self.player_rect.right = min(self.world_width, self.player_rect.right)
 
         self.update_camera()
-        self.animation_frame += self.animation_speed
+        self.animation_frame += self.animation_speed # let charater can play play play in the game 
 
     def generate_ground_segments(self):
         ground_segments = []
@@ -310,7 +310,7 @@ class Game1:
             if gap_start > last_x: # The first section of ground (before the last crack) should also be added
                 ground_segments.append((last_x, gap_start - last_x))
 
-            last_x = gap_end
+            last_x = gap_end # kira next ground position
 
     # last ground
         if last_x < self.world_width: # The last section of ground (after the last crack) should also be added
@@ -332,12 +332,12 @@ class Game1:
         # ground crack
         for start_x, width in self.generate_ground_segments():
             if width > 0:
-                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100))
-                self.screen.blit(ground_surface, (start_x - self.camera_x, 600))
+                ground_surface = self.ground_image_full.subsurface((start_x, 0, width, 100)) # cut the ground form full ground
+                self.screen.blit(ground_surface, (start_x - self.camera_x, 600)) # put the cut's ground
 
         for coin in self.coins:
             frame_index = int(coin["frame"]) % len(self.coin_frames)
-            image = self.coin_frames[frame_index]
+            image = self.coin_frames[frame_index] # walk 1 walk 2 walk 3
             self.screen.blit(image, self.world_to_screen(coin["rect"]))
 
         for diamond in self.diamond:
@@ -359,7 +359,7 @@ class Game1:
                 
         current_image = self.get_player_image()# talking about the player face, when the player turn right face follow right.
         if not self.facing_right:
-            current_image = pygame.transform.flip(current_image, True, False)
+            current_image = pygame.transform.flip(current_image, True, False) # true = right , false = left
         self.screen.blit(current_image, self.world_to_screen(self.player_rect))
        
         ui_bar = pygame.Surface((380, 50), pygame.SRCALPHA)
@@ -383,7 +383,7 @@ class Game1:
     def run(self, event=None):
         if event: # if enter event 
             if self.death_popup.handle_event(event):
-                self.__init__(self.screen, self.username)
+                self.__init__(self.screen, self.username) # restart the game
                 return
             
         if not self.death_popup.active: # If the death popup is not showing (meaning the player is still alive)

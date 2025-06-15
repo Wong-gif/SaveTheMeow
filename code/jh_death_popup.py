@@ -14,7 +14,7 @@ class DeathPopup:
         self.active = True
         self.reason = reason_text
 
-    def hide(self):
+    def hide(self): # hide the popup first
         self.active = False
 
     def draw(self):
