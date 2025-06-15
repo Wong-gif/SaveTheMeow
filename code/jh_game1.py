@@ -206,8 +206,8 @@ class Game1:
                 self.death_popup.show("Time's up! Game over!")
                 return
         
-        self.velocity_y += self.gravity
-        self.player_rect.y += self.velocity_y
+        self.velocity_y += self.gravity # put the player down fast
+        self.player_rect.y += self.velocity_y # put the player moving
         self.portal_frame_index += self.portal_animation_speed
         if self.portal_frame_index >= len(self.portal_frames):
            self.portal_frame_index = 0 # loop the portal
@@ -241,7 +241,7 @@ class Game1:
         self.on_ground = False
         for start_x, width in self.generate_ground_segments():
             ground_rect = pygame.Rect(start_x, 605, width, 100)
-            if self.player_rect.colliderect(ground_rect):
+            if self.player_rect.colliderect(ground_rect): # stand on the ground
                 self.on_ground = True
                 self.player_rect.bottom = ground_rect.top
                 self.velocity_y = 0
@@ -265,7 +265,7 @@ class Game1:
                 if not brick.get("visible", False):
                     if abs(self.player_rect.centerx - brick["rect"].centerx) < 80:
                         brick["visible"] = True
-                        brick["rect"].y -= 30
+                        brick["rect"].y -= 30 # speed of brike up
 
         for brick in self.bricks:
             if brick["type"] == "spike" and brick["active"]:
@@ -296,7 +296,7 @@ class Game1:
         self.player_rect.right = min(self.world_width, self.player_rect.right)
 
         self.update_camera()
-        self.animation_frame += self.animation_speed
+        self.animation_frame += self.animation_speed # let charater can play play play in the game 
 
     def generate_ground_segments(self):
         ground_segments = []
@@ -310,7 +310,7 @@ class Game1:
             if gap_start > last_x: # The first section of ground (before the last crack) should also be added
                 ground_segments.append((last_x, gap_start - last_x))
 
-            last_x = gap_end
+            last_x = gap_end # kira next ground position
 
     # last ground
         if last_x < self.world_width: # The last section of ground (after the last crack) should also be added
