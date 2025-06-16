@@ -407,7 +407,7 @@ class Game2:
 
     def update(self, dt): # delta time = dt
         # Update portal animation
-        self.portal_frame_timer += dt
+        self.portal_frame_timer += dt # record the time if > o.1 second loop again
         if self.portal_frame_timer > 100:
             self.portal_frame_index = (self.portal_frame_index + 1) % len(self.portal_frames)
             self.portal_frame_timer = 0
